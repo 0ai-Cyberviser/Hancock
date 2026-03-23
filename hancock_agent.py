@@ -998,7 +998,8 @@ def build_app(client, model: str):
                 "count": len(results),
             })
         except Exception as exc:
-            _inc("errors_total"); return jsonify({"error": str(exc)}), 500
+            logger.exception("Error in /v1/geolocate endpoint: %s", exc)
+            _inc("errors_total"); return jsonify({"error": "Internal server error"}), 500
 
     @app.route("/v1/predict-locations", methods=["POST"])
     def predict_locations_endpoint():
@@ -1036,7 +1037,8 @@ def build_app(client, model: str):
             predictions = analyzer.predict_next_locations(infra_list)
             return jsonify({"predictions": predictions, "count": len(predictions)})
         except Exception as exc:
-            _inc("errors_total"); return jsonify({"error": str(exc)}), 500
+            logger.exception("Error in /v1/predict-locations endpoint: %s", exc)
+            _inc("errors_total"); return jsonify({"error": "Internal server error"}), 500
 
     @app.route("/v1/map-infrastructure", methods=["POST"])
     def map_infrastructure_endpoint():
