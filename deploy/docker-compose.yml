@@ -1,6 +1,6 @@
 version: "3.9"
 # Hancock full-stack: agent + Ollama + Prometheus + Grafana
-# Dockerfile referenced from repo root (../../Dockerfile relative to this file).
+# Dockerfile referenced from repo root (../Dockerfile relative to this file).
 
 services:
   ollama:

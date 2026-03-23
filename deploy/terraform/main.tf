@@ -224,7 +224,7 @@ resource "aws_ecs_task_definition" "hancock" {
     }]
 
     healthCheck = {
-      command     = ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:${var.container_port}/health')\" || exit 1"]
+      command     = ["CMD-SHELL", "curl -sf http://localhost:5000/health || exit 1"]
       interval    = 30
       timeout     = 10
       retries     = 3
