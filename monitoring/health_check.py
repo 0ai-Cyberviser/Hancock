@@ -9,6 +9,7 @@ Results are cached for TTL_SECONDS to avoid hammering backends on every poll.
 
 import time
 import threading
+import urllib.parse
 import urllib.request
 import urllib.error
 
@@ -40,6 +41,10 @@ def _cached(key, fn):
 
 def _http_ping(url, timeout=5):
     """Return latency_ms and HTTP status for a simple GET to *url*."""
+    # Validate scheme to prevent unintended use of file:/ or custom URI handlers
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme not in ("http", "https"):
+        raise ValueError(f"_http_ping: unsupported URL scheme {parsed.scheme!r}")
     start = time.monotonic()
     try:
         with urllib.request.urlopen(url, timeout=timeout) as resp:  # nosec B310

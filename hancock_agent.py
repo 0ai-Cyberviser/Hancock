@@ -1069,6 +1069,7 @@ def _send_notification(source: str, severity: str, alert: str, triage: str):
     """Send triage result to Slack or Teams webhook (if configured via env vars)."""
     import urllib.request
     import urllib.error
+    import urllib.parse
 
     slack_url = os.getenv("HANCOCK_SLACK_WEBHOOK", "")
     teams_url = os.getenv("HANCOCK_TEAMS_WEBHOOK", "")

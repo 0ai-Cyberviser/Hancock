@@ -1,4 +1,4 @@
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET  # nosec B405 — using defusedxml drop-in replacement
 import json
 import logging
 import sys
