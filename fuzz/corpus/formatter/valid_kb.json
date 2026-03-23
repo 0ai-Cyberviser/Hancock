@@ -1,0 +1,1 @@
+{"system_prompt":"You are Hancock.","pairs":[{"user":"How do I scan for open ports?","assistant":"Use nmap: nmap -sV -sC target.com. This performs a service version scan with default scripts enabled. Always ensure you have written authorization."}]}

@@ -1,0 +1,1 @@
+[{"cve_id":"CVE-2024-5678","description":"SQL injection in login form allows authentication bypass in versions before 3.1 and can lead to complete database compromise","cvss_score":9.1,"severity":"CRITICAL","attack_vector":"NETWORK","cwes":["CWE-89"],"references":["https://example.com"]}]

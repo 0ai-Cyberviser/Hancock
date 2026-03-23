@@ -3,7 +3,7 @@
 PYTHON        := .venv/bin/python
 PIP           := .venv/bin/pip
 
-.PHONY: help setup install dev-install run server pipeline pipeline-v3 finetune lint test test-cov clean docker docker-up fly-deploy client-python client-node
+.PHONY: help setup install dev-install run server pipeline pipeline-v3 finetune lint test test-cov fuzz fuzz-target clean docker docker-up fly-deploy client-python client-node
 
 help:
 	@echo ""
@@ -37,6 +37,8 @@ help:
 	@echo "    lint           Run flake8 linter"
 	@echo "    test           Run test suite"
 	@echo "    test-cov       Run test suite with HTML coverage report"
+	@echo "    fuzz           Run all fuzz targets (quick, 60s each)"
+	@echo "    fuzz-target    Run a single fuzz target: make fuzz-target TARGET=fuzz_nvd_parser"
 	@echo "    clean          Remove build artifacts and cache"
 	@echo ""
 	@echo "  Docker:"
@@ -90,6 +92,22 @@ test-cov:
 	.venv/bin/pytest tests/ -v --tb=short --cov=. --cov-report=html --cov-report=term-missing \
 	  --cov-omit=".venv/*,data/*,docs/*,tests/*"
 	@echo "[Hancock] Coverage report: htmlcov/index.html"
+
+fuzz:
+	@echo "[Hancock] Running all fuzz targets (quick, 60s each)..."
+	@for target in fuzz/fuzz_*.py; do \
+	  name=$$(basename $$target .py); \
+	  corpus_name=$${name#fuzz_}; \
+	  echo "[Hancock] Fuzzing $$name ..."; \
+	  $(PYTHON) $$target -atheris_runs=5000 -max_total_time=60 fuzz/corpus/$$corpus_name 2>&1 | tail -5; \
+	done
+	@echo "[Hancock] Fuzzing complete."
+
+fuzz-target:
+	@test -n "$(TARGET)" || (echo "Usage: make fuzz-target TARGET=fuzz_nvd_parser" && exit 1)
+	@echo "[Hancock] Fuzzing $(TARGET)..."
+	@corpus_name=$${TARGET#fuzz_}; \
+	$(PYTHON) fuzz/$(TARGET).py -atheris_runs=50000 -max_total_time=300 fuzz/corpus/$$corpus_name
 
 clean:
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
