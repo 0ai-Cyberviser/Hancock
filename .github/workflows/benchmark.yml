@@ -1,0 +1,60 @@
+name: Benchmark
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    name: Run benchmarks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install flask openai python-dotenv xmltodict requests \
+                      pytest python-json-logger
+
+      - name: Run benchmark suite
+        id: benchmarks
+        run: |
+          python tests/benchmark_suite.py 2>&1 | tee benchmark_results.txt
+
+      - name: Upload benchmark results artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: benchmark_results.txt
+
+      - name: Post benchmark comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let body = '## Benchmark Results\n\n```\n';
+            try {
+              body += fs.readFileSync('benchmark_results.txt', 'utf8');
+            } catch (e) {
+              body += 'Benchmark results not available.';
+            }
+            body += '\n```';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });

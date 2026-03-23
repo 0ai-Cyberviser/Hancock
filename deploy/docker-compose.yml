@@ -1,0 +1,107 @@
+version: "3.9"
+
+networks:
+  hancock-net:
+    driver: bridge
+
+volumes:
+  ollama_models:
+  prometheus_data:
+  grafana_data:
+
+services:
+  # ── Ollama LLM backend ──────────────────────────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    networks:
+      - hancock-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ── Hancock agent ───────────────────────────────────────────────────────────
+  hancock:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: ghcr.io/0ai-cyberviser/hancock:latest
+    container_name: hancock-agent
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - HANCOCK_LLM_BACKEND=${HANCOCK_LLM_BACKEND:-ollama}
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.1:8b}
+      - OLLAMA_CODER_MODEL=${OLLAMA_CODER_MODEL:-qwen2.5-coder:7b}
+      - HANCOCK_LOG_JSON=true
+      - HANCOCK_LOG_LEVEL=${HANCOCK_LOG_LEVEL:-INFO}
+    env_file:
+      - ../.env
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks:
+      - hancock-net
+    healthcheck:
+      test:
+        - "CMD"
+        - "python"
+        - "-c"
+        - "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    labels:
+      - "com.cyberviser.project=hancock"
+      - "com.cyberviser.version=0.6.0"
+
+  # ── Prometheus ──────────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.51.2
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ../monitoring/alerting_rules.yaml:/etc/prometheus/alerting_rules.yaml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=15d"
+      - "--web.enable-lifecycle"
+    networks:
+      - hancock-net
+    depends_on:
+      - hancock
+
+  # ── Grafana ─────────────────────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:10.4.2
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ../monitoring/grafana_dashboard.json:/var/lib/grafana/dashboards/hancock.json:ro
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/hancock.json
+    networks:
+      - hancock-net
+    depends_on:
+      - prometheus

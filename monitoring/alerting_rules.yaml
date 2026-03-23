@@ -1,0 +1,135 @@
+---
+# Prometheus alerting rules for Hancock AI Security Agent
+# Apply with: kubectl apply -f alerting_rules.yaml  (if using Prometheus Operator)
+# Or load via prometheus.yml  rule_files: section
+
+groups:
+  - name: hancock.availability
+    interval: 30s
+    rules:
+      - alert: HancockDown
+        expr: up{job="hancock"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: hancock
+        annotations:
+          summary: "Hancock agent is down"
+          description: >
+            The Hancock agent ({{ $labels.instance }}) has been unreachable
+            for more than 1 minute.
+
+      - alert: HancockModelUnavailable
+        expr: |
+          sum(rate(hancock_errors_total{error_type="model_unavailable"}[5m])) > 0
+        for: 2m
+        labels:
+          severity: critical
+          service: hancock
+        annotations:
+          summary: "Hancock model backend unavailable"
+          description: >
+            The LLM backend has been returning model-unavailable errors for
+            more than 2 minutes.  Check Ollama / OpenAI connectivity.
+
+  - name: hancock.performance
+    interval: 30s
+    rules:
+      - alert: HancockHighP99Latency
+        expr: |
+          histogram_quantile(
+            0.99,
+            sum(rate(hancock_request_latency_seconds_bucket[5m])) by (le, endpoint)
+          ) > 5
+        for: 5m
+        labels:
+          severity: warning
+          service: hancock
+        annotations:
+          summary: "Hancock p99 request latency > 5 s"
+          description: >
+            The 99th-percentile request latency for {{ $labels.endpoint }}
+            has exceeded 5 seconds for 5 minutes.
+
+      - alert: HancockHighInferenceLatency
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum(rate(hancock_model_inference_seconds_bucket[5m])) by (le, model)
+          ) > 30
+        for: 5m
+        labels:
+          severity: warning
+          service: hancock
+        annotations:
+          summary: "Hancock model inference p95 > 30 s"
+          description: >
+            Model {{ $labels.model }} p95 inference time has exceeded 30 s
+            for 5 minutes.  Consider scaling or switching models.
+
+  - name: hancock.errors
+    interval: 30s
+    rules:
+      - alert: HancockHighErrorRate
+        expr: |
+          (
+            sum(rate(hancock_errors_total[5m]))
+            /
+            sum(rate(hancock_requests_total[5m]))
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: hancock
+        annotations:
+          summary: "Hancock error rate > 5%"
+          description: >
+            The Hancock agent error rate has exceeded 5% for 5 minutes.
+            Current value: {{ printf "%.2f" $value }}%.
+
+      - alert: HancockRateLimitExhaustion
+        expr: |
+          sum(rate(hancock_rate_limit_hits_total[1m])) > 10
+        for: 2m
+        labels:
+          severity: warning
+          service: hancock
+        annotations:
+          summary: "Hancock rate limiter is heavily triggered"
+          description: >
+            More than 10 requests/second are being rate-limited.  Consider
+            raising limits or scaling the service.
+
+  - name: hancock.resources
+    interval: 60s
+    rules:
+      - alert: HancockHighMemoryUsage
+        expr: |
+          (
+            node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes
+          ) / node_memory_MemTotal_bytes > 0.80
+        for: 5m
+        labels:
+          severity: warning
+          service: hancock
+        annotations:
+          summary: "Host memory usage > 80%"
+          description: >
+            Memory usage on {{ $labels.instance }} has exceeded 80% for
+            5 minutes.  Current: {{ printf "%.1f" (mul $value 100) }}%.
+
+      - alert: HancockDiskSpaceLow
+        expr: |
+          (
+            node_filesystem_size_bytes{mountpoint="/"} -
+            node_filesystem_free_bytes{mountpoint="/"}
+          ) / node_filesystem_size_bytes{mountpoint="/"} > 0.85
+        for: 10m
+        labels:
+          severity: warning
+          service: hancock
+        annotations:
+          summary: "Hancock host disk usage > 85%"
+          description: >
+            Disk usage on {{ $labels.instance }} (/) has exceeded 85% for
+            10 minutes.  Free up space or expand the volume.

@@ -1,0 +1,17 @@
+apiVersion: v2
+name: hancock
+description: Hancock AI Security Agent — Helm chart
+type: application
+version: 0.6.0
+appVersion: "0.6.0"
+keywords:
+  - security
+  - ai
+  - pentest
+  - cybersecurity
+home: https://github.com/0ai-Cyberviser/Hancock
+sources:
+  - https://github.com/0ai-Cyberviser/Hancock
+maintainers:
+  - name: CyberViser
+    email: contact@cyberviser.ai

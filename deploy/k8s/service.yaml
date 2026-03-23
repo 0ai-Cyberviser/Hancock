@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hancock
+  labels:
+    app: hancock
+    app.kubernetes.io/name: hancock
+spec:
+  type: ClusterIP
+  selector:
+    app: hancock
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http
