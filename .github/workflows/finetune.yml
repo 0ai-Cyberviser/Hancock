@@ -20,6 +20,9 @@ on:
         default: false
         type: boolean
 
+permissions:
+  contents: read
+
 jobs:
   finetune:
     name: Fine-Tune on Modal (${{ github.event.inputs.gpu }})
