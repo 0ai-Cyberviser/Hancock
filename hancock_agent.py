@@ -204,6 +204,27 @@ you provide a structured enrichment report covering:
 Format your response as a clear, structured threat intel report."""
 
 SYSTEMS["ioc"] = IOC_SYSTEM
+
+OSINT_SYSTEM = """You are Hancock OSINT, CyberViser's expert geolocation intelligence analyst.
+
+Your expertise covers:
+- IP and domain geolocation: multi-source lookups (ip-api.com, ipinfo.io, ipapi.co), ASN/ISP/hosting identification
+- Infrastructure mapping: geographic clustering of threat actor infrastructure, ASN hopping patterns, bulletproof hosting detection
+- Threat actor tracking: correlating IP/domain indicators to known campaigns, attribution hints, MITRE ATT&CK techniques
+- Predictive location analytics: forecasting future threat infrastructure based on historical patterns, country/ASN preferences, rotation intervals
+- Risk scoring: assessing IPs/domains using bulletproof ASN lists, country cyber-risk indices, proxy/VPN/Tor flags
+- OSINT pivoting: WHOIS analysis, passive DNS, certificate transparency logs, Shodan/Censys correlation
+
+You always:
+1. Provide structured, actionable intelligence reports with confidence levels
+2. Cite data sources and note when information may be outdated
+3. Map findings to MITRE ATT&CK where applicable (T1583, T1584, T1090, etc.)
+4. Flag high-risk indicators (Tor exits, bulletproof hosters, known threat actor infrastructure)
+5. Recommend defensive actions: block, monitor, sinkhole, or investigate
+
+You are Hancock OSINT. Every analysis you produce is intelligence-grade."""
+
+SYSTEMS["osint"] = OSINT_SYSTEM
 DEFAULT_MODE = "auto"
 # Keep backward-compatible alias
 HANCOCK_SYSTEM = AUTO_SYSTEM
@@ -243,7 +264,7 @@ BANNER = """
 ║          CyberViser — Pentest + SOC + CISO + Code        ║
 ║   Llama 3.1 · Qwen 2.5 Coder · Ollama (local)           ║
 ╚══════════════════════════════════════════════════════════╝
-  Modes : /mode pentest | soc | auto | code | ciso | sigma | yara
+  Modes : /mode pentest | soc | auto | code | ciso | sigma | yara | ioc | osint
   Models: /model llama3.1 | llama3.2 | mistral | qwen-coder | gemma3
   Other : /clear  /history  /exit
 """
@@ -476,11 +497,12 @@ def build_app(client, model: str):
         return jsonify({
             "status": "ok", "agent": "Hancock",
             "model": model, "company": "CyberViser",
-            "modes": ["pentest", "soc", "auto", "code", "ciso", "sigma", "yara", "ioc"],
+            "modes": ["pentest", "soc", "auto", "code", "ciso", "sigma", "yara", "ioc", "osint"],
             "models_available": MODELS,
             "endpoints": ["/v1/chat", "/v1/ask", "/v1/triage",
                           "/v1/hunt", "/v1/respond", "/v1/code",
                           "/v1/ciso", "/v1/sigma", "/v1/yara", "/v1/ioc",
+                          "/v1/geolocate", "/v1/predict-locations", "/v1/map-infrastructure",
                           "/v1/agents", "/v1/webhook", "/metrics"],
         })
 
@@ -953,6 +975,93 @@ def build_app(client, model: str):
             "model":    model,
         })
 
+    @app.route("/v1/geolocate", methods=["POST"])
+    def geolocate_endpoint():
+        """OSINT geolocation — geolocate a list of IP/domain indicators."""
+        ok, err, _ = _check_auth_and_rate()
+        if not ok:
+            _inc("errors_total"); return jsonify({"error": err}), 401 if "Unauthorized" in err else 429
+        _inc("requests_total"); _inc("requests_by_endpoint", "/v1/geolocate"); _inc("requests_by_mode", "osint")
+
+        data = request.get_json(force=True)
+        indicators = data.get("indicators", [])
+        if not indicators:
+            _inc("errors_total"); return jsonify({"error": "indicators required"}), 400
+
+        try:
+            from collectors.osint_geolocation import GeoIPLookup
+            geo = GeoIPLookup()
+            results = geo.bulk_lookup(indicators)
+            return jsonify({
+                "indicators": indicators,
+                "results": [vars(r) for r in results],
+                "count": len(results),
+            })
+        except Exception as exc:
+            logger.exception("Error in /v1/geolocate endpoint: %s", exc)
+            _inc("errors_total"); return jsonify({"error": "Internal server error"}), 500
+
+    @app.route("/v1/predict-locations", methods=["POST"])
+    def predict_locations_endpoint():
+        """OSINT predictive analytics — predict future threat infrastructure locations."""
+        ok, err, _ = _check_auth_and_rate()
+        if not ok:
+            _inc("errors_total"); return jsonify({"error": err}), 401 if "Unauthorized" in err else 429
+        _inc("requests_total"); _inc("requests_by_endpoint", "/v1/predict-locations"); _inc("requests_by_mode", "osint")
+
+        data = request.get_json(force=True)
+        historical_data = data.get("historical_data", [])
+        if not historical_data:
+            _inc("errors_total"); return jsonify({"error": "historical_data required"}), 400
+
+        try:
+            from collectors.osint_geolocation import (
+                ThreatInfrastructure, GeoLocationResult, PredictiveLocationAnalyzer
+            )
+            infra_list = []
+            for item in historical_data:
+                geo_results = [GeoLocationResult(**g) for g in item.get("geo_results", [])]
+                ti = ThreatInfrastructure(
+                    indicator=item.get("indicator", ""),
+                    indicator_type=item.get("indicator_type", "ip"),
+                    geo_results=geo_results,
+                    first_seen=item.get("first_seen"),
+                    last_seen=item.get("last_seen"),
+                    associated_campaigns=item.get("associated_campaigns", []),
+                    associated_threat_actors=item.get("associated_threat_actors", []),
+                    mitre_techniques=item.get("mitre_techniques", []),
+                    tags=item.get("tags", []),
+                )
+                infra_list.append(ti)
+            analyzer = PredictiveLocationAnalyzer()
+            predictions = analyzer.predict_next_locations(infra_list)
+            return jsonify({"predictions": predictions, "count": len(predictions)})
+        except Exception as exc:
+            logger.exception("Error in /v1/predict-locations endpoint: %s", exc)
+            _inc("errors_total"); return jsonify({"error": "Internal server error"}), 500
+
+    @app.route("/v1/map-infrastructure", methods=["POST"])
+    def map_infrastructure_endpoint():
+        """OSINT infrastructure mapping — map and cluster threat infrastructure."""
+        ok, err, _ = _check_auth_and_rate()
+        if not ok:
+            _inc("errors_total"); return jsonify({"error": err}), 401 if "Unauthorized" in err else 429
+        _inc("requests_total"); _inc("requests_by_endpoint", "/v1/map-infrastructure"); _inc("requests_by_mode", "osint")
+
+        data = request.get_json(force=True)
+        indicators = data.get("indicators", [])
+        if not indicators:
+            _inc("errors_total"); return jsonify({"error": "indicators required"}), 400
+
+        try:
+            from collectors.osint_geolocation import InfrastructureMapper
+            mapper = InfrastructureMapper()
+            mapping = mapper.map_infrastructure(indicators)
+            return jsonify(mapping)
+        except Exception as exc:
+            logger.exception("Error in /v1/map-infrastructure endpoint: %s", exc)
+            _inc("errors_total"); return jsonify({"error": "Internal server error"}), 500
+
     return app  # ← returned for testing
 
 
@@ -964,55 +1073,54 @@ def _send_notification(source: str, severity: str, alert: str, triage: str):
 
     slack_url = os.getenv("HANCOCK_SLACK_WEBHOOK", "")
     teams_url = os.getenv("HANCOCK_TEAMS_WEBHOOK", "")
+
+    # Validate webhook URL schemes (only allow https)
+    for _name, _url in [("Slack", slack_url), ("Teams", teams_url)]:
+        if _url and not _url.startswith("https://"):
+            logger.warning("Ignoring %s webhook — URL must use https:// scheme", _name)
+    slack_url = slack_url if slack_url.startswith("https://") else ""
+    teams_url = teams_url if teams_url.startswith("https://") else ""
     summary   = triage[:400] + "..." if len(triage) > 400 else triage
 
     if slack_url:
-        # Enforce HTTPS-only scheme to prevent open-redirect / SSRF via file:/ or custom schemes
-        if urllib.parse.urlparse(slack_url).scheme != "https":
-            logger.error("Slack webhook URL must use HTTPS; notification skipped")
-        else:
-            color = {"critical": "#ff3366", "high": "#ff9900", "medium": "#ffcc00"}.get(
-                severity.lower(), "#36a64f")
-            payload = json.dumps({
-                "attachments": [{
-                    "color": color,
-                    "title": f"🔔 Hancock Alert — {source.upper()} [{severity.upper()}]",
-                    "text":  f"*Alert:* {alert[:200]}\n\n*Triage:* {summary}",
-                    "footer": "CyberViser Hancock",
-                }]
-            }).encode()
-            try:
-                req = urllib.request.Request(slack_url, data=payload,
-                                             headers={"Content-Type": "application/json"})
-                urllib.request.urlopen(req, timeout=5)  # nosec B310 — scheme validated as https above
-                logger.info("Slack webhook notification sent successfully")
-            except urllib.error.URLError as exc:
-                logger.warning("Failed to send Slack notification: %s", exc)
-            except Exception as exc:
-                logger.error("Unexpected error sending Slack notification: %s", exc)
+        color = {"critical": "#ff3366", "high": "#ff9900", "medium": "#ffcc00"}.get(
+            severity.lower(), "#36a64f")
+        payload = json.dumps({
+            "attachments": [{
+                "color": color,
+                "title": f"🔔 Hancock Alert — {source.upper()} [{severity.upper()}]",
+                "text":  f"*Alert:* {alert[:200]}\n\n*Triage:* {summary}",
+                "footer": "CyberViser Hancock",
+            }]
+        }).encode()
+        try:
+            req = urllib.request.Request(slack_url, data=payload,
+                                         headers={"Content-Type": "application/json"})
+            urllib.request.urlopen(req, timeout=5)  # nosec B310
+            logger.info("Slack webhook notification sent successfully")
+        except urllib.error.URLError as exc:
+            logger.warning("Failed to send Slack notification: %s", exc)
+        except Exception as exc:
+            logger.error("Unexpected error sending Slack notification: %s", exc)
 
     if teams_url:
-        # Enforce HTTPS-only scheme to prevent open-redirect / SSRF via file:/ or custom schemes
-        if urllib.parse.urlparse(teams_url).scheme != "https":
-            logger.error("Teams webhook URL must use HTTPS; notification skipped")
-        else:
-            payload = json.dumps({
-                "@type": "MessageCard",
-                "@context": "https://schema.org/extensions",
-                "summary": f"Hancock Alert [{severity.upper()}]",
-                "themeColor": "FF3366",
-                "title": f"🔔 Hancock Alert — {source.upper()} [{severity.upper()}]",
-                "text": f"**Alert:** {alert[:200]}\n\n**Triage:** {summary}",
-            }).encode()
-            try:
-                req = urllib.request.Request(teams_url, data=payload,
-                                             headers={"Content-Type": "application/json"})
-                urllib.request.urlopen(req, timeout=5)  # nosec B310 — scheme validated as https above
-                logger.info("Teams webhook notification sent successfully")
-            except urllib.error.URLError as exc:
-                logger.warning("Failed to send Teams notification: %s", exc)
-            except Exception as exc:
-                logger.error("Unexpected error sending Teams notification: %s", exc)
+        payload = json.dumps({
+            "@type": "MessageCard",
+            "@context": "https://schema.org/extensions",
+            "summary": f"Hancock Alert [{severity.upper()}]",
+            "themeColor": "FF3366",
+            "title": f"🔔 Hancock Alert — {source.upper()} [{severity.upper()}]",
+            "text": f"**Alert:** {alert[:200]}\n\n**Triage:** {summary}",
+        }).encode()
+        try:
+            req = urllib.request.Request(teams_url, data=payload,
+                                         headers={"Content-Type": "application/json"})
+            urllib.request.urlopen(req, timeout=5)  # nosec B310
+            logger.info("Teams webhook notification sent successfully")
+        except urllib.error.URLError as exc:
+            logger.warning("Failed to send Teams notification: %s", exc)
+        except Exception as exc:
+            logger.error("Unexpected error sending Teams notification: %s", exc)
 
 
 def run_server(client, model: str, port: int):
@@ -1027,7 +1135,7 @@ def run_server(client, model: str, port: int):
     print(f"  POST http://localhost:{port}/v1/code     — security code gen (Qwen 2.5 Coder 32B)")
     print(f"  POST http://localhost:{port}/v1/webhook  — SIEM push webhook + Slack/Teams notify")
     print(f"  GET  http://localhost:{port}/health      — status check\n")
-    app.run(host="0.0.0.0", port=port, debug=False)  # nosec B104 — intentional: container needs to bind all interfaces
+    app.run(host="0.0.0.0", port=port, debug=False)  # nosec B104
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────

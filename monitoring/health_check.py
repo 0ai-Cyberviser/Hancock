@@ -47,7 +47,7 @@ def _http_ping(url, timeout=5):
         raise ValueError(f"_http_ping: unsupported URL scheme {parsed.scheme!r}")
     start = time.monotonic()
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:  # nosec B310 — scheme validated above
+        with urllib.request.urlopen(url, timeout=timeout) as resp:  # nosec B310
             status = resp.status
         latency_ms = (time.monotonic() - start) * 1000
         return latency_ms, status

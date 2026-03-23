@@ -7,3 +7,4 @@ prometheus-client
 python-json-logger
 defusedxml
 pytest
+maxminddb

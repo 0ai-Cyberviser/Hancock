@@ -75,6 +75,46 @@ def run_formatter(v2: bool = False) -> None:
     format_all()
 
 
+def run_osint_geolocation(target: str) -> dict:
+    """Run OSINT geolocation enrichment for a target IP or domain.
+
+    Performs geolocation lookup, threat intel enrichment, and infrastructure
+    mapping. Returns a structured result dictionary.
+    """
+    try:
+        from collectors.osint_geolocation import GeoIPLookup, InfrastructureMapper
+    except ImportError as exc:
+        print(f"[pipeline] osint_geolocation unavailable: {exc}")
+        return {}
+
+    geo = GeoIPLookup()
+    mapper = InfrastructureMapper()
+
+    try:
+        # Determine whether target is an IP or domain
+        import socket
+        try:
+            socket.inet_aton(target)
+            results = [geo.lookup_ip(target)]
+        except OSError:
+            results = geo.lookup_domain(target)
+
+        # Enrich with threat intel (gracefully degrades without API keys)
+        enriched = [geo.enrich_with_threat_intel(r) for r in results]
+
+        # Map infrastructure (groups by ASN/country/ISP)
+        mapping = mapper.map_infrastructure([target])
+
+        return {
+            "target": target,
+            "geo_results": [vars(r) for r in enriched],
+            "infrastructure_map": mapping,
+        }
+    except Exception as exc:
+        print(f"[pipeline] osint_geolocation step failed for {target}: {exc}")
+        return {"target": target, "error": str(exc)}
+
+
 def run_full_assessment(target: str) -> None:
     """Orchestrate a full security assessment pipeline for a given target."""
     allowlist = ["nmap", "sqlmap", "burp"]
@@ -98,6 +138,16 @@ def run_full_assessment(target: str) -> None:
                 print(f"[pipeline] burp step ready for {target}")
             except Exception as exc:
                 print(f"[pipeline] burp step skipped: {exc}")
+
+    # OSINT geolocation enrichment
+    try:
+        osint_result = run_osint_geolocation(target)
+        if osint_result and not osint_result.get("error"):
+            print(f"[pipeline] osint_geolocation completed for {target}")
+        else:
+            print(f"[pipeline] osint_geolocation step skipped or failed for {target}")
+    except Exception as exc:
+        print(f"[pipeline] osint_geolocation step skipped: {exc}")
 
     print("[pipeline] Full assessment completed successfully.")
 

@@ -27,6 +27,7 @@ This policy applies to the **Hancock** codebase:
 | Data collectors | ✅ Yes |
 | GitHub Actions workflows | ✅ Yes |
 | Training data / JSONL files | ✅ Yes |
+| Fuzz targets (`fuzz/`) | ✅ Yes |
 | Third-party dependencies | ⚠️ Report upstream |
 
 ### Out of Scope

@@ -1,0 +1,1 @@
+{"cve":{"id":"CVE-2024-0001","descriptions":[{"lang":"en","value":"A very long description that exceeds the minimum fifty character threshold for the parser"}],"metrics":null}}
