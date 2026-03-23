@@ -32,10 +32,11 @@ from __future__ import annotations
 import argparse
 import hmac
 import json
+import logging
 import os
 import sys
 import readline  # noqa: F401 — enables arrow-key history in CLI
-from hancock_constants import require_openai
+from hancock_constants import require_openai, OPENAI_IMPORT_ERROR_MSG
 
 try:
     from openai import OpenAI
@@ -256,11 +257,6 @@ def require_openai_or_exit() -> None:
 
 def make_ollama_client() -> OpenAI:
     """Returns an OpenAI-compatible client pointed at the local Ollama server."""
-    try:
-        require_openai(OpenAI)
-    except ImportError as exc:
-        # Provide a clean, actionable message instead of a full traceback
-        sys.exit(str(exc))
     require_openai_or_exit()
     return OpenAI(base_url=OLLAMA_BASE_URL, api_key="ollama")
 
@@ -460,7 +456,8 @@ def build_app(client, model: str):
         _rate_counts[ip] = timestamps
         # Evict IPs with no recent requests (keep dict bounded)
         if len(_rate_counts) > 10_000:
-            stale = [k for k, v in _rate_counts.items() if not v]
+            stale = [k for k, v in _rate_counts.items()
+                     if not v or (v and now - v[-1] > 3600)]
             for k in stale:
                 del _rate_counts[k]
         return True, "", _RATE_LIMIT - len(timestamps)
@@ -565,15 +562,18 @@ def build_app(client, model: str):
         if stream:
             def generate():
                 full = ""
-                stream_resp = client.chat.completions.create(
-                    model=model, messages=messages, max_tokens=1024,
-                    temperature=0.7, top_p=0.95, stream=True,
-                )
-                for chunk in stream_resp:
-                    if chunk.choices and chunk.choices[0].delta.content:
-                        delta = chunk.choices[0].delta.content
-                        full += delta
-                        yield f"data: {json.dumps({'delta': delta})}\n\n"
+                try:
+                    stream_resp = client.chat.completions.create(
+                        model=model, messages=messages, max_tokens=1024,
+                        temperature=0.7, top_p=0.95, stream=True,
+                    )
+                    for chunk in stream_resp:
+                        if chunk.choices and chunk.choices[0].delta.content:
+                            delta = chunk.choices[0].delta.content
+                            full += delta
+                            yield f"data: {json.dumps({'delta': delta})}\n\n"
+                except Exception as exc:
+                    yield f"data: {json.dumps({'error': str(exc)})}\n\n"
                 yield f"data: {json.dumps({'done': True, 'response': full})}\n\n"
             return Response(stream_with_context(generate()), mimetype="text/event-stream")
 
@@ -944,8 +944,10 @@ def build_app(client, model: str):
 
 def _send_notification(source: str, severity: str, alert: str, triage: str):
     """Send triage result to Slack or Teams webhook (if configured via env vars)."""
-    import urllib.request, urllib.error
+    import urllib.request
+    import urllib.error
 
+    logger = logging.getLogger(__name__)
     slack_url = os.getenv("HANCOCK_SLACK_WEBHOOK", "")
     teams_url = os.getenv("HANCOCK_TEAMS_WEBHOOK", "")
     summary   = triage[:400] + "..." if len(triage) > 400 else triage
@@ -965,8 +967,11 @@ def _send_notification(source: str, severity: str, alert: str, triage: str):
             req = urllib.request.Request(slack_url, data=payload,
                                          headers={"Content-Type": "application/json"})
             urllib.request.urlopen(req, timeout=5)
-        except urllib.error.URLError:
-            pass  # non-fatal
+            logger.info("Slack webhook notification sent for %s alert from %s", severity, source)
+        except urllib.error.URLError as exc:
+            logger.warning("Failed to send Slack notification: %s", exc)
+        except Exception as exc:
+            logger.error("Unexpected error sending Slack notification: %s", exc)
 
     if teams_url:
         payload = json.dumps({
@@ -981,8 +986,11 @@ def _send_notification(source: str, severity: str, alert: str, triage: str):
             req = urllib.request.Request(teams_url, data=payload,
                                          headers={"Content-Type": "application/json"})
             urllib.request.urlopen(req, timeout=5)
-        except urllib.error.URLError:
-            pass  # non-fatal
+            logger.info("Teams webhook notification sent for %s alert from %s", severity, source)
+        except urllib.error.URLError as exc:
+            logger.warning("Failed to send Teams notification: %s", exc)
+        except Exception as exc:
+            logger.error("Unexpected error sending Teams notification: %s", exc)
 
 
 def run_server(client, model: str, port: int):

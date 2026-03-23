@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+.env
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Test & coverage
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local model data (large binary files)
+hancock-cpu-adapter/
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# Notebooks (not needed in container)
+*.ipynb
+
+# Logs
+*.log

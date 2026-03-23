@@ -1,8 +1,15 @@
-# Existing dependencies
-existing-package1
-existing-package2
+# Core runtime dependencies
+openai>=1.0.0
+flask>=3.0.0
+python-dotenv>=1.0.0
 
-# New dependencies for tool integration support
-xmltodict
-requests
-pytest
+# Tool integration support
+xmltodict>=0.13.0
+requests>=2.31.0
+
+# Monitoring & observability
+prometheus-client>=0.19.0
+python-json-logger>=2.0.7
+
+# Testing
+pytest>=8.0.0

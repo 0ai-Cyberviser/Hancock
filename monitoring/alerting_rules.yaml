@@ -1,0 +1,141 @@
+groups:
+  - name: hancock_availability
+    interval: 30s
+    rules:
+      # ── Error rate ─────────────────────────────────────────────────────────
+      - alert: HancockHighErrorRate
+        expr: |
+          (
+            sum(rate(hancock_errors_by_endpoint_total[5m]))
+            /
+            sum(rate(hancock_requests_total[5m]))
+          ) > 0.05
+        for: 2m
+        labels:
+          severity: warning
+          service: hancock
+        annotations:
+          summary: "Hancock error rate > 5%"
+          description: >
+            The error rate for Hancock API is {{ printf "%.1f" (mul 100 $value) }}%,
+            which exceeds the 5% threshold.
+
+      - alert: HancockCriticalErrorRate
+        expr: |
+          (
+            sum(rate(hancock_errors_by_endpoint_total[5m]))
+            /
+            sum(rate(hancock_requests_total[5m]))
+          ) > 0.20
+        for: 1m
+        labels:
+          severity: critical
+          service: hancock
+        annotations:
+          summary: "Hancock error rate > 20% — CRITICAL"
+          description: >
+            Error rate is {{ printf "%.1f" (mul 100 $value) }}%.
+            Immediate investigation required.
+
+      # ── Response time ──────────────────────────────────────────────────────
+      - alert: HancockSlowP99
+        expr: |
+          histogram_quantile(
+            0.99,
+            sum(rate(hancock_request_latency_seconds_bucket[5m])) by (le)
+          ) > 5
+        for: 3m
+        labels:
+          severity: warning
+          service: hancock
+        annotations:
+          summary: "Hancock p99 latency > 5 seconds"
+          description: >
+            The p99 response time is {{ printf "%.2f" $value }}s,
+            exceeding the 5s SLO threshold.
+
+      - alert: HancockSlowP50
+        expr: |
+          histogram_quantile(
+            0.50,
+            sum(rate(hancock_request_latency_seconds_bucket[5m])) by (le)
+          ) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: hancock
+        annotations:
+          summary: "Hancock p50 latency > 2 seconds"
+          description: >
+            Median response time is {{ printf "%.2f" $value }}s.
+            Consider scaling or checking model backend health.
+
+      # ── Model availability ─────────────────────────────────────────────────
+      - alert: HancockModelUnavailable
+        expr: hancock_model_availability == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: hancock
+        annotations:
+          summary: "Hancock model backend unavailable"
+          description: >
+            Backend '{{ $labels.backend }}' / model '{{ $labels.model }}' is
+            reporting unavailable.  Check Ollama / NVIDIA NIM / OpenAI.
+
+      # ── Rate limiting ──────────────────────────────────────────────────────
+      - alert: HancockRateLimitNearExhaustion
+        expr: hancock_rate_limit_utilization > 0.85
+        for: 1m
+        labels:
+          severity: warning
+          service: hancock
+        annotations:
+          summary: "Hancock rate limit >85% used for IP {{ $labels.ip }}"
+          description: >
+            IP {{ $labels.ip }} has consumed {{ printf "%.0f" (mul 100 $value) }}%
+            of its rate limit.
+
+      - alert: HancockRateLimitExhausted
+        expr: hancock_rate_limit_utilization >= 1.0
+        for: 30s
+        labels:
+          severity: critical
+          service: hancock
+        annotations:
+          summary: "Hancock rate limit exhausted for IP {{ $labels.ip }}"
+          description: >
+            IP {{ $labels.ip }} has hit the rate limit ceiling.
+            Possible abuse or misconfigured client.
+
+      # ── Memory / process health ────────────────────────────────────────────
+      - alert: HancockMemoryLeak
+        expr: |
+          (
+            process_resident_memory_bytes{job="hancock"}
+            - process_resident_memory_bytes{job="hancock"} offset 30m
+          ) / process_resident_memory_bytes{job="hancock"} offset 30m > 0.25
+        for: 10m
+        labels:
+          severity: warning
+          service: hancock
+        annotations:
+          summary: "Hancock memory grew >25% in 30 minutes"
+          description: >
+            RSS memory has grown {{ printf "%.1f" (mul 100 $value) }}% in the
+            last 30 minutes.  Possible memory leak — check rate-limiter state
+            and streaming generator cleanup.
+
+      # ── No traffic (dead-man switch) ──────────────────────────────────────
+      - alert: HancockNoTraffic
+        expr: |
+          sum(rate(hancock_requests_total[10m])) == 0
+        for: 10m
+        labels:
+          severity: info
+          service: hancock
+        annotations:
+          summary: "Hancock has received no requests for 10 minutes"
+          description: >
+            No requests recorded in the last 10 minutes.
+            Verify the service is running and receiving traffic.

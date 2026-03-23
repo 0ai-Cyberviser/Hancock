@@ -1,0 +1,17 @@
+# Example terraform.tfvars — copy to terraform.tfvars and fill in real values
+# NEVER commit terraform.tfvars with real secrets to version control
+
+aws_region         = "us-east-1"
+project            = "hancock"
+environment        = "prod"
+ecr_repository_url = "123456789012.dkr.ecr.us-east-1.amazonaws.com/hancock"
+image_tag          = "latest"
+
+task_cpu    = 512
+task_memory = 1024
+
+desired_count = 2
+min_capacity  = 1
+max_capacity  = 10
+
+vpc_cidr = "10.0.0.0/16"

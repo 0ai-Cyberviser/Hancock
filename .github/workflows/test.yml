@@ -1,0 +1,66 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * *"   # daily at 06:00 UTC
+
+jobs:
+  test:
+    name: "Python ${{ matrix.python-version }}"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+
+      # ── Lint ──────────────────────────────────────────────────────────────
+      - name: Lint — syntax errors & undefined names (flake8)
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Lint — style warnings (flake8)
+        run: |
+          flake8 . --count --exit-zero \
+            --max-complexity=10 --max-line-length=127 --statistics \
+            --exclude=.venv,node_modules,hancock-cpu-adapter,deploy/helm
+
+      # ── Tests ─────────────────────────────────────────────────────────────
+      - name: Unit & integration tests (pytest)
+        run: |
+          pytest tests/ -v \
+            --ignore=tests/load_test_locust.py \
+            --ignore=tests/benchmark_suite.py \
+            -x
+
+      # ── Security scan ──────────────────────────────────────────────────────
+      - name: Security scan (bandit)
+        run: |
+          pip install bandit
+          bandit -r hancock_agent.py hancock_constants.py monitoring/ deploy/ \
+            -x tests/ -ll -q || true
+
+      - name: Dependency vulnerability check (pip-audit)
+        run: |
+          pip install pip-audit
+          pip-audit --desc --skip-editable || true

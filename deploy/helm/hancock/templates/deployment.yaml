@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hancock.fullname" . }}
+  labels:
+    {{- include "hancock.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "hancock.fullname" . }}
+  template:
+    metadata:
+      labels:
+        {{- include "hancock.labels" . | nindent 8 }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.service.metricsPort | quote }}
+        prometheus.io/path: "/metrics"
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: hancock
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.config.port }}
+            - name: metrics
+              containerPort: 8001
+          env:
+            - name: HANCOCK_LLM_BACKEND
+              value: {{ .Values.config.llmBackend | quote }}
+            - name: OLLAMA_BASE_URL
+              value: {{ .Values.config.ollamaBaseUrl | quote }}
+            - name: OLLAMA_MODEL
+              value: {{ .Values.config.ollamaModel | quote }}
+            - name: OLLAMA_CODER_MODEL
+              value: {{ .Values.config.ollamaCoderModel | quote }}
+            - name: HANCOCK_PORT
+              value: {{ .Values.config.port | quote }}
+            - name: HANCOCK_RATE_LIMIT
+              value: {{ .Values.config.rateLimit | quote }}
+            - name: LOG_LEVEL
+              value: {{ .Values.config.logLevel | quote }}
+            - name: LOG_FORMAT
+              value: {{ .Values.config.logFormat | quote }}
+          envFrom:
+            - secretRef:
+                name: {{ include "hancock.fullname" . }}-secrets
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}

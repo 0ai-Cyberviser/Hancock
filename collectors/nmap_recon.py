@@ -1,4 +1,7 @@
-import nmap
+try:
+    import nmap
+except ImportError:
+    nmap = None  # type: ignore
 import xml.etree.ElementTree as ET
 import json
 import logging
@@ -59,3 +62,20 @@ if __name__ == '__main__':
     nmap_recon = NmapRecon(target)
     nmap_recon.run_scan()
     nmap_recon.parse_xml_to_json()
+
+
+def run_nmap(target: str) -> dict:
+    """Convenience wrapper: run an nmap scan and return results as a dict.
+
+    Returns a dict with key 'result' on success, or 'error' if nmap is not
+    installed or the scan fails.
+    """
+    if nmap is None:
+        return {"returncode": 1, "error": "python-nmap not installed — run: pip install python-nmap"}
+    try:
+        recon = NmapRecon(target)
+        recon.run_scan()
+        recon.parse_xml_to_json()
+        return {"returncode": 0, "result": "scan complete", "target": target}
+    except Exception as exc:
+        return {"returncode": 1, "error": str(exc)}
