@@ -1,8 +1,8 @@
-# Existing dependencies
-existing-package1
-existing-package2
-
-# New dependencies for tool integration support
+openai
+flask
+python-dotenv
 xmltodict
 requests
+prometheus-client
+python-json-logger
 pytest

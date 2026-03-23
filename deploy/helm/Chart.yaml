@@ -1,0 +1,18 @@
+apiVersion: v2
+name: hancock
+description: Hancock — AI-powered cybersecurity agent by CyberViser
+type: application
+version: "0.5.0"
+appVersion: "0.5.0"
+home: https://cyberviser.ai
+sources:
+  - https://github.com/cyberviser/hancock
+keywords:
+  - security
+  - ai
+  - cybersecurity
+  - pentest
+  - soc
+maintainers:
+  - name: CyberViser
+    email: contact@cyberviser.ai

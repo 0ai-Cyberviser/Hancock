@@ -1,0 +1,85 @@
+version: "3.9"
+# Hancock full-stack: agent + Ollama + Prometheus + Grafana
+# Dockerfile referenced from repo root (../Dockerfile relative to this file).
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  hancock:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    image: cyberviser/hancock:latest
+    container_name: hancock-agent
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - HANCOCK_LLM_BACKEND=${HANCOCK_LLM_BACKEND:-ollama}
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.1:8b}
+      - OLLAMA_CODER_MODEL=${OLLAMA_CODER_MODEL:-qwen2.5-coder:7b}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    env_file:
+      - ../.env
+    depends_on:
+      ollama:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      - "com.cyberviser.project=hancock"
+      - "com.cyberviser.version=0.5.0"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=15d"
+    depends_on:
+      - hancock
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:?Set GRAFANA_ADMIN_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+volumes:
+  ollama_models:
+  prometheus_data:
+  grafana_data:

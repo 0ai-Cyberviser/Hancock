@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hancock-config
+  namespace: hancock
+  labels:
+    app: hancock
+data:
+  HANCOCK_LLM_BACKEND: "ollama"
+  OLLAMA_BASE_URL: "http://ollama:11434"
+  OLLAMA_MODEL: "llama3.1:8b"
+  OLLAMA_CODER_MODEL: "qwen2.5-coder:7b"
+  LOG_LEVEL: "INFO"
+  PORT: "5000"
