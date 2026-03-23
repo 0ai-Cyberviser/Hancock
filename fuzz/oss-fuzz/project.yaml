@@ -9,4 +9,3 @@ sanitizers:
   - address
   - undefined
 main_repo: "https://github.com/0ai-Cyberviser/Hancock"
-vendor_ccs: []

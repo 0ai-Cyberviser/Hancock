@@ -28,6 +28,7 @@ jobs:
           - fuzz_mitre_parser
           - fuzz_formatter
           - fuzz_webhook_signature
+          - fuzz_api_inputs
     steps:
       - uses: actions/checkout@v4
 

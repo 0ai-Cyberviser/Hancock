@@ -23,7 +23,7 @@ _client = None
 
 
 def _get_client():
-    """Lazy-initialise Flask test client once."""
+    """Lazy-initialize Flask test client once."""
     global _app, _client
     if _client is not None:
         return _client
