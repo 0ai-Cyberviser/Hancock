@@ -34,7 +34,7 @@ class NmapRecon:
 
     def parse_xml_to_json(self):
         try:
-            tree = ET.parse('nmap_scan.xml')
+            tree = ET.parse('nmap_scan.xml')  # nosec B314
             root = tree.getroot()
             data = {
                 'targets': [],

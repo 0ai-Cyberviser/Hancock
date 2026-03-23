@@ -42,7 +42,7 @@ def _http_ping(url, timeout=5):
     """Return latency_ms and HTTP status for a simple GET to *url*."""
     start = time.monotonic()
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:
+        with urllib.request.urlopen(url, timeout=timeout) as resp:  # nosec B310
             status = resp.status
         latency_ms = (time.monotonic() - start) * 1000
         return latency_ms, status

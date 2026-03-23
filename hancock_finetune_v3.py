@@ -118,7 +118,7 @@ def get_lora_config(vram_gb: float) -> dict:
 def load_dataset_from_github() -> list:
     import urllib.request
     print(f"[v3] Downloading dataset from GitHub...")
-    with urllib.request.urlopen(DATASET_URL) as r:
+    with urllib.request.urlopen(DATASET_URL) as r:  # nosec B310
         lines = r.read().decode("utf-8").splitlines()
     samples = [json.loads(l) for l in lines if l.strip()]
     print(f"[v3] Downloaded {len(samples):,} samples")

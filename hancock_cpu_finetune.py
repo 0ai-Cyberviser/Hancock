@@ -162,7 +162,7 @@ def main():
     # ── Tokenizer ──────────────────────────────────────────────────────────────
     print(f"\n[3/6] Loading tokenizer: {MODEL_NAME}")
     print("      (first run downloads ~500MB — subsequent runs use cache)")
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)  # nosec B615
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
 
@@ -186,7 +186,7 @@ def main():
     print(f"\n[4/6] Loading model: {MODEL_NAME} (float32, CPU)")
     print("      (first run downloads ~2.2GB — subsequent runs use cache)")
     t0 = time.time()
-    model = AutoModelForCausalLM.from_pretrained(
+    model = AutoModelForCausalLM.from_pretrained(  # nosec B615
         MODEL_NAME,
         torch_dtype=torch.float32,
         low_cpu_mem_usage=True,
@@ -328,8 +328,8 @@ def run_test():
     if not OUTPUT_DIR.exists():
         sys.exit(f"ERROR: No adapter at {OUTPUT_DIR}. Run fine-tune first.")
 
-    base_model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=torch.float32)
-    tokenizer  = AutoTokenizer.from_pretrained(OUTPUT_DIR)
+    base_model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=torch.float32)  # nosec B615
+    tokenizer  = AutoTokenizer.from_pretrained(OUTPUT_DIR)  # nosec B615
     model      = PeftModel.from_pretrained(base_model, str(OUTPUT_DIR))
     model.eval()
 

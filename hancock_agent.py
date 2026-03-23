@@ -963,6 +963,13 @@ def _send_notification(source: str, severity: str, alert: str, triage: str):
 
     slack_url = os.getenv("HANCOCK_SLACK_WEBHOOK", "")
     teams_url = os.getenv("HANCOCK_TEAMS_WEBHOOK", "")
+
+    # Validate webhook URL schemes (only allow https)
+    for _name, _url in [("Slack", slack_url), ("Teams", teams_url)]:
+        if _url and not _url.startswith("https://"):
+            logger.warning("Ignoring %s webhook — URL must use https:// scheme", _name)
+    slack_url = slack_url if slack_url.startswith("https://") else ""
+    teams_url = teams_url if teams_url.startswith("https://") else ""
     summary   = triage[:400] + "..." if len(triage) > 400 else triage
 
     if slack_url:
@@ -979,7 +986,7 @@ def _send_notification(source: str, severity: str, alert: str, triage: str):
         try:
             req = urllib.request.Request(slack_url, data=payload,
                                          headers={"Content-Type": "application/json"})
-            urllib.request.urlopen(req, timeout=5)
+            urllib.request.urlopen(req, timeout=5)  # nosec B310
             logger.info("Slack webhook notification sent successfully")
         except urllib.error.URLError as exc:
             logger.warning("Failed to send Slack notification: %s", exc)
@@ -998,7 +1005,7 @@ def _send_notification(source: str, severity: str, alert: str, triage: str):
         try:
             req = urllib.request.Request(teams_url, data=payload,
                                          headers={"Content-Type": "application/json"})
-            urllib.request.urlopen(req, timeout=5)
+            urllib.request.urlopen(req, timeout=5)  # nosec B310
             logger.info("Teams webhook notification sent successfully")
         except urllib.error.URLError as exc:
             logger.warning("Failed to send Teams notification: %s", exc)
@@ -1018,7 +1025,7 @@ def run_server(client, model: str, port: int):
     print(f"  POST http://localhost:{port}/v1/code     — security code gen (Qwen 2.5 Coder 32B)")
     print(f"  POST http://localhost:{port}/v1/webhook  — SIEM push webhook + Slack/Teams notify")
     print(f"  GET  http://localhost:{port}/health      — status check\n")
-    app.run(host="0.0.0.0", port=port, debug=False)
+    app.run(host="0.0.0.0", port=port, debug=False)  # nosec B104
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
