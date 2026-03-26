@@ -245,8 +245,19 @@ resource "aws_ecs_task_definition" "hancock" {
     linuxParameters = {
       initProcessEnabled = true
     }
+
+    mountPoints = [{
+      containerPath = "/tmp"
+      sourceVolume  = "tmp"
+      readOnly      = false
+    }]
   }])
 
+  volumes = [
+    {
+      name = "tmp"
+    }
+  ]
   tags = local.common_tags
 }
 
