@@ -138,7 +138,7 @@ locust -f tests/load_test_locust.py \
   --headless
 ```
 
-If API authentication is enabled, set `HANCOCK_API_KEY` in the environment — the Locust profiles read it automatically.
+If API authentication is enabled, set `HANCOCK_API_KEY` in the environment and configure your Locust tasks to send the appropriate `Authorization` header using that key.
 
 ---
 
