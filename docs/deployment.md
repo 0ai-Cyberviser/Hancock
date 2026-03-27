@@ -39,11 +39,11 @@ This validates Python version, required packages, environment variables, and Han
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
-| `HANCOCK_LLM_BACKEND` | No | `ollama` | Backend: `ollama` or `nvidia_nim` |
+| `HANCOCK_LLM_BACKEND` | No | `ollama` | Backend: `ollama` or `nvidia` |
 | `OLLAMA_URL` | No | `http://localhost:11434` | Ollama server URL |
 | `OLLAMA_MODEL` | No | `llama3.1:8b` | Default chat model |
 | `OLLAMA_CODER_MODEL` | No | `qwen2.5-coder:7b` | Code generation model |
-| `NVIDIA_API_KEY` | Conditional | — | Required when `HANCOCK_LLM_BACKEND=nvidia_nim` |
+| `NVIDIA_API_KEY` | Conditional | — | Required when `HANCOCK_LLM_BACKEND=nvidia` |
 | `OPENAI_API_KEY` | Conditional | — | Required for OpenAI-compatible backends |
 | `HANCOCK_API_KEY` | No | — | Bearer token for API authentication |
 | `HANCOCK_WEBHOOK_SECRET` | No | — | HMAC secret for webhook signature verification |
