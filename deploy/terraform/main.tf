@@ -213,9 +213,9 @@ resource "aws_ecs_task_definition" "hancock" {
     }]
 
     environment = [
-      { name = "HANCOCK_LLM_BACKEND", value = "nim" },
+      { name = "HANCOCK_LLM_BACKEND", value = "nvidia" },
       { name = "LOG_LEVEL", value = "INFO" },
-      { name = "PORT", value = tostring(var.container_port) }
+      { name = "HANCOCK_PORT", value = tostring(var.container_port) }
     ]
 
     secrets = [{
