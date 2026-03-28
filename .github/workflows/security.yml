@@ -48,6 +48,8 @@ jobs:
 
       - name: Audit production dependencies
         run: |
+          # CVE-2026-4539: pygments <=2.19.2 ReDoS in AdlLexer (transitive dep, no fix available yet)
+          # Remove --ignore-vuln once pygments releases a patched version
           # Ignore CVE-2026-4539 (pygments 2.19.2): no fixed version available yet.
           # Remove --ignore-vuln once pygments ships a patched release.
           pip-audit -r requirements.txt --ignore-vuln CVE-2026-4539

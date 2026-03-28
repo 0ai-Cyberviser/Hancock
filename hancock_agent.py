@@ -901,6 +901,11 @@ def build_app(client, model: str):
         if not indicator:
             _inc("errors_total"); return jsonify({"error": "indicator required"}), 400
 
+        # Auto-detect IOC type when set to "auto"
+        if ioc_type == "auto":
+            from input_validator import detect_ioc_type
+            ioc_type = detect_ioc_type(indicator)
+
         prompt = f"Indicator: {indicator}\nType: {ioc_type}\n"
         if context:
             prompt += f"Additional context: {context}\n"
