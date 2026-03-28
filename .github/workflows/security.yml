@@ -47,7 +47,7 @@ jobs:
         run: pip install pip-audit
 
       - name: Audit production dependencies
-        run: pip-audit -r requirements.txt
+        run: pip-audit -r requirements.txt --ignore-vuln CVE-2026-4539  # pygments — no patched release yet
 
   trivy-image:
     name: Trivy container image scan
