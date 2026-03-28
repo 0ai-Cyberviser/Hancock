@@ -46,13 +46,9 @@ Metrics are exposed at `GET /metrics` and collected by `monitoring/metrics_expor
 
 | Metric | Type | Labels | Description |
 |---|---|---|---|
-| `hancock_request_duration_seconds` | Histogram | `method`, `endpoint`, `status` | HTTP request latency |
-| `hancock_requests_total` | Counter | `method`, `endpoint`, `status` | Total HTTP requests |
-| `hancock_model_response_time_seconds` | Histogram | `model`, `mode` | LLM model response time |
-| `hancock_rate_limit_exceeded_total` | Counter | `endpoint` | Rate limit violations |
-| `hancock_memory_usage_bytes` | Gauge | — | Process memory usage |
-| `hancock_active_connections` | Gauge | — | Current active connections |
-
+| `hancock_requests_total` | Counter | `method`, `endpoint`, `status` | Total HTTP requests handled by Hancock |
+| `hancock_errors_total` | Counter | varies | Total HTTP requests that resulted in an error |
+| `hancock_*_by_*` | Counter | varies | Breakdown counters (for example, requests by model, tenant, or endpoint) |
 ### Scrape Configuration
 
 Add Hancock to your `prometheus.yml`:
