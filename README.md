@@ -26,7 +26,7 @@ Hancock is **CyberViser's** AI-powered cybersecurity agent, fine-tuned on Mistra
 - **NVD/CVE** — Real vulnerability data
 - **Pentest Knowledge Base** — Recon, exploitation, post-exploitation
 
-It operates in three specialist modes and exposes a clean REST API.
+It operates in nine specialist modes and exposes a clean REST API.
 
 ```
 ╔══════════════════════════════════════════════════════════╗
@@ -47,6 +47,16 @@ It operates in three specialist modes and exposes a clean REST API.
 - [Features](#-features)
 - [Quick Start](#-quick-start)
 - [API Reference](#-api-reference)
+- [CLI Commands](#-cli-commands)
+- [Environment Variables](#-environment-variables)
+- [OSINT Geolocation Intelligence](#-osint-geolocation-intelligence)
+- [Security Tool Integrations](#-security-tool-integrations)
+- [Client SDKs](#-client-sdks)
+- [Monitoring & Observability](#-monitoring--observability)
+- [Deployment](#-deployment)
+- [Fuzzing & Security Testing](#-fuzzing--security-testing)
+- [CI/CD Pipelines](#-cicd-pipelines)
+- [Hugging Face Spaces](#-hugging-face-spaces)
 - [Fine-Tuning](#-fine-tuning)
 - [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
@@ -66,6 +76,7 @@ It operates in three specialist modes and exposes a clean REST API.
 | 🔍 **Sigma** | Sigma detection rule authoring with ATT&CK tagging | ✅ Live |
 | 🦠 **YARA** | YARA malware detection rule authoring | ✅ Live |
 | 🔎 **IOC** | Threat intelligence enrichment for IOCs | ✅ Live |
+| 🌍 **OSINT** | IP/domain geolocation, infrastructure mapping, predictive analytics | ✅ Live |
 | 🔐 **GraphQL Security** | GraphQL auth/authz testing, IDOR detection, JWT security | ✅ Live |
 
 ---
@@ -140,7 +151,10 @@ Start the server: `python hancock_agent.py --server`
 | `POST` | `/v1/ciso`      | CISO advisory: risk, compliance, board reports, gap analysis |
 | `POST` | `/v1/sigma`     | Sigma detection rule generator |
 | `POST` | `/v1/yara`      | YARA malware detection rule generator |
-| `POST` | `/v1/ioc`       | IOC threat intelligence enrichment (IP, domain, URL, hash, email) |
+| `POST` | `/v1/ioc`       | IOC threat intelligence enrichment |
+| `POST` | `/v1/geolocate` | OSINT geolocation for IPs/domains |
+| `POST` | `/v1/predict-locations` | Predict future threat infrastructure locations |
+| `POST` | `/v1/map-infrastructure` | Map and cluster threat infrastructure geographically |
 | `POST` | `/v1/webhook`   | Ingest alerts from Splunk/Elastic/Sentinel/CrowdStrike |
 
 ### Examples
@@ -178,6 +192,27 @@ curl -X POST http://localhost:5000/v1/yara \
 curl -X POST http://localhost:5000/v1/ioc \
   -H "Content-Type: application/json" \
   -d '{"indicator": "185.220.101.35", "type": "ip"}'
+```
+
+**OSINT Geolocation:**
+```bash
+curl -X POST http://localhost:5000/v1/geolocate \
+  -H "Content-Type: application/json" \
+  -d '{"indicators": ["185.220.101.35", "evil.example.com"]}'
+```
+
+**Predict Threat Infrastructure Locations:**
+```bash
+curl -X POST http://localhost:5000/v1/predict-locations \
+  -H "Content-Type: application/json" \
+  -d '{"indicators": ["185.220.101.35", "45.33.32.156"], "campaign": "APT29-infra"}'
+```
+
+**Map Threat Infrastructure:**
+```bash
+curl -X POST http://localhost:5000/v1/map-infrastructure \
+  -H "Content-Type: application/json" \
+  -d '{"indicators": ["185.220.101.35", "45.33.32.156", "93.184.216.34"]}'
 ```
 
 **GraphQL Security Testing:**
@@ -220,10 +255,266 @@ curl -X POST http://localhost:5000/v1/respond \
 /mode sigma     — Sigma detection rule authoring
 /mode yara      — YARA malware detection rule authoring
 /mode ioc       — IOC threat intelligence enrichment
+/mode osint     — OSINT geolocation intelligence analyst
 /clear          — clear conversation history
 /history        — show history
 /model <id>     — switch NVIDIA NIM model
 /exit           — quit
+```
+
+---
+
+## 🔧 Environment Variables
+
+Copy `.env.example` to `.env` and configure:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `HANCOCK_LLM_BACKEND` | Backend engine: `ollama` \| `nvidia` \| `openai` | `ollama` |
+| `OLLAMA_BASE_URL` | Ollama server URL | `http://localhost:11434` |
+| `OLLAMA_MODEL` | Ollama chat model | `llama3.1:8b` |
+| `OLLAMA_CODER_MODEL` | Ollama code generation model | `qwen2.5-coder:7b` |
+| `NVIDIA_API_KEY` | NVIDIA NIM API key ([get free](https://build.nvidia.com)) | — |
+| `OPENAI_API_KEY` | OpenAI API key (fallback) | — |
+| `OPENAI_ORG_ID` | OpenAI organization ID | — |
+| `HANCOCK_MODEL` | NIM/OpenAI model override | `mistralai/mistral-7b-instruct-v0.3` |
+| `HANCOCK_CODER_MODEL` | NIM/OpenAI code model | `qwen/qwen2.5-coder-32b-instruct` |
+| `HANCOCK_PORT` | REST API server port | `5000` |
+| `HANCOCK_API_KEY` | Bearer token for API auth (empty = no auth) | — |
+| `HANCOCK_RATE_LIMIT` | Max requests per IP per minute | `60` |
+| `HANCOCK_WEBHOOK_SECRET` | HMAC-SHA256 secret for `/v1/webhook` | — |
+| `HANCOCK_SLACK_WEBHOOK` | Slack incoming webhook URL | — |
+| `HANCOCK_TEAMS_WEBHOOK` | Microsoft Teams incoming webhook URL | — |
+| `IPINFO_TOKEN` | ipinfo.io API token (OSINT geolocation fallback) | — |
+| `ABUSEIPDB_KEY` | AbuseIPDB API key (threat enrichment) | — |
+| `VT_API_KEY` | VirusTotal API key (threat enrichment) | — |
+
+---
+
+## 🌍 OSINT Geolocation Intelligence
+
+The OSINT module (`collectors/osint_geolocation.py`) provides multi-source IP/domain geolocation, threat infrastructure mapping, geographic clustering, and predictive location analytics.
+
+### Capabilities
+
+- **Multi-source geolocation** — ip-api.com (primary), ipinfo.io (fallback), ipapi.co (secondary fallback)
+- **Threat enrichment** — AbuseIPDB + VirusTotal integration for risk scoring
+- **Infrastructure mapping** — Geographic clustering via Haversine distance, ASN/ISP grouping
+- **Predictive analytics** — Forecast future threat infrastructure locations based on historical patterns
+- **Risk scoring** — Bulletproof ASN detection, country cyber-risk index (see `collectors/osint_geolocation.py` for the full list)
+
+### CLI Mode
+
+```bash
+python hancock_agent.py
+# Then type: /mode osint
+```
+
+### API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/v1/geolocate` | Geolocate a list of IP/domain indicators |
+| `POST` | `/v1/predict-locations` | Predict future threat infrastructure locations |
+| `POST` | `/v1/map-infrastructure` | Map and cluster indicators geographically |
+
+> 📖 Full guide: [`docs/osint-geolocation.md`](docs/osint-geolocation.md)
+
+---
+
+## 🛠️ Security Tool Integrations
+
+Hancock integrates with common security tools for automated reconnaissance and testing:
+
+| Tool | Module | Description |
+|------|--------|-------------|
+| **Nmap** | `collectors/nmap_recon.py` | Port scanning, service enumeration, XML-to-JSON parsing |
+| **SQLMap** | `collectors/sqlmap_exploit.py` | Automated SQL injection testing via SQLMap API |
+| **Burp Suite** | `collectors/burp_post_exploit.py` | Active scanning via Burp REST API |
+
+### GraphQL Security Testing
+
+The GraphQL security framework provides automated penetration testing:
+
+```bash
+# Generate GraphQL security knowledge base
+python collectors/graphql_security_kb.py
+
+# Run GraphQL security tests
+python collectors/graphql_security_tester.py \
+  --url https://api.example.com/graphql \
+  --token <jwt-token> \
+  --verbose \
+  --report graphql_security_report.json
+```
+
+Tests include: introspection detection, IDOR/BOLA, JWT vulnerabilities, mutation authorization bypass, field-level auth flaws, and rate limiting bypasses.
+
+> 📖 Guides: [`docs/graphql-security-guide.md`](docs/graphql-security-guide.md) · [`docs/graphql-security-quickstart.md`](docs/graphql-security-quickstart.md) · [`TOOL_INTEGRATION.md`](TOOL_INTEGRATION.md)
+
+---
+
+## 📦 Client SDKs
+
+### Python SDK
+
+```bash
+pip install openai python-dotenv
+python clients/python/hancock_cli.py
+# or: make client-python
+```
+
+See [`clients/python/README.md`](clients/python/README.md) for library usage.
+
+### Node.js SDK
+
+```bash
+cd clients/nodejs && npm install
+node clients/nodejs/hancock.js
+# or: make client-node
+```
+
+See [`clients/nodejs/README.md`](clients/nodejs/README.md) for library usage.
+
+---
+
+## 📊 Monitoring & Observability
+
+### Prometheus Metrics
+
+The `/metrics` endpoint exposes Prometheus-compatible metrics:
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `hancock_request_duration_seconds` | Histogram | Request latency by endpoint/method/status |
+| `hancock_requests_total` | Counter | Total requests by endpoint/mode |
+| `hancock_errors_total` | Counter | Total errors |
+| `hancock_rate_limit_hits_total` | Counter | Rate limit violations |
+| `hancock_memory_usage_bytes` | Gauge | Process memory usage |
+| `hancock_active_connections` | Gauge | Active WebSocket connections |
+
+### Health Checks
+
+The `/health` endpoint checks backend availability (Ollama, NVIDIA NIM, or OpenAI) with 30-second TTL caching.
+
+Pre-flight validation:
+```bash
+python deploy/startup_checks.py
+```
+
+> 📖 Full guide: [`docs/monitoring.md`](docs/monitoring.md) · [`docs/performance.md`](docs/performance.md)
+
+---
+
+## 🚢 Deployment
+
+### Docker
+
+```bash
+# Build image
+docker build -t cyberviser/hancock:latest .
+# or: make docker
+
+# Run with Docker Compose (Ollama + Hancock)
+docker-compose up -d
+# or: make docker-up
+```
+
+### Kubernetes / Helm
+
+```bash
+# Apply manifests directly
+kubectl apply -f deploy/k8s/
+
+# Or install via Helm
+helm install hancock deploy/helm/ -f deploy/helm/values.yaml
+```
+
+Includes HPA (2–10 replicas), ConfigMap, and Secret manifests.
+
+### Terraform (AWS ECS Fargate)
+
+```bash
+cd deploy/terraform
+terraform init && terraform apply
+```
+
+### Fly.io
+
+```bash
+flyctl deploy --config fly.toml
+# or: make fly-deploy
+```
+
+> 📖 Guides: [`docs/deployment.md`](docs/deployment.md) · [`docs/production-checklist.md`](docs/production-checklist.md) · [`docs/ci-cd.md`](docs/ci-cd.md)
+
+---
+
+## 🔒 Fuzzing & Security Testing
+
+Hancock includes [atheris](https://github.com/google/atheris)-based fuzz targets for continuous security testing:
+
+| Target | Module Under Test |
+|--------|-------------------|
+| `fuzz/fuzz_nvd_parser.py` | NVD CVE parser |
+| `fuzz/fuzz_mitre_parser.py` | MITRE ATT&CK parser |
+| `fuzz/fuzz_formatter.py` | JSONL formatter |
+| `fuzz/fuzz_formatter_v3.py` | v3 formatter |
+| `fuzz/fuzz_api_inputs.py` | API endpoint inputs |
+| `fuzz/fuzz_webhook_signature.py` | Webhook HMAC verification |
+| `fuzz/fuzz_ghsa_parser.py` | GitHub Security Advisory parser |
+| `fuzz/fuzz_xml_parsing.py` | XML parsing |
+
+```bash
+# Run all fuzz targets (60s each)
+make fuzz
+
+# Run a specific fuzz target
+make fuzz-target TARGET=fuzz_nvd_parser
+```
+
+CIFuzz runs on every PR via `.github/workflows/cifuzz.yml` and daily continuous fuzzing runs via `.github/workflows/continuous-fuzz.yml`.
+
+---
+
+## ⚙️ CI/CD Pipelines
+
+| Workflow | Trigger | Description |
+|----------|---------|-------------|
+| `test.yml` | Push / PR | Unit and integration test suite |
+| `security.yml` | Push / PR | Bandit SAST, pip-audit, Trivy container scan |
+| `codeql.yml` | Push / PR | CodeQL static analysis |
+| `cifuzz.yml` | PR | CIFuzz atheris fuzz testing |
+| `continuous-fuzz.yml` | Daily schedule | Extended continuous fuzzing |
+| `benchmark.yml` | PR | Latency regression benchmarking |
+| `python-package.yml` | Push | Package distribution |
+| `deploy.yml` | Push to main | Automatic deployment to staging |
+| `finetune.yml` | Manual | Model fine-tuning pipeline |
+| `release.yml` | Tag | GitHub release automation |
+
+---
+
+## 🤗 Hugging Face Spaces
+
+Hancock is available as a free Gradio web UI on Hugging Face Spaces:
+
+```
+https://huggingface.co/spaces/cyberviser/hancock
+```
+
+To self-host the Spaces app, set these environment variables:
+
+| Variable | Description |
+|----------|-------------|
+| `HANCOCK_API_URL` | URL of your deployed Hancock instance |
+| `HANCOCK_API_KEY` | Bearer token (optional, leave blank if auth is disabled) |
+
+```bash
+python spaces_app.py
 ```
 
 ---
