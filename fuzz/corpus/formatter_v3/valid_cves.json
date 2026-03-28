@@ -1,0 +1,1 @@
+[{"cve_id": "CVE-2024-1234", "description": "A buffer overflow vulnerability in libfoo allows remote code execution via crafted network packets.", "cvss_score": 9.8, "attack_vector": "NETWORK", "cwes": ["CWE-120"]}]

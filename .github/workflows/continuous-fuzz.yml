@@ -1,25 +1,20 @@
-# ─── CIFuzz — Continuous fuzzing on pull requests ────────────────
-# Runs fuzz targets locally for a short duration on every PR to catch
-# regressions early.  Full continuous fuzzing happens on OSS-Fuzz.
-name: CIFuzz
+# ─── Continuous Fuzzing — Scheduled daily runs ───────────────────
+# Runs all fuzz targets for a longer duration on a daily schedule
+# to catch issues that short CI runs may miss.
+name: Continuous Fuzzing
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - "hancock_agent.py"
-      - "collectors/**"
-      - "formatter/**"
-      - "fuzz/**"
-      - "requirements*.txt"
+  schedule:
+    - cron: "15 3 * * *"          # daily at 03:15 UTC
+  workflow_dispatch:               # allow manual trigger
 
 permissions:
   contents: read
 
 jobs:
-  cifuzz:
+  fuzz:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
@@ -47,7 +42,7 @@ jobs:
           pip install -r requirements.txt
           pip install atheris
 
-      - name: Run fuzzer — ${{ matrix.target }}
+      - name: Run fuzzer — ${{ matrix.target }} (extended)
         env:
           NVIDIA_API_KEY: "fuzz-test-key"
           HANCOCK_API_KEY: ""
@@ -55,19 +50,20 @@ jobs:
           cd fuzz
           CORPUS_NAME="${{ matrix.target }}"
           CORPUS_NAME="${CORPUS_NAME#fuzz_}"
+          mkdir -p corpus/"${CORPUS_NAME}"
           python "${{ matrix.target }}.py" \
-            -atheris_runs=10000 \
-            -max_total_time=120 \
+            -atheris_runs=100000 \
+            -max_total_time=600 \
             corpus/"${CORPUS_NAME}" \
-            2>&1 | tail -50
+            2>&1 | tail -80
 
       - name: Upload crash artifacts
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cifuzz-crash-${{ matrix.target }}
+          name: fuzz-crash-${{ matrix.target }}
           path: |
             fuzz/crash-*
             fuzz/oom-*
             fuzz/timeout-*
-          retention-days: 30
+          retention-days: 90

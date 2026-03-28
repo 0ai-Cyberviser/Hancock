@@ -10,8 +10,11 @@ This directory contains [OSS-Fuzz](https://github.com/google/oss-fuzz) integrati
 | `fuzz_nvd_parser.py` | `collectors/nvd_collector.py` | NVD CVE JSON parsing (`parse_cve()`) |
 | `fuzz_mitre_parser.py` | `collectors/mitre_collector.py` | MITRE ATT&CK technique extraction |
 | `fuzz_formatter.py` | `formatter/to_mistral_jsonl*.py` | JSONL formatter functions (KB, MITRE, CVE, SOC) |
+| `fuzz_formatter_v3.py` | `collectors/formatter_v3.py` | v3 dataset formatter (NVD, KEV, GHSA, Atomic) |
 | `fuzz_api_inputs.py` | `hancock_agent.py` | REST API endpoint JSON input parsing |
 | `fuzz_webhook_signature.py` | `hancock_agent.py` | HMAC-SHA256 webhook signature verification |
+| `fuzz_ghsa_parser.py` | `collectors/ghsa_collector.py` | GitHub Security Advisory parsing |
+| `fuzz_xml_parsing.py` | `collectors/nmap_recon.py` | XML parsing via defusedxml |
 
 ## Quick Start
 
@@ -38,6 +41,8 @@ inputs. The fuzzer uses these as starting points to generate new interesting inp
 
 - **CIFuzz**: The `.github/workflows/cifuzz.yml` workflow runs fuzz targets on every PR
   that modifies relevant source files, catching regressions before merge.
+- **Continuous Fuzzing**: The `.github/workflows/continuous-fuzz.yml` workflow runs all
+  fuzz targets daily with extended duration (10 minutes each) to catch deeper bugs.
 - **OSS-Fuzz**: Configuration in `oss-fuzz/` for continuous fuzzing via Google's
   OSS-Fuzz infrastructure.
 

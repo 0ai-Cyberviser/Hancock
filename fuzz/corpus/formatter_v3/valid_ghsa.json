@@ -1,0 +1,1 @@
+[{"ghsa_id": "GHSA-test-1234-abcd", "summary": "RCE in baz", "description": "Remote code execution in baz package via deserialization of untrusted data in versions before 2.0.0.", "severity": "critical", "cvss_score": 9.8, "packages": ["baz (pip)"], "ecosystem": "pip", "cve_id": "CVE-2024-5678"}]
