@@ -21,10 +21,8 @@ These are the target latencies for Hancock endpoints under normal load. They are
 | Endpoint | p50 | p95 | p99 |
 |---|---|---|---|
 | `GET /health` | < 10 ms | < 25 ms | < 50 ms |
-| `GET /models` | < 20 ms | < 50 ms | < 100 ms |
-| `GET /mode` | < 20 ms | < 50 ms | < 100 ms |
-| `POST /chat` (LLM mocked) | < 50 ms | < 150 ms | < 500 ms |
-
+| `POST /v1/ask` | < 20 ms | < 50 ms | < 100 ms |
+| `POST /v1/chat` (LLM mocked) | < 20 ms | < 50 ms | < 100 ms |
 The **p99 threshold of 500 ms** is the hard CI gate. Any PR that breaches it will fail the benchmark job.
 
 The Prometheus alert `HancockHighP99Latency` fires when p99 exceeds **5 s** over a 10-minute window in production (see `monitoring/alerting_rules.yaml`).
