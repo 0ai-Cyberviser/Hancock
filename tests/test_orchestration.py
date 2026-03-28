@@ -228,12 +228,15 @@ class TestPipelineBuildControllers:
 class TestPipelineNewWrappers:
     """Test the new collector wrapper functions."""
 
-    @patch("hancock_pipeline.run_graphql_security")
-    def test_graphql_security_returns_dict(self, mock_fn):
-        mock_fn.return_value = {"target": "http://x", "findings": []}
-        from hancock_pipeline import run_graphql_security
-        result = run_graphql_security("http://x")
-        assert isinstance(result, dict)
+    def test_graphql_security_import_error_returns_error_dict(self):
+        """When graphql_security_tester is not importable, return error dict."""
+        import hancock_pipeline
+
+        with patch.dict("sys.modules", {"collectors.graphql_security_tester": None}):
+            # Force re-import failure by clearing any cached import
+            result = hancock_pipeline.run_graphql_security("http://x")
+            assert isinstance(result, dict)
+            assert "error" in result
 
     @patch("collectors.graphql_security_kb.collect", return_value=42)
     def test_graphql_kb_returns_count(self, mock_collect):

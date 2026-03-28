@@ -119,13 +119,23 @@ def run_graphql_kb() -> int:
 def run_graphql_security(url: str, token: str | None = None) -> dict[str, Any]:
     """Run automated GraphQL security tests against *url*.
 
-    Returns the assessment report dictionary produced by the tester.
+    Parameters
+    ----------
+    url:
+        The GraphQL endpoint URL to test (e.g. ``https://api.example.com/graphql``).
+    token:
+        Optional Bearer/API token for authenticated testing.  Passed to the
+        ``GraphQLSecurityTester`` so requests include an ``Authorization``
+        header.
+
+    Returns the assessment report dictionary produced by the tester, or a
+    dict with an ``"error"`` key if the module is unavailable.
     """
     try:
         from collectors.graphql_security_tester import GraphQLSecurityTester
     except ImportError as exc:
         print(f"[pipeline] graphql_security_tester unavailable: {exc}")
-        return {}
+        return {"url": url, "error": f"graphql_security_tester unavailable: {exc}"}
 
     tester = GraphQLSecurityTester(url=url, token=token, verbose=True)
     tester.run_all_tests()

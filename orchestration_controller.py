@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 
 
 @dataclass
@@ -133,7 +133,7 @@ class OrchestrationController:
     def run_all(
         self,
         tools: list[str] | None = None,
-        params: Optional[dict[str, dict[str, Any]]] = None,
+        params: dict[str, dict[str, Any]] | None = None,
     ) -> OrchestrationReport:
         """Execute multiple tools in sequence and collect results.
 
