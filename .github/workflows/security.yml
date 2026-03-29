@@ -76,7 +76,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build Docker image for scanning
-        run: docker build -t hancock:scan -f Dockerfile .
+        run: docker build -t hancock:scan -f deploy/docker/Dockerfile .
 
       - name: Run Trivy container scan
         uses: aquasecurity/trivy-action@master
