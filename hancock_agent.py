@@ -38,6 +38,8 @@ import sys
 import readline  # noqa: F401 — enables arrow-key history in CLI
 from hancock_constants import require_openai, OPENAI_IMPORT_ERROR_MSG
 
+logger = logging.getLogger(__name__)
+
 try:
     from openai import OpenAI
 except ImportError:  # allow import without OpenAI; client factories enforce requirement at runtime
@@ -263,11 +265,6 @@ def make_ollama_client() -> OpenAI:
 
 def make_client(api_key: str) -> OpenAI:
     """Returns an OpenAI-compatible client pointed at NVIDIA NIM (legacy)."""
-    try:
-        require_openai(OpenAI)
-    except ImportError as exc:
-        # Provide a clean, actionable message instead of a full traceback
-        sys.exit(str(exc))
     require_openai_or_exit()
     return OpenAI(base_url=NIM_BASE_URL, api_key=api_key)
 
@@ -456,8 +453,7 @@ def build_app(client, model: str):
         _rate_counts[ip] = timestamps
         # Evict IPs with no recent requests (keep dict bounded)
         if len(_rate_counts) > 10_000:
-            stale = [k for k, v in _rate_counts.items()
-                     if not v or (v and now - v[-1] > 3600)]
+            stale = [k for k, v in _rate_counts.items() if not v or now - v[-1] > 3600]
             for k in stale:
                 del _rate_counts[k]
         return True, "", _RATE_LIMIT - len(timestamps)
@@ -573,6 +569,7 @@ def build_app(client, model: str):
                             full += delta
                             yield f"data: {json.dumps({'delta': delta})}\n\n"
                 except Exception as exc:
+                    logger.error("Streaming error: %s", exc)
                     yield f"data: {json.dumps({'error': str(exc)})}\n\n"
                 yield f"data: {json.dumps({'done': True, 'response': full})}\n\n"
             return Response(stream_with_context(generate()), mimetype="text/event-stream")
@@ -608,7 +605,10 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=1024,
             temperature=0.7, top_p=0.95,
         )
-        return jsonify({"answer": resp.choices[0].message.content, "model": model, "mode": mode})
+        answer = resp.choices[0].message.content
+        if not answer:
+            _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
+        return jsonify({"answer": answer, "model": model, "mode": mode})
 
     @app.route("/v1/triage", methods=["POST"])
     def triage_endpoint():
@@ -635,7 +635,10 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=1200,
             temperature=0.4, top_p=0.95,
         )
-        return jsonify({"triage": resp.choices[0].message.content, "model": model})
+        triage_text = resp.choices[0].message.content
+        if not triage_text:
+            _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
+        return jsonify({"triage": triage_text, "model": model})
 
     @app.route("/v1/hunt", methods=["POST"])
     def hunt_endpoint():
@@ -663,7 +666,10 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=1200,
             temperature=0.4, top_p=0.95,
         )
-        return jsonify({"query": resp.choices[0].message.content, "siem": siem, "model": model})
+        query_text = resp.choices[0].message.content
+        if not query_text:
+            _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
+        return jsonify({"query": query_text, "siem": siem, "model": model})
 
     @app.route("/v1/respond", methods=["POST"])
     def respond_endpoint():
@@ -690,7 +696,10 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=1500,
             temperature=0.4, top_p=0.95,
         )
-        return jsonify({"playbook": resp.choices[0].message.content, "incident": incident_type, "model": model})
+        playbook_text = resp.choices[0].message.content
+        if not playbook_text:
+            _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
+        return jsonify({"playbook": playbook_text, "incident": incident_type, "model": model})
 
     @app.route("/v1/code", methods=["POST"])
     def code_endpoint():
@@ -717,8 +726,11 @@ def build_app(client, model: str):
             model=code_model, messages=messages, max_tokens=2048,
             temperature=0.2, top_p=0.7,
         )
+        code_text = resp.choices[0].message.content
+        if not code_text:
+            _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
         return jsonify({
-            "code":     resp.choices[0].message.content,
+            "code":     code_text,
             "model":    code_model,
             "language": language or "auto",
             "task":     task,
@@ -881,6 +893,8 @@ def build_app(client, model: str):
             temperature=0.3, top_p=0.9,
         )
         report = resp.choices[0].message.content
+        if not report:
+            _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
         return jsonify({"indicator": indicator, "type": ioc_type,
                         "report": report, "model": model})
 

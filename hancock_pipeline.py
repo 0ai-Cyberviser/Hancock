@@ -1,13 +1,28 @@
-# Hancock Pipeline
+"""Hancock Pipeline — Orchestration module for automated security assessments."""
+from __future__ import annotations
 
-## Orchestration Functions
 
-### run_full_assessment()
+def perform_reconnaissance(target: str) -> None:
+    """Run reconnaissance phase against *target*."""
+    raise NotImplementedError("Reconnaissance tool integration pending")
 
-This function orchestrates the full assessment process, integrating reconnaissance, exploitation, and post-exploitation tools. It includes allowlist safety checks to ensure that only approved tools are utilized to prevent unauthorized access or actions.
 
-```python
-def run_full_assessment(target):
+def exploit_target(target: str) -> None:
+    """Run exploitation phase against *target*."""
+    raise NotImplementedError("Exploitation tool integration pending")
+
+
+def perform_post_exploitation(target: str) -> None:
+    """Run post-exploitation phase against *target*."""
+    raise NotImplementedError("Post-exploitation tool integration pending")
+
+
+def run_full_assessment(target: str) -> None:
+    """Orchestrate the full assessment process.
+
+    Integrates reconnaissance, exploitation, and post-exploitation tools.
+    Includes allowlist safety checks to ensure only approved tools are used.
+    """
     # Allowlist of approved tools
     allowlist = ['tool1', 'tool2', 'tool3']
 
@@ -21,8 +36,3 @@ def run_full_assessment(target):
             perform_post_exploitation(target)
 
     print('Full assessment completed successfully.')
-```
-
-## Integrating tools
-
-Each tool should have its own functions defined for reconnaissance, exploitation, and post-exploitation tasks.
