@@ -21,6 +21,11 @@ logging.basicConfig(
 class NmapRecon:
     def __init__(self, target):
         self.target = target
+        if not _NMAP_AVAILABLE:
+            raise RuntimeError(
+                "python-nmap library is required to use NmapRecon but is not installed. "
+                "Install the 'python-nmap' package or use the run_nmap() helper instead."
+            )
         self.nm = nmap.PortScanner()
 
     def run_scan(self):
