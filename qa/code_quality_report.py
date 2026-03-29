@@ -60,7 +60,8 @@ def collect_file_stats() -> list[dict]:
     return stats
 
 
-def run_pytest_coverage() -> dict:
+def collect_tests() -> dict:
+    """Collect test count by running pytest in collection-only mode."""
     rc, output = _run([
         sys.executable, "-m", "pytest",
         "tests/",
@@ -99,7 +100,7 @@ def generate_report() -> dict:
         "timestamp":    timestamp,
         "file_stats":   collect_file_stats(),
         "lint":         run_flake8(),
-        "tests":        run_pytest_coverage(),
+        "tests":        collect_tests(),
         "summary": {},
     }
 

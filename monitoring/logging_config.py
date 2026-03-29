@@ -10,6 +10,7 @@ Usage:
 """
 from __future__ import annotations
 
+import contextvars
 import logging
 import logging.handlers
 import os
@@ -24,24 +25,31 @@ try:
 except ImportError:
     _JSON_AVAILABLE = False
 
+# Thread-safe / async-safe request ID storage
+_current_request_id: contextvars.ContextVar[str] = contextvars.ContextVar(
+    "hancock_request_id", default=""
+)
+
 
 class RequestIdFilter(logging.Filter):
-    """Inject a per-request correlation ID into every log record."""
+    """Inject a per-request correlation ID into every log record.
 
-    _request_id: str = ""
+    Uses ``contextvars.ContextVar`` so each thread / async task gets its
+    own request ID without cross-contamination.
+    """
 
-    @classmethod
-    def set_request_id(cls, request_id: str) -> None:
-        cls._request_id = request_id
+    @staticmethod
+    def set_request_id(request_id: str) -> None:
+        _current_request_id.set(request_id)
 
-    @classmethod
-    def new_request_id(cls) -> str:
+    @staticmethod
+    def new_request_id() -> str:
         rid = str(uuid.uuid4())[:8]
-        cls.set_request_id(rid)
+        _current_request_id.set(rid)
         return rid
 
     def filter(self, record: logging.LogRecord) -> bool:  # noqa: A003
-        record.request_id = self._request_id or "-"
+        record.request_id = _current_request_id.get() or "-"
         return True
 
 

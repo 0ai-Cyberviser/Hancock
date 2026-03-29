@@ -74,6 +74,11 @@ def _check_ollama() -> CheckResult:
 
 
 def run_checks(warn_only: bool = False) -> list[CheckResult]:
+    """Run all startup checks.
+
+    When *warn_only* is True, all checks are returned as non-blocking
+    (``blocking=False``) so the caller can still start the server.
+    """
     backend = os.getenv("HANCOCK_LLM_BACKEND", "ollama").lower()
     port    = int(os.getenv("HANCOCK_PORT", "5000"))
 
@@ -89,6 +94,12 @@ def run_checks(warn_only: bool = False) -> list[CheckResult]:
         checks.append(_check_env_var("OPENAI_API_KEY", required=True))
     elif backend == "ollama":
         checks.append(_check_ollama())
+
+    if warn_only:
+        checks = [
+            CheckResult(c.name, c.passed, c.message, blocking=False)
+            for c in checks
+        ]
 
     return checks
 

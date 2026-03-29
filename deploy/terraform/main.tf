@@ -148,6 +148,20 @@ resource "aws_secretsmanager_secret" "hancock" {
   tags                    = local.common_tags
 }
 
+# Provide a placeholder JSON structure for the secret.  Replace the values
+# out-of-band (e.g. via CI/CD or the AWS Console) before first deploy.
+resource "aws_secretsmanager_secret_version" "hancock" {
+  secret_id = aws_secretsmanager_secret.hancock.id
+  secret_string = jsonencode({
+    openai_api_key  = ""
+    hancock_api_key = ""
+  })
+
+  lifecycle {
+    ignore_changes = [secret_string]
+  }
+}
+
 # ── CloudWatch Log Group ──────────────────────────────────────────────────────
 resource "aws_cloudwatch_log_group" "hancock" {
   name              = "/ecs/${var.project}"

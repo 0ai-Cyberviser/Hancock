@@ -71,7 +71,7 @@ Pre-deployment verification, security hardening, and operational readiness.
   ```bash
   bandit -r hancock_agent.py -ll
   ```
-- [ ] Dependencies pinned to specific versions in `requirements.txt`
+- [ ] Dependencies use lower-bound constraints in `requirements.txt`; pin exact versions or use a lockfile for reproducible production builds
 
 ---
 

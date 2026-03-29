@@ -123,7 +123,13 @@ spec:
       targetPort: 3000
 
 ---
-# Fill in real values before applying
+# Create this secret manually or via SealedSecrets / external-secrets-operator.
+# Example:
+#   kubectl create secret generic grafana-secrets \
+#     --namespace hancock \
+#     --from-literal=admin-password="$(openssl rand -base64 24)"
+#
+# Do NOT commit real credentials to version control.
 apiVersion: v1
 kind: Secret
 metadata:
@@ -131,4 +137,4 @@ metadata:
   namespace: hancock
 type: Opaque
 stringData:
-  admin-password: "change-me-in-production"
+  admin-password: ""

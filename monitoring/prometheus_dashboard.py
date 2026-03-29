@@ -56,7 +56,16 @@ def _panel(
 
 
 def build_grafana_dashboard() -> dict[str, Any]:
-    """Return the full Grafana dashboard JSON definition."""
+    """Return the full Grafana dashboard JSON definition.
+
+    Queries reference only the metrics currently emitted by the
+    ``hancock_agent.py`` ``/metrics`` endpoint:
+
+    * ``hancock_requests_total``
+    * ``hancock_errors_total``
+    * ``hancock_requests_by_endpoint``
+    * ``hancock_requests_by_mode``
+    """
     return {
         "__inputs": [],
         "__requires": [
@@ -80,61 +89,29 @@ def build_grafana_dashboard() -> dict[str, Any]:
             ),
             _panel(
                 2, "Error rate (%)", "timeseries",
-                "100 * rate(hancock_errors_by_endpoint_total[1m]) / ignoring(endpoint, status_code)"
-                " rate(hancock_requests_total[1m])",
+                "100 * rate(hancock_errors_total[1m])"
+                " / rate(hancock_requests_total[1m])",
                 {"x": 8, "y": 0, "w": 8, "h": 8},
-                legend_format="{{endpoint}}", unit="percent",
+                legend_format="error %", unit="percent",
             ),
             _panel(
-                3, "Active requests", "stat",
-                "sum(hancock_active_requests)",
+                3, "Requests by endpoint", "timeseries",
+                "increase(hancock_requests_by_endpoint[1h])",
                 {"x": 16, "y": 0, "w": 8, "h": 8},
-                legend_format="active", unit="short",
+                legend_format="{{endpoint}}", unit="short",
             ),
-            # ── Row 2: Latency ────────────────────────────────────────────────
+            # ── Row 2: Business metrics ───────────────────────────────────────
             _panel(
-                4, "Request latency p50 (s)", "timeseries",
-                "histogram_quantile(0.50, sum(rate(hancock_request_latency_seconds_bucket[5m])) by (le, endpoint))",
-                {"x": 0, "y": 8, "w": 8, "h": 8},
-                legend_format="{{endpoint}} p50", unit="s",
-            ),
-            _panel(
-                5, "Request latency p95 (s)", "timeseries",
-                "histogram_quantile(0.95, sum(rate(hancock_request_latency_seconds_bucket[5m])) by (le, endpoint))",
-                {"x": 8, "y": 8, "w": 8, "h": 8},
-                legend_format="{{endpoint}} p95", unit="s",
-            ),
-            _panel(
-                6, "Request latency p99 (s)", "timeseries",
-                "histogram_quantile(0.99, sum(rate(hancock_request_latency_seconds_bucket[5m])) by (le, endpoint))",
-                {"x": 16, "y": 8, "w": 8, "h": 8},
-                legend_format="{{endpoint}} p99", unit="s",
-            ),
-            # ── Row 3: Model & tokens ─────────────────────────────────────────
-            _panel(
-                7, "Estimated tokens / min", "timeseries",
-                "rate(hancock_tokens_used_estimated_total[1m]) * 60",
-                {"x": 0, "y": 16, "w": 12, "h": 8},
-                legend_format="{{model}}", unit="short",
-            ),
-            _panel(
-                8, "Model availability", "stat",
-                "hancock_model_availability",
-                {"x": 12, "y": 16, "w": 12, "h": 8},
-                legend_format="{{backend}} {{model}}", unit="short",
-            ),
-            # ── Row 4: Business metrics ───────────────────────────────────────
-            _panel(
-                9, "Requests by mode", "piechart",
+                4, "Requests by mode", "piechart",
                 "increase(hancock_requests_by_mode[1h])",
-                {"x": 0, "y": 24, "w": 12, "h": 8},
+                {"x": 0, "y": 8, "w": 12, "h": 8},
                 legend_format="{{mode}}",
             ),
             _panel(
-                10, "Rate limit utilisation", "timeseries",
-                "hancock_rate_limit_utilization",
-                {"x": 12, "y": 24, "w": 12, "h": 8},
-                legend_format="{{ip}}", unit="percentunit",
+                5, "Total errors", "stat",
+                "hancock_errors_total",
+                {"x": 12, "y": 8, "w": 12, "h": 8},
+                legend_format="errors", unit="short",
             ),
         ],
         "refresh": "10s",
