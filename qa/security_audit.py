@@ -39,7 +39,12 @@ SECRET_PATTERNS = [
 
 def _run(cmd: list[str]) -> tuple[int, str]:
     result = subprocess.run(cmd, capture_output=True, text=True)
-    return result.returncode, result.stdout + result.stderr
+    if result.stderr:
+        # Forward stderr to the real stderr stream so it is visible, but
+        # do not mix it with stdout, which may contain JSON or other
+        # machine-readable output expected by callers.
+        sys.stderr.write(result.stderr)
+    return result.returncode, result.stdout
 
 
 def _is_env_set(name: str) -> bool:
