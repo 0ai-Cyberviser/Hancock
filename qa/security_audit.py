@@ -93,17 +93,26 @@ def run_bandit() -> dict:
         "-ll", "-q", "-f", "json",
     ])
     try:
-        data = json.loads(output.split("\n", 1)[-1] if output.startswith("{") else output)
-        issues = data.get("results", [])
-    except json.JSONDecodeError:
+        raw_json = output.split("\n", 1)[-1] if output.lstrip().startswith("{") else output
+        data = json.loads(raw_json)
+        issues = data.get("results", []) if isinstance(data, dict) else []
+        parse_error = None
+        raw_output_snippet = None
+    except json.JSONDecodeError as exc:
+        # Do not silently treat parse failures as a clean run: record the error
+        # and a snippet of the raw output for debugging.
         issues = []
+        parse_error = f"Failed to parse Bandit JSON output: {exc}"
+        raw_output_snippet = output[:1000]
     return {
-        "returncode": rc,
-        "issues":     len(issues),
-        "high":       sum(1 for i in issues if i.get("issue_severity") == "HIGH"),
-        "medium":     sum(1 for i in issues if i.get("issue_severity") == "MEDIUM"),
-        "low":        sum(1 for i in issues if i.get("issue_severity") == "LOW"),
-        "details":    issues[:10],  # first 10 findings
+        "returncode":          rc,
+        "issues":              len(issues),
+        "high":                sum(1 for i in issues if i.get("issue_severity") == "HIGH"),
+        "medium":              sum(1 for i in issues if i.get("issue_severity") == "MEDIUM"),
+        "low":                 sum(1 for i in issues if i.get("issue_severity") == "LOW"),
+        "details":             issues[:10],  # first 10 findings
+        "parse_error":         parse_error,
+        "raw_output_snippet":  raw_output_snippet,
     }
 
 
