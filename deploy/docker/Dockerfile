@@ -38,8 +38,8 @@ RUN useradd --no-create-home --shell /bin/false hancock \
     && mkdir -p /var/log \
     && chown hancock:hancock /var/log
 
-# Expose API and metrics ports
-EXPOSE 5000 8001
+# Expose API and metrics port
+EXPOSE 5000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
