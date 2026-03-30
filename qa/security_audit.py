@@ -61,7 +61,10 @@ def scan_for_secrets() -> list[dict]:
                 continue
             for i, line in enumerate(content.splitlines(), 1):
                 if pattern.search(line) and "os.getenv" not in line and "example" not in line.lower():
-                    redacted = _redact_line(line.strip(), pattern)[:80]
+                    # Truncate first, then redact so the marker can't
+                    # shift secret content into the visible window.
+                    truncated = line.strip()[:80]
+                    redacted = _redact_line(truncated, pattern)
                     findings.append({
                         "file":    str(py_file),
                         "line":    i,
@@ -122,10 +125,10 @@ def check_env_config() -> list[dict]:
         })
 
     if backend == "nvidia":
-        nim_key = os.getenv("NVIDIA_API_KEY", "")
-        nim_key_invalid = not nim_key or "your" in nim_key.lower()
-        # Clear reference to actual key value immediately
-        del nim_key
+        nim_key_invalid = (
+            not os.getenv("NVIDIA_API_KEY", "")
+            or "your" in os.getenv("NVIDIA_API_KEY", "").lower()
+        )
         if nim_key_invalid:
             findings.append({
                 "severity": "HIGH",
