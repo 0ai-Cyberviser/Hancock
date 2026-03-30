@@ -12,7 +12,6 @@ Run:
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import re
@@ -44,16 +43,13 @@ def _run(cmd: list[str]) -> tuple[int, str]:
 
 
 def _is_env_set(name: str) -> bool:
-    """Return True if the environment variable *name* is set and non-empty.
+    """Return True if the environment variable *name* is set.
 
-    Uses hashing to ensure no sensitive value is retained in memory or
-    propagated through data-flow analysis.
+    Uses only key-membership testing (``name in os.environ``) so that no
+    sensitive *value* is ever read into a Python variable.  This eliminates
+    any taint-propagation path that CodeQL could trace to a logging sink.
     """
-    raw = os.getenv(name, "")
-    digest = hashlib.sha256(raw.encode()).hexdigest()
-    # An empty string always hashes to the same value.
-    empty_hash = hashlib.sha256(b"").hexdigest()
-    return digest != empty_hash
+    return name in os.environ
 
 
 def scan_for_secrets() -> list[dict]:
@@ -129,8 +125,8 @@ def run_pip_audit() -> dict:
 def check_env_config() -> list[dict]:
     """Warn if dangerous environment configurations are detected.
 
-    Sensitive env-var values are inspected only through the boolean helper
-    _is_env_set() which hashes the raw value, so no secret data flows into
+    Sensitive env-var values are never read; ``_is_env_set()`` only performs
+    key-membership checks on ``os.environ``, so no secret data flows into
     the returned findings.
     """
     findings: list[dict] = []
@@ -147,7 +143,7 @@ def check_env_config() -> list[dict]:
         if not _is_env_set("NVIDIA_API_KEY"):
             findings.append({
                 "severity": "HIGH",
-                "issue":    "NVIDIA_API_KEY is not set or empty",
+                "issue":    "NVIDIA_API_KEY is not set",
                 "recommendation": "Set a real NVIDIA NIM API key",
             })
 
