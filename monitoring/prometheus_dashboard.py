@@ -85,141 +85,89 @@ def build_dashboard():
         panel_id=1,
         title="Request Rate (req/s)",
         targets=[_target(
-            "sum(rate(hancock_requests_total[2m])) by (endpoint)",
-            legend="{{endpoint}}",
+            "rate(hancock_requests_total[2m])",
+            legend="total",
         )],
         grid_pos={"x": 0, "y": 0, "w": 12, "h": 8},
         unit="reqps",
-        description="Incoming request rate per endpoint.",
+        description="Incoming request rate (all endpoints).",
     ))
 
     panels.append(timeseries_panel(
         panel_id=2,
         title="Error Rate (%)",
         targets=[_target(
-            'sum(rate(hancock_requests_total{status=~"5.."}[2m])) '
-            '/ sum(rate(hancock_requests_total[2m])) * 100',
+            'rate(hancock_errors_total[2m]) '
+            '/ (rate(hancock_requests_total[2m]) > 0) * 100',
             legend="error %",
         )],
         grid_pos={"x": 12, "y": 0, "w": 12, "h": 8},
         unit="percent",
-        description="Percentage of 5xx responses over total requests.",
+        description="Percentage of errors over total requests.",
     ))
 
-    # Row 2 – latency
+    # Row 2 – per-endpoint and per-mode breakdown
     panels.append(timeseries_panel(
         panel_id=3,
-        title="Request Duration p50 / p95 / p99",
-        targets=[
-            {
-                "expr": (
-                    "histogram_quantile(0.50, "
-                    "sum(rate(hancock_request_duration_seconds_bucket[2m])) "
-                    "by (le))"
-                ),
-                "legendFormat": "p50",
-                "refId": "A",
-                "datasource": DATASOURCE,
-            },
-            {
-                "expr": (
-                    "histogram_quantile(0.95, "
-                    "sum(rate(hancock_request_duration_seconds_bucket[2m])) "
-                    "by (le))"
-                ),
-                "legendFormat": "p95",
-                "refId": "B",
-                "datasource": DATASOURCE,
-            },
-            {
-                "expr": (
-                    "histogram_quantile(0.99, "
-                    "sum(rate(hancock_request_duration_seconds_bucket[2m])) "
-                    "by (le))"
-                ),
-                "legendFormat": "p99",
-                "refId": "C",
-                "datasource": DATASOURCE,
-            },
-        ],
+        title="Requests by Endpoint",
+        targets=[_target(
+            "hancock_requests_by_endpoint",
+            legend="{{endpoint}}",
+        )],
         grid_pos={"x": 0, "y": 8, "w": 12, "h": 8},
-        unit="s",
-        description="Request latency percentiles.",
+        unit="short",
+        description="Cumulative request count per endpoint.",
     ))
 
     panels.append(timeseries_panel(
         panel_id=4,
-        title="Model Response Time p50 / p99",
-        targets=[
-            {
-                "expr": (
-                    "histogram_quantile(0.50, "
-                    "sum(rate(hancock_model_response_time_seconds_bucket[2m])) "
-                    "by (le, model))"
-                ),
-                "legendFormat": "{{model}} p50",
-                "refId": "A",
-                "datasource": DATASOURCE,
-            },
-            {
-                "expr": (
-                    "histogram_quantile(0.99, "
-                    "sum(rate(hancock_model_response_time_seconds_bucket[2m])) "
-                    "by (le, model))"
-                ),
-                "legendFormat": "{{model}} p99",
-                "refId": "B",
-                "datasource": DATASOURCE,
-            },
-        ],
+        title="Requests by Mode",
+        targets=[_target(
+            "hancock_requests_by_mode",
+            legend="{{mode}}",
+        )],
         grid_pos={"x": 12, "y": 8, "w": 12, "h": 8},
-        unit="s",
-        description="Model inference latency percentiles.",
+        unit="short",
+        description="Cumulative request count per specialist mode.",
     ))
 
-    # Row 3 – rate limiting, memory, connections
+    # Row 3 – memory (requires metrics_exporter gauge) and totals
     panels.append(timeseries_panel(
         panel_id=5,
-        title="Rate Limit Exceeded (events/s)",
-        targets=[_target(
-            "sum(rate(hancock_rate_limit_exceeded_total[2m])) by (endpoint)",
-            legend="{{endpoint}}",
-        )],
-        grid_pos={"x": 0, "y": 16, "w": 8, "h": 8},
-        unit="short",
-        description="Rate at which requests are rejected by the rate limiter.",
-    ))
-
-    panels.append(timeseries_panel(
-        panel_id=6,
         title="Memory Usage",
         targets=[_target(
             "hancock_memory_usage_bytes",
             legend="RSS",
         )],
-        grid_pos={"x": 8, "y": 16, "w": 8, "h": 8},
+        grid_pos={"x": 0, "y": 16, "w": 12, "h": 8},
         unit="bytes",
-        description="Resident set size of the Hancock process.",
+        description=(
+            "Resident set size of the Hancock process. "
+            "Available when metrics_exporter is wired into the agent."
+        ),
     ))
 
     panels.append(timeseries_panel(
-        panel_id=7,
+        panel_id=6,
         title="Active Connections",
         targets=[_target(
             "hancock_active_connections",
             legend="connections",
         )],
-        grid_pos={"x": 16, "y": 16, "w": 8, "h": 8},
+        grid_pos={"x": 12, "y": 16, "w": 12, "h": 8},
         unit="short",
-        description="Current number of open HTTP connections.",
+        description=(
+            "Current number of open HTTP connections. "
+            "Available when metrics_exporter is wired into the agent."
+        ),
     ))
 
     # Row 4 – stat panels
     panels.append(stat_panel(
-        panel_id=8,
+        panel_id=7,
         title="Total Requests",
         targets=[_target(
-            "sum(hancock_requests_total)",
+            "hancock_requests_total",
             legend="total",
         )],
         grid_pos={"x": 0, "y": 24, "w": 6, "h": 4},
@@ -227,37 +175,36 @@ def build_dashboard():
     ))
 
     panels.append(stat_panel(
-        panel_id=9,
-        title="Total Rate-Limit Events",
+        panel_id=8,
+        title="Total Errors",
         targets=[_target(
-            "sum(hancock_rate_limit_exceeded_total)",
-            legend="total",
+            "hancock_errors_total",
+            legend="errors",
         )],
         grid_pos={"x": 6, "y": 24, "w": 6, "h": 4},
         unit="short",
     ))
 
     panels.append(stat_panel(
-        panel_id=10,
-        title="p99 Request Duration",
-        targets=[_target(
-            "histogram_quantile(0.99, "
-            "sum(rate(hancock_request_duration_seconds_bucket[5m])) by (le))",
-            legend="p99",
-        )],
-        grid_pos={"x": 12, "y": 24, "w": 6, "h": 4},
-        unit="s",
-    ))
-
-    panels.append(stat_panel(
-        panel_id=11,
+        panel_id=9,
         title="Current Memory (RSS)",
         targets=[_target(
             "hancock_memory_usage_bytes",
             legend="RSS",
         )],
-        grid_pos={"x": 18, "y": 24, "w": 6, "h": 4},
+        grid_pos={"x": 12, "y": 24, "w": 6, "h": 4},
         unit="bytes",
+    ))
+
+    panels.append(stat_panel(
+        panel_id=10,
+        title="Active Connections",
+        targets=[_target(
+            "hancock_active_connections",
+            legend="connections",
+        )],
+        grid_pos={"x": 18, "y": 24, "w": 6, "h": 4},
+        unit="short",
     ))
 
     dashboard = {

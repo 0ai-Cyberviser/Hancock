@@ -34,3 +34,6 @@ data/*.json
 # OS
 .DS_Store
 Thumbs.db
+
+# Benchmark results (generated, not tracked)
+benchmarks/results/

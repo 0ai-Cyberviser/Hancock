@@ -11,6 +11,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source
 COPY hancock_agent.py .
+COPY hancock_constants.py .
 COPY collectors/ collectors/
 COPY formatter/ formatter/
 

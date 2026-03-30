@@ -17,10 +17,10 @@ automatically carries the request-ID without explicit passing.
 import datetime
 import json
 import logging
-import threading
 import uuid
+from contextvars import ContextVar
 
-_local = threading.local()
+_request_id_var: ContextVar[str | None] = ContextVar("request_id", default=None)
 
 
 # ---------------------------------------------------------------------------
@@ -28,19 +28,20 @@ _local = threading.local()
 # ---------------------------------------------------------------------------
 
 def get_request_id():
-    """Return the current thread-local request-ID, or a new UUID."""
-    return getattr(_local, "request_id", None) or str(uuid.uuid4())
+    """Return the current context-local request-ID, or a new UUID."""
+    return _request_id_var.get() or str(uuid.uuid4())
 
 
 def set_request_id(request_id=None):
-    """Set the thread-local request-ID (generate one if omitted)."""
-    _local.request_id = request_id or str(uuid.uuid4())
-    return _local.request_id
+    """Set the context-local request-ID (generate one if omitted)."""
+    rid = request_id or str(uuid.uuid4())
+    _request_id_var.set(rid)
+    return rid
 
 
 def clear_request_id():
-    """Clear the thread-local request-ID at end of request."""
-    _local.request_id = None
+    """Clear the context-local request-ID at end of request."""
+    _request_id_var.set(None)
 
 
 # ---------------------------------------------------------------------------

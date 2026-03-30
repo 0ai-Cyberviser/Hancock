@@ -54,7 +54,7 @@
         "h": 8
       },
       "datasource": "Prometheus",
-      "description": "Incoming request rate per endpoint.",
+      "description": "Incoming request rate (all endpoints).",
       "fieldConfig": {
         "defaults": {
           "unit": "reqps",
@@ -75,8 +75,8 @@
       },
       "targets": [
         {
-          "expr": "sum(rate(hancock_requests_total[2m])) by (endpoint)",
-          "legendFormat": "{{endpoint}}",
+          "expr": "rate(hancock_requests_total[2m])",
+          "legendFormat": "total",
           "refId": "A",
           "datasource": "Prometheus"
         }
@@ -93,7 +93,7 @@
         "h": 8
       },
       "datasource": "Prometheus",
-      "description": "Percentage of 5xx responses over total requests.",
+      "description": "Percentage of errors over total requests.",
       "fieldConfig": {
         "defaults": {
           "unit": "percent",
@@ -114,7 +114,7 @@
       },
       "targets": [
         {
-          "expr": "sum(rate(hancock_requests_total{status=~\"5..\"}[2m])) / sum(rate(hancock_requests_total[2m])) * 100",
+          "expr": "rate(hancock_errors_total[2m]) / (rate(hancock_requests_total[2m]) > 0) * 100",
           "legendFormat": "error %",
           "refId": "A",
           "datasource": "Prometheus"
@@ -123,7 +123,7 @@
     },
     {
       "id": 3,
-      "title": "Request Duration p50 / p95 / p99",
+      "title": "Requests by Endpoint",
       "type": "timeseries",
       "gridPos": {
         "x": 0,
@@ -132,103 +132,7 @@
         "h": 8
       },
       "datasource": "Prometheus",
-      "description": "Request latency percentiles.",
-      "fieldConfig": {
-        "defaults": {
-          "unit": "s",
-          "custom": {
-            "lineWidth": 2,
-            "fillOpacity": 10
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "tooltip": {
-          "mode": "multi"
-        },
-        "legend": {
-          "displayMode": "list"
-        }
-      },
-      "targets": [
-        {
-          "expr": "histogram_quantile(0.50, sum(rate(hancock_request_duration_seconds_bucket[2m])) by (le))",
-          "legendFormat": "p50",
-          "refId": "A",
-          "datasource": "Prometheus"
-        },
-        {
-          "expr": "histogram_quantile(0.95, sum(rate(hancock_request_duration_seconds_bucket[2m])) by (le))",
-          "legendFormat": "p95",
-          "refId": "B",
-          "datasource": "Prometheus"
-        },
-        {
-          "expr": "histogram_quantile(0.99, sum(rate(hancock_request_duration_seconds_bucket[2m])) by (le))",
-          "legendFormat": "p99",
-          "refId": "C",
-          "datasource": "Prometheus"
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "title": "Model Response Time p50 / p99",
-      "type": "timeseries",
-      "gridPos": {
-        "x": 12,
-        "y": 8,
-        "w": 12,
-        "h": 8
-      },
-      "datasource": "Prometheus",
-      "description": "Model inference latency percentiles.",
-      "fieldConfig": {
-        "defaults": {
-          "unit": "s",
-          "custom": {
-            "lineWidth": 2,
-            "fillOpacity": 10
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "tooltip": {
-          "mode": "multi"
-        },
-        "legend": {
-          "displayMode": "list"
-        }
-      },
-      "targets": [
-        {
-          "expr": "histogram_quantile(0.50, sum(rate(hancock_model_response_time_seconds_bucket[2m])) by (le, model))",
-          "legendFormat": "{{model}} p50",
-          "refId": "A",
-          "datasource": "Prometheus"
-        },
-        {
-          "expr": "histogram_quantile(0.99, sum(rate(hancock_model_response_time_seconds_bucket[2m])) by (le, model))",
-          "legendFormat": "{{model}} p99",
-          "refId": "B",
-          "datasource": "Prometheus"
-        }
-      ]
-    },
-    {
-      "id": 5,
-      "title": "Rate Limit Exceeded (events/s)",
-      "type": "timeseries",
-      "gridPos": {
-        "x": 0,
-        "y": 16,
-        "w": 8,
-        "h": 8
-      },
-      "datasource": "Prometheus",
-      "description": "Rate at which requests are rejected by the rate limiter.",
+      "description": "Cumulative request count per endpoint.",
       "fieldConfig": {
         "defaults": {
           "unit": "short",
@@ -249,7 +153,7 @@
       },
       "targets": [
         {
-          "expr": "sum(rate(hancock_rate_limit_exceeded_total[2m])) by (endpoint)",
+          "expr": "hancock_requests_by_endpoint",
           "legendFormat": "{{endpoint}}",
           "refId": "A",
           "datasource": "Prometheus"
@@ -257,17 +161,56 @@
       ]
     },
     {
-      "id": 6,
-      "title": "Memory Usage",
+      "id": 4,
+      "title": "Requests by Mode",
       "type": "timeseries",
       "gridPos": {
-        "x": 8,
-        "y": 16,
-        "w": 8,
+        "x": 12,
+        "y": 8,
+        "w": 12,
         "h": 8
       },
       "datasource": "Prometheus",
-      "description": "Resident set size of the Hancock process.",
+      "description": "Cumulative request count per specialist mode.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi"
+        },
+        "legend": {
+          "displayMode": "list"
+        }
+      },
+      "targets": [
+        {
+          "expr": "hancock_requests_by_mode",
+          "legendFormat": "{{mode}}",
+          "refId": "A",
+          "datasource": "Prometheus"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Memory Usage",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": "Prometheus",
+      "description": "Resident set size of the Hancock process. Available when metrics_exporter is wired into the agent.",
       "fieldConfig": {
         "defaults": {
           "unit": "bytes",
@@ -296,17 +239,17 @@
       ]
     },
     {
-      "id": 7,
+      "id": 6,
       "title": "Active Connections",
       "type": "timeseries",
       "gridPos": {
-        "x": 16,
+        "x": 12,
         "y": 16,
-        "w": 8,
+        "w": 12,
         "h": 8
       },
       "datasource": "Prometheus",
-      "description": "Current number of open HTTP connections.",
+      "description": "Current number of open HTTP connections. Available when metrics_exporter is wired into the agent.",
       "fieldConfig": {
         "defaults": {
           "unit": "short",
@@ -335,7 +278,7 @@
       ]
     },
     {
-      "id": 8,
+      "id": 7,
       "title": "Total Requests",
       "type": "stat",
       "gridPos": {
@@ -364,7 +307,7 @@
       },
       "targets": [
         {
-          "expr": "sum(hancock_requests_total)",
+          "expr": "hancock_requests_total",
           "legendFormat": "total",
           "refId": "A",
           "datasource": "Prometheus"
@@ -372,8 +315,8 @@
       ]
     },
     {
-      "id": 9,
-      "title": "Total Rate-Limit Events",
+      "id": 8,
+      "title": "Total Errors",
       "type": "stat",
       "gridPos": {
         "x": 6,
@@ -401,56 +344,19 @@
       },
       "targets": [
         {
-          "expr": "sum(hancock_rate_limit_exceeded_total)",
-          "legendFormat": "total",
+          "expr": "hancock_errors_total",
+          "legendFormat": "errors",
           "refId": "A",
           "datasource": "Prometheus"
         }
       ]
     },
     {
-      "id": 10,
-      "title": "p99 Request Duration",
-      "type": "stat",
-      "gridPos": {
-        "x": 12,
-        "y": 24,
-        "w": 6,
-        "h": 4
-      },
-      "datasource": "Prometheus",
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ]
-        },
-        "colorMode": "background",
-        "graphMode": "area",
-        "textMode": "auto"
-      },
-      "targets": [
-        {
-          "expr": "histogram_quantile(0.99, sum(rate(hancock_request_duration_seconds_bucket[5m])) by (le))",
-          "legendFormat": "p99",
-          "refId": "A",
-          "datasource": "Prometheus"
-        }
-      ]
-    },
-    {
-      "id": 11,
+      "id": 9,
       "title": "Current Memory (RSS)",
       "type": "stat",
       "gridPos": {
-        "x": 18,
+        "x": 12,
         "y": 24,
         "w": 6,
         "h": 4
@@ -477,6 +383,43 @@
         {
           "expr": "hancock_memory_usage_bytes",
           "legendFormat": "RSS",
+          "refId": "A",
+          "datasource": "Prometheus"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Active Connections",
+      "type": "stat",
+      "gridPos": {
+        "x": 18,
+        "y": 24,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": "Prometheus",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "expr": "hancock_active_connections",
+          "legendFormat": "connections",
           "refId": "A",
           "datasource": "Prometheus"
         }
