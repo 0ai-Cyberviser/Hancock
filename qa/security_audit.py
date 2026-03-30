@@ -36,7 +36,7 @@ EXCLUDE = ["deploy/helm", ".venv", "node_modules", "hancock-cpu-adapter"]
 
 # ── Secret pattern detector ───────────────────────────────────────────────────
 SECRET_PATTERNS = [
-    (re.compile(r'(?i)(api_key|secret|password|token)\s*=\s*["'][^"']{8,}["']'), "hardcoded credential"),
+    (re.compile(r"(?i)(api_key|secret|password|token)\s*=\s*[\"'][^\"']{8,}[\"']"), "hardcoded credential"),
     (re.compile(r'nvapi-[A-Za-z0-9_-]{20,}'),                                       "NVIDIA API key"),
     (re.compile(r'sk-[A-Za-z0-9]{20,}'),                                            "OpenAI API key"),
     (re.compile(r'ghp_[A-Za-z0-9]{36}'),                                            "GitHub token"),
