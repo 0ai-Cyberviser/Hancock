@@ -641,7 +641,7 @@ def build_app(client, model: str):
             "access_token": access_token,
             "refresh_token": refresh_token,
             "token_type": "Bearer",
-            "expires_in": _token_mgr._default_ttl,
+            "expires_in": _token_mgr.default_ttl,
         })
 
     @app.route("/v1/auth/refresh", methods=["POST"])

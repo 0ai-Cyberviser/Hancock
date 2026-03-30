@@ -77,6 +77,11 @@ class TokenManager:
         self._refresh_ttl = refresh_ttl
 
     @property
+    def default_ttl(self) -> int:
+        """Default access token lifetime in seconds."""
+        return self._default_ttl
+
+    @property
     def enabled(self) -> bool:
         """True when a JWT secret is configured and PyJWT is installed."""
         return bool(self._secret and jwt is not None)
