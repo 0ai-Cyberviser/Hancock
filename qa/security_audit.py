@@ -190,6 +190,16 @@ def generate_report() -> dict:
     return report
 
 
+def _redact_potential_secrets(text: str) -> str:
+    """Redact substrings that look like secrets based on SECRET_PATTERNS."""
+    if not isinstance(text, str):
+        text = str(text)
+    redacted = text
+    for pattern, _ in SECRET_PATTERNS:
+        redacted = pattern.sub("<redacted>", redacted)
+    return redacted
+
+
 def _print_summary(report: dict) -> None:
     """Print a human-readable summary to stdout.
 
@@ -227,11 +237,14 @@ def _print_summary(report: dict) -> None:
     if env_count > 0:
         print("\n\u26a0\ufe0f  Configuration issues:")
         for finding in report.get("env_config", []):
+            severity = finding.get("severity", "?")
+            issue = _redact_potential_secrets(finding.get("issue", "?"))
+            recommendation = _redact_potential_secrets(finding.get("recommendation", "?"))
             print(
-                "  [%s] %s" % (finding.get("severity", "?"), finding.get("issue", "?"))
+                "  [%s] %s" % (severity, issue)
             )
             print(
-                "    \u2192 %s" % finding.get("recommendation", "?")
+                "    \u2192 %s" % recommendation
             )
 
 
