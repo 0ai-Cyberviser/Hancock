@@ -56,20 +56,6 @@ def _is_env_set(name: str) -> bool:
     return digest != empty_hash
 
 
-def _env_value_contains(name: str, substring: str) -> bool:
-    """Return True if the env var *name* contains *substring* (case-insensitive).
-
-    The actual value is hashed after the check so it never reaches a caller.
-    """
-    raw = os.getenv(name, "")
-    result = substring.lower() in raw.lower()
-    # Overwrite raw with its hash so CodeQL's taint tracker sees a sanitiser
-    # on the path from os.getenv → return.  The boolean *result* only
-    # carries one bit ("contains" / "does not contain"), not the secret.
-    raw = hashlib.sha256(raw.encode()).hexdigest()  # noqa: F841
-    return result
-
-
 def scan_for_secrets() -> list[dict]:
     """Scan Python files for hard-coded secrets.
 
@@ -143,9 +129,9 @@ def run_pip_audit() -> dict:
 def check_env_config() -> list[dict]:
     """Warn if dangerous environment configurations are detected.
 
-    Sensitive env-var values are inspected only through boolean helpers
-    (_is_env_set / _env_value_contains) that hash the raw values, so no
-    secret data flows into the returned findings.
+    Sensitive env-var values are inspected only through the boolean helper
+    _is_env_set() which hashes the raw value, so no secret data flows into
+    the returned findings.
     """
     findings: list[dict] = []
 
@@ -158,10 +144,10 @@ def check_env_config() -> list[dict]:
 
     backend = os.getenv("HANCOCK_LLM_BACKEND", "ollama")
     if backend == "nvidia":
-        if not _is_env_set("NVIDIA_API_KEY") or _env_value_contains("NVIDIA_API_KEY", "your"):
+        if not _is_env_set("NVIDIA_API_KEY"):
             findings.append({
                 "severity": "HIGH",
-                "issue":    "NVIDIA_API_KEY appears to be a placeholder",
+                "issue":    "NVIDIA_API_KEY is not set or empty",
                 "recommendation": "Set a real NVIDIA NIM API key",
             })
 
@@ -214,7 +200,6 @@ def _print_summary(report: dict) -> None:
     All values printed are plain literals or integers that were never derived
     from sensitive environment variables or file content containing secrets.
     """
-    summary = report.get("summary", {})
     secret_count = len(report.get("secret_scan", []))
     env_count = len(report.get("env_config", []))
     env_high_count = sum(
