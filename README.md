@@ -390,12 +390,12 @@ The `/metrics` endpoint exposes Prometheus-compatible metrics:
 
 | Metric | Type | Description |
 |--------|------|-------------|
-| `hancock_request_duration_seconds` | Histogram | Request latency by endpoint/method/status |
-| `hancock_requests_total` | Counter | Total requests by endpoint/mode |
-| `hancock_errors_total` | Counter | Total errors |
-| `hancock_rate_limit_hits_total` | Counter | Rate limit violations |
-| `hancock_memory_usage_bytes` | Gauge | Process memory usage |
-| `hancock_active_connections` | Gauge | Active WebSocket connections |
+| `hancock_requests_total` | Counter | Total requests |
+| `hancock_errors_total` | Counter | Total 4xx/5xx errors |
+| `hancock_requests_by_endpoint` | Counter | Requests per endpoint |
+| `hancock_requests_by_mode` | Counter | Requests per specialist mode |
+
+Additional metrics (histograms, gauges) are available via `monitoring/metrics_exporter.py` when integrated as middleware — see `docs/monitoring.md`.
 
 ### Health Checks
 
