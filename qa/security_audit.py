@@ -19,10 +19,15 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-RESULTS_DIR = Path(__file__).parent / "results"
+_results_dir_env = os.getenv("QA_RESULTS_DIR")
+if _results_dir_env:
+    RESULTS_DIR = Path(_results_dir_env)
+else:
+    RESULTS_DIR = Path(tempfile.gettempdir()) / "security_audit_results"
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 SOURCE_DIRS = ["hancock_agent.py", "hancock_constants.py", "monitoring/", "deploy/"]
