@@ -55,6 +55,36 @@ fuzz/oss-fuzz/
 └── build.sh       # Compilation script for fuzz targets
 ```
 
+### Submitting to Google OSS-Fuzz
+
+To integrate Hancock into [Google OSS-Fuzz](https://github.com/google/oss-fuzz)
+for continuous fuzzing, follow these steps:
+
+1. **Sign the Google CLA** — Visit <https://cla.developers.google.com/> and sign
+   the Individual (or Corporate) CLA. The email on the CLA **must match** the
+   email in your git commits. Without this the `cla/google` check will fail.
+
+2. **Fork `google/oss-fuzz`** fresh from upstream `master` — do **not** reuse a
+   stale fork that has diverged from upstream, as extra files will pollute the PR.
+
+3. **Add only three files** in a single commit:
+   ```bash
+   mkdir -p projects/hancock
+   cp fuzz/oss-fuzz/project.yaml  projects/hancock/project.yaml
+   cp fuzz/oss-fuzz/Dockerfile    projects/hancock/Dockerfile
+   cp fuzz/oss-fuzz/build.sh      projects/hancock/build.sh
+   ```
+
+4. **Open a PR** titled `[New Project] Add hancock` with a description that links
+   to this repo and the upstream fuzz targets (`fuzz/` directory).
+
+5. **Wait for maintainer approval** — first-time contributors must have their
+   workflow runs approved by a Google maintainer before CI checks will execute.
+
+> **Important:** The PR must touch *only* files under `projects/hancock/`.
+> Modifying anything else (infra, workflows, docs, etc.) will cause CI failures
+> and delay review.
+
 ## Adding a New Fuzz Target
 
 1. Create `fuzz/fuzz_<name>.py` following the atheris pattern:

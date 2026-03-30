@@ -54,6 +54,14 @@ Open an issue using the [Feature Request template](.github/ISSUE_TEMPLATE/featur
 - Keep the agent's ethical guardrails intact — never remove authorization checks
 - All training data must come from **public, legally sourced** cybersecurity knowledge bases
 
+## OSS-Fuzz Contributions
+
+If you are submitting a PR to [google/oss-fuzz](https://github.com/google/oss-fuzz) to
+integrate or update Hancock's fuzz targets, you **must** sign the
+[Google CLA](https://cla.developers.google.com/) first. See
+[`fuzz/README.md`](fuzz/README.md#submitting-to-google-oss-fuzz) for the full
+submission checklist.
+
 ## Questions?
 
 Open an issue or reach out at [github.com/cyberviser](https://github.com/cyberviser).
