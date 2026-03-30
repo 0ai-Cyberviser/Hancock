@@ -20,5 +20,5 @@ output "cloudwatch_log_group" {
 
 output "secrets_manager_arn" {
   description = "ARN of the Secrets Manager secret"
-  value       = aws_secretsmanager_secret.hancock.arn
+  value       = var.nvidia_api_key_arn
 }
