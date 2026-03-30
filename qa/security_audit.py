@@ -234,9 +234,9 @@ def _print_summary(report: dict) -> None:
             print(
                 "  [%s] %s" % (finding.get("severity", "?"), finding.get("issue", "?"))
             )
-            print(
-                "    \u2192 %s" % finding.get("recommendation", "?")
-            )
+            # Do not print potentially sensitive recommendation text directly.
+            # The full recommendation is available in the JSON report file.
+            print("    \u2192 See full report for recommendation.")
 
 
 def main() -> None:
