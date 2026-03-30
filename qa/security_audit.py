@@ -247,7 +247,7 @@ def main() -> None:
     out_file = RESULTS_DIR / f"security_{report['timestamp'].replace(':', '-')}.json"
     with out_file.open("w") as fh:
         json.dump(report, fh, indent=2)
-    print(f"\n[Hancock Security] Report saved to {out_file}")
+    print("\n[Hancock Security] Report saved to results/ (security_<timestamp>.json)")
     sys.exit(0 if passed else 1)
 
 
