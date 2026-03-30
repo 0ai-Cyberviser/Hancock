@@ -37,6 +37,7 @@ import os
 import sys
 import readline  # noqa: F401 — enables arrow-key history in CLI
 from hancock_constants import require_openai, OPENAI_IMPORT_ERROR_MSG
+from auth import TokenManager, AuthAuditor, Role, check_bearer_token
 
 logger = logging.getLogger(__name__)
 
@@ -451,17 +452,52 @@ def build_app(client, model: str):
     _rate_counts: dict = {}  # ip → [timestamp, ...]
     _RATE_LIMIT  = int(os.getenv("HANCOCK_RATE_LIMIT", "60"))   # requests/min
     _RATE_WINDOW = 60  # seconds
+    _METRICS_AUTH = os.getenv("HANCOCK_METRICS_AUTH", "").lower() == "true"
+
+    _token_mgr = TokenManager()
+    _auditor = AuthAuditor()
 
     def _check_auth_and_rate() -> "tuple[bool, str, int]":
         """Returns (ok, error_message, remaining). Empty HANCOCK_API_KEY disables auth."""
         import time
 
-        # Auth check (skip if key not configured)
-        if _HANCOCK_API_KEY:
-            auth = request.headers.get("Authorization", "")
-            token = auth.removeprefix("Bearer ").strip()
-            if not hmac.compare_digest(token, _HANCOCK_API_KEY):
-                return False, "Unauthorized: provide Authorization: Bearer <HANCOCK_API_KEY>", 0
+        # Auth check (skip if no key and no JWT configured)
+        ip = request.remote_addr or "unknown"
+        endpoint = request.path
+        auth_header = request.headers.get("Authorization", "")
+
+        if _HANCOCK_API_KEY or _token_mgr.enabled:
+            authenticated = False
+
+            # Try static Bearer API key first
+            if _HANCOCK_API_KEY and auth_header:
+                if check_bearer_token(auth_header, _HANCOCK_API_KEY):
+                    authenticated = True
+                    _auditor.log_auth_event(
+                        "success", ip=ip, subject="api-key",
+                        method="bearer", endpoint=endpoint,
+                    )
+
+            # Try JWT token
+            if not authenticated and _token_mgr.enabled and auth_header:
+                jwt_token = auth_header.removeprefix("Bearer ").strip()
+                try:
+                    payload = _token_mgr.verify_token(jwt_token)
+                    _auditor.log_auth_event(
+                        "success", ip=ip, subject=payload.get("sub", ""),
+                        method="jwt", endpoint=endpoint,
+                    )
+                    authenticated = True
+                except ValueError:
+                    pass  # fall through to failure
+
+            if not authenticated:
+                reason = "Invalid or missing credentials"
+                _auditor.log_auth_event(
+                    "failure", ip=ip, method="bearer/jwt",
+                    endpoint=endpoint, reason=reason,
+                )
+                return False, "Unauthorized: provide Authorization: Bearer <token>", 0
 
         # In-memory rate limiter (per source IP) — evicts stale entries to prevent memory leak
         now = time.time()
@@ -503,12 +539,25 @@ def build_app(client, model: str):
                           "/v1/hunt", "/v1/respond", "/v1/code",
                           "/v1/ciso", "/v1/sigma", "/v1/yara", "/v1/ioc",
                           "/v1/geolocate", "/v1/predict-locations", "/v1/map-infrastructure",
-                          "/v1/agents", "/v1/webhook", "/metrics"],
+                          "/v1/agents", "/v1/webhook",
+                          "/v1/auth/token", "/v1/auth/refresh", "/v1/auth/validate",
+                          "/metrics"],
+            "auth": {
+                "bearer_token": bool(_HANCOCK_API_KEY),
+                "jwt": _token_mgr.enabled,
+                "metrics_auth": _METRICS_AUTH,
+            },
         })
 
     @app.route("/metrics", methods=["GET"])
     def metrics_endpoint():
         """Prometheus-compatible plain-text metrics."""
+        # Optionally require auth for metrics (set HANCOCK_METRICS_AUTH=true)
+        if _METRICS_AUTH:
+            ok, err, _ = _check_auth_and_rate()
+            if not ok:
+                _inc("errors_total")
+                return jsonify({"error": err}), 401 if "Unauthorized" in err else 429
         with _metrics_lock:
             snap = {
                 "requests_total": _metrics["requests_total"],
@@ -535,6 +584,128 @@ def build_app(client, model: str):
         for m, cnt in snap["by_mode"].items():
             lines.append(f'hancock_requests_by_mode{{mode="{m}"}} {cnt}')
         return Response("\n".join(lines) + "\n", mimetype="text/plain; version=0.0.4")
+
+    # ── JWT Auth endpoints ────────────────────────────────────────────────────
+
+    @app.route("/v1/auth/token", methods=["POST"])
+    def auth_token_endpoint():
+        """Issue JWT access + refresh tokens.
+
+        Requires a valid API key (Bearer token) to exchange for JWT tokens.
+        Body JSON: {"subject": "<name>", "role": "admin|analyst|readonly"}
+        """
+        if not _token_mgr.enabled:
+            return jsonify({"error": "JWT authentication not configured"}), 501
+        _inc("requests_total"); _inc("requests_by_endpoint", "/v1/auth/token")
+
+        # Require static API key to issue JWT tokens
+        ip = request.remote_addr or "unknown"
+        if not _HANCOCK_API_KEY:
+            return jsonify({"error": "API key must be configured to issue tokens"}), 501
+
+        auth_header = request.headers.get("Authorization", "")
+        if not check_bearer_token(auth_header, _HANCOCK_API_KEY):
+            _auditor.log_auth_event(
+                "failure", ip=ip, method="bearer",
+                endpoint="/v1/auth/token", reason="Invalid API key",
+            )
+            _inc("errors_total")
+            return jsonify({"error": "Unauthorized: valid API key required"}), 401
+
+        data = request.get_json(force=True)
+        subject = data.get("subject", "")
+        role_str = data.get("role", "analyst")
+
+        if not subject:
+            _inc("errors_total")
+            return jsonify({"error": "subject required"}), 400
+        if role_str not in ("admin", "analyst", "readonly"):
+            _inc("errors_total")
+            return jsonify({
+                "error": f"invalid role '{role_str}'; valid: admin, analyst, readonly"
+            }), 400
+
+        role = Role(role_str)
+        try:
+            access_token = _token_mgr.issue_token(subject, role)
+            refresh_token = _token_mgr.issue_refresh_token(subject, role)
+        except RuntimeError as exc:
+            _inc("errors_total")
+            return jsonify({"error": str(exc)}), 500
+
+        _auditor.log_auth_event(
+            "success", ip=ip, subject=subject,
+            method="bearer", endpoint="/v1/auth/token",
+        )
+        return jsonify({
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "token_type": "Bearer",
+            "expires_in": _token_mgr._default_ttl,
+        })
+
+    @app.route("/v1/auth/refresh", methods=["POST"])
+    def auth_refresh_endpoint():
+        """Exchange a valid refresh token for new access + refresh tokens.
+
+        Body JSON: {"refresh_token": "<jwt>"}
+        """
+        if not _token_mgr.enabled:
+            return jsonify({"error": "JWT authentication not configured"}), 501
+        _inc("requests_total"); _inc("requests_by_endpoint", "/v1/auth/refresh")
+
+        ip = request.remote_addr or "unknown"
+        data = request.get_json(force=True)
+        refresh_tok = data.get("refresh_token", "")
+        if not refresh_tok:
+            _inc("errors_total")
+            return jsonify({"error": "refresh_token required"}), 400
+
+        try:
+            result = _token_mgr.refresh(refresh_tok)
+        except ValueError as exc:
+            _auditor.log_auth_event(
+                "failure", ip=ip, method="jwt",
+                endpoint="/v1/auth/refresh", reason=str(exc),
+            )
+            _inc("errors_total")
+            return jsonify({"error": str(exc)}), 401
+
+        _auditor.log_auth_event(
+            "success", ip=ip, method="jwt",
+            endpoint="/v1/auth/refresh", subject="refresh",
+        )
+        return jsonify(result)
+
+    @app.route("/v1/auth/validate", methods=["POST"])
+    def auth_validate_endpoint():
+        """Validate a JWT token and return its claims.
+
+        Body JSON: {"token": "<jwt>"}
+        """
+        if not _token_mgr.enabled:
+            return jsonify({"error": "JWT authentication not configured"}), 501
+        _inc("requests_total"); _inc("requests_by_endpoint", "/v1/auth/validate")
+
+        data = request.get_json(force=True)
+        token = data.get("token", "")
+        if not token:
+            _inc("errors_total")
+            return jsonify({"error": "token required"}), 400
+
+        try:
+            payload = _token_mgr.verify_token(token)
+        except ValueError as exc:
+            _inc("errors_total")
+            return jsonify({"error": str(exc), "valid": False}), 401
+
+        return jsonify({
+            "valid": True,
+            "subject": payload.get("sub"),
+            "role": payload.get("role"),
+            "expires_at": payload.get("exp"),
+            "issued_at": payload.get("iat"),
+        })
 
     @app.route("/v1/agents", methods=["GET"])
     def agents_endpoint():

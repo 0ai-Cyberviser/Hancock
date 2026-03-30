@@ -61,3 +61,13 @@ HEADER_REQUEST_ID = "X-Request-ID"
 
 WEBHOOK_SIGNATURE_HEADER = "X-Hancock-Signature"
 WEBHOOK_SIGNATURE_PREFIX = "sha256="
+
+# ── Authentication ───────────────────────────────────────────────────────────
+
+DEFAULT_JWT_TTL = 3600          # 1 hour for access tokens
+DEFAULT_JWT_REFRESH_TTL = 86400  # 24 hours for refresh tokens
+JWT_ALGORITHM = "HS256"
+JWT_ISSUER = "hancock"
+
+AUTH_ROLES = ("admin", "analyst", "readonly")
+AUTH_METHODS = ("bearer", "jwt", "webhook_hmac")
