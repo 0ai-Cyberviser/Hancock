@@ -52,7 +52,7 @@ inputs. The fuzzer uses these as starting points to generate new interesting inp
   OSS-Fuzz, the workflow can be switched to the CIFuzz actions.
 - **Continuous Fuzzing**: The `.github/workflows/continuous-fuzz.yml` workflow runs all
   fuzz targets daily with extended duration (10 minutes each) to catch deeper bugs.
-- **OSS-Fuzz**: Configuration in `oss-fuzz/` for continuous fuzzing via Google's
+- **OSS-Fuzz**: Configuration in `fuzz/oss-fuzz/` for continuous fuzzing via Google's
   OSS-Fuzz infrastructure (pending project registration).
 
 ## Google Bug Hunters
