@@ -5,23 +5,19 @@ aws_region  = "us-east-1"
 project     = "hancock"
 environment = "prod"
 
-# Full container image URI (e.g., from ECR)
-image_uri = "123456789012.dkr.ecr.us-east-1.amazonaws.com/hancock:latest"
+# ECR repository URL for the application image
+ecr_repository_url = "123456789012.dkr.ecr.us-east-1.amazonaws.com/hancock"
 
 # Task resources
-cpu    = 512
-memory = 1024
+task_cpu    = 512
+task_memory = 1024
 
 desired_count = 2
 min_capacity  = 1
 max_capacity  = 10
 
 # Networking
-vpc_id = "vpc-0123456789abcdef0"
-subnet_ids = [
-  "subnet-0123456789abcdef0",
-  "subnet-abcdef01234567890",
-]
+vpc_cidr = "10.0.0.0/16"
 
 # Secrets
 nvidia_api_key_arn = "arn:aws:secretsmanager:us-east-1:123456789012:secret:nvidia/api-key-abcdef"
