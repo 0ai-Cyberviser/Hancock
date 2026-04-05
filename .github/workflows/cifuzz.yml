@@ -26,15 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target:
-          - fuzz_nvd_parser
-          - fuzz_mitre_parser
-          - fuzz_formatter
-          - fuzz_formatter_v3
-          - fuzz_webhook_signature
-          - fuzz_api_inputs
-          - fuzz_ghsa_parser
-          - fuzz_xml_parsing
+        sanitizer: [address, undefined]
     steps:
       - name: Build Fuzzers
         id: build

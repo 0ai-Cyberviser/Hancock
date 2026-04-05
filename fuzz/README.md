@@ -47,6 +47,9 @@ inputs. The fuzzer uses these as starting points to generate new interesting inp
 
 - **CIFuzz**: The `.github/workflows/cifuzz.yml` workflow runs fuzz targets on every PR
   that modifies relevant source files, catching regressions before merge.
+- **ClusterFuzzLite**: The `.clusterfuzzlite/` directory provides local CI fuzzing
+  support via [ClusterFuzzLite](https://google.github.io/clusterfuzzlite/), enabling
+  continuous fuzzing without requiring the project to be registered in OSS-Fuzz.
 - **Continuous Fuzzing**: The `.github/workflows/continuous-fuzz.yml` workflow runs all
   fuzz targets daily with extended duration (10 minutes each) to catch deeper bugs.
 - **OSS-Fuzz**: Configuration in `oss-fuzz/` for continuous fuzzing via Google's
@@ -75,6 +78,15 @@ policy.
 fuzz/oss-fuzz/
 ├── project.yaml   # OSS-Fuzz project metadata
 ├── Dockerfile     # Build environment for OSS-Fuzz
+└── build.sh       # Compilation script for fuzz targets
+```
+
+## ClusterFuzzLite Config
+
+```
+.clusterfuzzlite/
+├── project.yaml   # ClusterFuzzLite project metadata
+├── Dockerfile     # Build environment for ClusterFuzzLite
 └── build.sh       # Compilation script for fuzz targets
 ```
 
