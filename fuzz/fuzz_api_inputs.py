@@ -30,7 +30,21 @@ def _get_client():
 
     import hancock_agent  # noqa: E402
 
-    _app = hancock_agent.app
+    # build_app requires a client and model name; supply a no-op mock so the
+    # fuzzer can exercise request parsing without a real LLM backend.
+    class _MockClient:
+        class chat:
+            class completions:
+                @staticmethod
+                def create(**kwargs):
+                    class _Choice:
+                        class message:
+                            content = "mock"
+                    class _Resp:
+                        choices = [_Choice()]
+                    return _Resp()
+
+    _app = hancock_agent.build_app(_MockClient(), "mock-model")
     _app.config["TESTING"] = True
     _client = _app.test_client()
     return _client

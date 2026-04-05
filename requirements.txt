@@ -8,3 +8,4 @@ python-json-logger
 defusedxml
 pytest
 maxminddb
+python-nmap

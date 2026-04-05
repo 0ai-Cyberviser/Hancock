@@ -1,7 +1,6 @@
 import defusedxml.ElementTree as ET  # nosec B405 — using defusedxml drop-in replacement
 import json
 import logging
-import sys
 
 try:
     import nmap
@@ -11,12 +10,6 @@ except ImportError:
     _NMAP_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
-
-# Setup logging
-logging.basicConfig(
-    filename='nmap_recon.log', level=logging.INFO,
-    format='%(asctime)s %(levelname)s:%(message)s',
-)
 
 class NmapRecon:
     def __init__(self, target):
@@ -30,12 +23,12 @@ class NmapRecon:
 
     def run_scan(self):
         try:
-            logging.info(f'Starting scan for {self.target}')
+            logger.info('Starting scan for %s', self.target)
             self.nm.scan(self.target, arguments='-sV -oX nmap_scan.xml')
-            logging.info('Scan completed successfully')
+            logger.info('Scan completed successfully')
         except Exception as e:
-            logging.error(f'Scan failed for {self.target}: {str(e)}')
-            sys.exit(1)
+            logger.error('Scan failed for %s: %s', self.target, e)
+            raise RuntimeError(f'Scan failed for {self.target}: {str(e)}') from e
 
     def parse_xml_to_json(self):
         try:
@@ -68,10 +61,10 @@ class NmapRecon:
 
             with open('nmap_recon.json', 'w') as json_file:
                 json.dump(data, json_file, indent=4)
-                logging.info('Parsed XML to JSON and saved to nmap_recon.json')
+                logger.info('Parsed XML to JSON and saved to nmap_recon.json')
         except Exception as e:
-            logging.error(f'Failed to parse XML: {str(e)}')
-            sys.exit(1)
+            logger.error('Failed to parse XML: %s', e)
+            raise RuntimeError(f'Failed to parse XML: {str(e)}') from e
 
 if __name__ == '__main__':
     target = 'target_ip_or_hostname'
