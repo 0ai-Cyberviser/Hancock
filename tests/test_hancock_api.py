@@ -260,6 +260,30 @@ class TestWebhook:
                         content_type="application/json")
         assert r.status_code == 400
 
+    def test_webhook_empty_model_response_returns_502(self):
+        """When the LLM returns an empty response, webhook returns 502."""
+        from unittest.mock import MagicMock, patch
+        mock_client = MagicMock()
+        mock_resp = MagicMock()
+        mock_resp.choices[0].message.content = ""
+        mock_client.chat.completions.create.return_value = mock_resp
+        with patch("hancock_agent.OpenAI", return_value=mock_client):
+            import hancock_agent
+            app = hancock_agent.build_app(
+                mock_client, "mistralai/mistral-7b-instruct-v0.3"
+            )
+            app.testing = True
+            c = app.test_client()
+            r = c.post("/v1/webhook",
+                       data=json.dumps({
+                           "source": "splunk",
+                           "alert": "Suspicious activity detected",
+                           "severity": "high",
+                       }),
+                       content_type="application/json")
+            assert r.status_code == 502
+            assert "empty" in r.get_json()["error"]
+
 
 # ── Auth (HANCOCK_API_KEY) ────────────────────────────────────────────────────
 

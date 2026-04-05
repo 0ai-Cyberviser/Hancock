@@ -338,6 +338,8 @@ def _do_chat(client: OpenAI, messages: list[dict], model: str, stream: bool) -> 
         model=model, messages=messages, max_tokens=1024,
         temperature=0.7, top_p=0.95,
     )
+    if not resp.choices or not resp.choices[0].message.content:
+        return ""
     return resp.choices[0].message.content
 
 
@@ -968,6 +970,9 @@ def build_app(client, model: str):
             temperature=0.4, top_p=0.95,
         )
         triage_text = resp.choices[0].message.content
+        if not triage_text:
+            _inc("errors_total")
+            return jsonify({"error": "model returned empty response"}), 502
 
         # ── Optional Slack/Teams notification ─────────────────────────────────
         _send_notification(source, severity, alert, triage_text)
