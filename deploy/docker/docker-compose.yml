@@ -101,7 +101,7 @@ services:
       - ./grafana-provisioning:/etc/grafana/provisioning:ro
       - ../../monitoring/grafana_dashboard.json:/var/lib/grafana/dashboards/hancock.json:ro
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-hancock-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:?GRAFANA_ADMIN_PASSWORD must be set}
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SERVER_DOMAIN=localhost
     networks:
