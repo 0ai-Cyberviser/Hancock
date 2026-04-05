@@ -50,7 +50,7 @@ Use this checklist before promoting Hancock to a production environment.
 
 - [ ] Benchmark suite passes with p99 < 500 ms — `pytest tests/benchmark_suite.py`
 - [ ] Load test completed at expected peak RPS with failure rate < 0.1% (`tests/load_test_locust.py`)
-- [ ] Memory usage stable under sustained load (no growth trend in `hancock_memory_usage_bytes`)
+- [ ] Memory usage stable under sustained load (no growth trend visible via `docker stats` or Grafana)
 
 ## Testing & CI
 

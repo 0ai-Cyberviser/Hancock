@@ -44,12 +44,22 @@ Metrics are exposed at `GET /metrics` and collected by `monitoring/metrics_expor
 
 ### Available Metrics
 
+The `/metrics` endpoint exposes four core counters:
+
 | Metric | Type | Labels | Description |
 |---|---|---|---|
-| `hancock_request_duration_seconds` | Histogram | `method`, `endpoint`, `status` | HTTP request latency |
-| `hancock_requests_total` | Counter | `method`, `endpoint`, `status` | Total HTTP requests |
-| `hancock_model_response_time_seconds` | Histogram | `model`, `mode` | LLM model response time |
-| `hancock_rate_limit_exceeded_total` | Counter | `endpoint` | Rate limit violations |
+| `hancock_requests_total` | Counter | — | Total HTTP requests |
+| `hancock_errors_total` | Counter | — | Total 4xx/5xx errors |
+| `hancock_requests_by_endpoint` | Counter | `endpoint` | Requests per endpoint |
+| `hancock_requests_by_mode` | Counter | `mode` | Requests per specialist mode |
+
+`monitoring/metrics_exporter.py` defines additional metrics (histograms, gauges) that become available when wired into the agent via middleware:
+
+| Metric | Type | Labels | Description |
+|---|---|---|---|
+| `hancock_request_duration_seconds` | Histogram | `method`, `endpoint`, `status_code` | HTTP request latency |
+| `hancock_model_response_time_seconds` | Histogram | `model`, `operation` | LLM model response time |
+| `hancock_rate_limit_exceeded_total` | Counter | `endpoint`, `client_id` | Rate limit violations |
 | `hancock_memory_usage_bytes` | Gauge | — | Process memory usage |
 | `hancock_active_connections` | Gauge | — | Current active connections |
 
@@ -78,14 +88,14 @@ annotations:
 ### Using the Metrics Helpers
 
 ```python
-from monitoring.metrics_exporter import track_request, track_model_response
+from monitoring.metrics_exporter import track_request, track_model_call
 
 # Track an HTTP request (context manager)
-with track_request(method="POST", endpoint="/chat"):
+with track_request(endpoint="/chat", method="POST"):
     ...
 
 # Track a model response
-with track_model_response(model="llama3.1:8b", mode="pentest"):
+with track_model_call(model="llama3.1:8b", operation="pentest"):
     response = llm.chat(...)
 ```
 
@@ -111,21 +121,20 @@ python monitoring/prometheus_dashboard.py
 
 ### Dashboard Panels
 
-The dashboard contains 11 panels:
+The dashboard contains 10 panels:
 
 | Panel | Visualization | Query |
 |---|---|---|
-| Request Rate | Time series | `rate(hancock_requests_total[5m])` |
-| Error Rate % | Time series | `rate(...status=~"5.."[5m]) / rate(...[5m]) * 100` |
-| Latency p50 | Time series | `histogram_quantile(0.50, ...)` |
-| Latency p95 | Time series | `histogram_quantile(0.95, ...)` |
-| Latency p99 | Time series | `histogram_quantile(0.99, ...)` |
-| Model Response Time | Time series | `histogram_quantile(0.99, hancock_model_response_time_seconds_bucket)` |
-| Rate Limit Exceeded | Time series | `rate(hancock_rate_limit_exceeded_total[5m])` |
+| Request Rate | Time series | `rate(hancock_requests_total[2m])` |
+| Error Rate % | Time series | `rate(hancock_errors_total[2m]) / rate(hancock_requests_total[2m]) * 100` |
+| Requests by Endpoint | Time series | `hancock_requests_by_endpoint` |
+| Requests by Mode | Time series | `hancock_requests_by_mode` |
 | Memory Usage | Time series | `hancock_memory_usage_bytes` |
 | Active Connections | Time series | `hancock_active_connections` |
-| Total Requests (stat) | Stat | `sum(hancock_requests_total)` |
-| Avg Response Time (stat) | Stat | `avg(hancock_request_duration_seconds_sum / ...count)` |
+| Total Requests (stat) | Stat | `hancock_requests_total` |
+| Total Errors (stat) | Stat | `hancock_errors_total` |
+| Current Memory (stat) | Stat | `hancock_memory_usage_bytes` |
+| Active Connections (stat) | Stat | `hancock_active_connections` |
 
 Dashboard refresh interval is 30 s.
 
@@ -133,7 +142,7 @@ Dashboard refresh interval is 30 s.
 
 ## Alerting Rules
 
-Alert rules are defined in `monitoring/alerting_rules.yaml` and organised into four groups.
+Alert rules are defined in `monitoring/alerting_rules.yaml` and organised into three groups.
 
 ### Loading the Rules
 
@@ -149,27 +158,19 @@ rule_files:
 
 | Alert | Condition | Severity | Description |
 |---|---|---|---|
-| `HancockHighErrorRate` | 5xx error rate > 5% over 5 min | critical | Too many server errors |
-| `HancockHighP99Latency` | p99 latency > 5 s over 10 min | warning | Slow responses |
+| `HancockHighErrorRate` | Error rate > 5% over 5 min | warning | Too many errors |
 
-#### `hancock.model` — LLM Backend
-
-| Alert | Condition | Severity | Description |
-|---|---|---|---|
-| `HancockModelUnavailable` | No model responses for 5 min | critical | LLM backend down |
-| `HancockHighModelP99` | Model p99 response > 30 s over 10 min | warning | Slow model inference |
-
-#### `hancock.rate_limits` — Abuse Detection
+#### `hancock.availability` — Service Health
 
 | Alert | Condition | Severity | Description |
 |---|---|---|---|
-| `HancockRateLimitSpike` | Rate limit exceeded > 1 req/s over 5 min | warning | Possible abuse or misconfigured client |
+| `HancockNoTraffic` | No requests for 5 min | critical | Service may be down |
 
 #### `hancock.memory` — Resource Usage
 
 | Alert | Condition | Severity | Description |
 |---|---|---|---|
-| `HancockMemoryGrowth` | Memory growing > 50 MiB/min over 5 min | warning | Possible memory leak |
+| `HancockMemoryGrowth` | Memory growing > 50 MiB/min over 10 min | warning | Possible memory leak |
 | `HancockHighMemoryUsage` | Absolute memory > 1 GiB | critical | Memory ceiling breached |
 
 ### Alertmanager Integration

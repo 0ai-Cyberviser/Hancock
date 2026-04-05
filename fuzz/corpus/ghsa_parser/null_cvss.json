@@ -1,0 +1,1 @@
+{"ghsa_id": "GHSA-aaaa-bbbb-cccc", "summary": "SQL injection", "description": "SQL injection in bar package", "severity": "critical", "cvss": null, "cwes": [], "identifiers": [], "vulnerabilities": [], "references": []}

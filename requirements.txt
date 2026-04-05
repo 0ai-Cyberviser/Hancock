@@ -2,7 +2,7 @@ openai
 flask
 python-dotenv
 xmltodict
-requests
+requests>=2.33.0
 prometheus-client
 python-json-logger
 defusedxml

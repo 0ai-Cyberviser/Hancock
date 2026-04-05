@@ -1,14 +1,1 @@
-{
-  "ghsa_id": "GHSA-xxxx-yyyy-zzzz",
-  "summary": "SQL injection in example-package query builder",
-  "description": "The query builder in example-package before 2.1.0 does not properly sanitize user input passed to the where() method, allowing SQL injection attacks.",
-  "severity": "critical",
-  "cvss": {"score": 9.8, "vector_string": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"},
-  "cwes": [{"cwe_id": "CWE-89"}],
-  "vulnerabilities": [
-    {"package": {"name": "example-package", "ecosystem": "npm"}, "vulnerable_version_range": "< 2.1.0"}
-  ],
-  "identifiers": [{"type": "CVE", "value": "CVE-2024-99999"}, {"type": "GHSA", "value": "GHSA-xxxx-yyyy-zzzz"}],
-  "references": ["https://example.com/advisory"],
-  "published_at": "2024-01-15T00:00:00Z"
-}
+{"ghsa_id": "GHSA-xxxx-yyyy-zzzz", "summary": "XSS in package foo", "description": "A cross-site scripting vulnerability was found in foo <1.2.3 allowing injection.", "severity": "high", "cvss": {"score": 7.5, "vector_string": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"}, "cwes": [{"cwe_id": "CWE-79"}], "identifiers": [{"type": "CVE", "value": "CVE-2024-12345"}, {"type": "GHSA", "value": "GHSA-xxxx-yyyy-zzzz"}], "vulnerabilities": [{"package": {"name": "foo", "ecosystem": "npm"}, "vulnerable_version_range": "< 1.2.3", "first_patched_version": {"identifier": "1.2.3"}}], "references": ["https://github.com/advisories/GHSA-xxxx-yyyy-zzzz"], "published_at": "2024-01-15T00:00:00Z"}

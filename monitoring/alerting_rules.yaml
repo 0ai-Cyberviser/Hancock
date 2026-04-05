@@ -1,6 +1,10 @@
 ---
 # Prometheus alerting rules for the Hancock security AI agent.
 # Load via Prometheus rule_files directive or as a PrometheusRule CR.
+#
+# These rules reference ONLY the metrics emitted by hancock_agent.py /metrics:
+#   hancock_requests_total, hancock_errors_total,
+#   hancock_requests_by_endpoint, hancock_requests_by_mode
 
 groups:
   - name: hancock.requests
@@ -12,9 +16,9 @@ groups:
       - alert: HancockHighErrorRate
         expr: |
           (
-            sum(rate(hancock_requests_total{status=~"5.."}[5m]))
+            rate(hancock_errors_total[5m])
             /
-            sum(rate(hancock_requests_total[5m]))
+            (rate(hancock_requests_total[5m]) > 0)
           ) * 100 > 5
         for: 2m
         labels:
@@ -23,93 +27,35 @@ groups:
         annotations:
           summary: "Hancock error rate above 5 %"
           description: >
-            The 5xx error rate for Hancock has exceeded 5 % for more than
+            The error rate for Hancock has exceeded 5 % for more than
             2 minutes. Current value: {{ $value | printf "%.1f" }} %.
 
-      # -----------------------------------------------------------------------
-      # p99 request latency > 5 s
-      # -----------------------------------------------------------------------
-      - alert: HancockHighP99Latency
-        expr: |
-          histogram_quantile(
-            0.99,
-            sum(rate(hancock_request_duration_seconds_bucket[5m])) by (le)
-          ) > 5
-        for: 3m
-        labels:
-          severity: warning
-          service: hancock
-        annotations:
-          summary: "Hancock p99 request latency above 5 s"
-          description: >
-            The p99 request duration has been above 5 seconds for more than
-            3 minutes. Current p99: {{ $value | printf "%.2f" }} s.
-
-  - name: hancock.model
+  - name: hancock.availability
     interval: 30s
     rules:
       # -----------------------------------------------------------------------
-      # Model unavailability — no successful model responses for 5 min
+      # No traffic — dead-man switch
       # -----------------------------------------------------------------------
-      - alert: HancockModelUnavailable
+      - alert: HancockNoTraffic
         expr: |
-          absent(hancock_model_response_time_seconds_count) == 1
-          or
-          sum(increase(hancock_model_response_time_seconds_count[5m])) == 0
+          rate(hancock_requests_total[5m]) == 0
         for: 5m
         labels:
           severity: critical
           service: hancock
         annotations:
-          summary: "Hancock model is not responding"
+          summary: "Hancock is receiving no traffic"
           description: >
-            No model inference events have been recorded in the last 5 minutes.
-            The AI backend (Ollama / NVIDIA NIM) may be down.
-
-      # -----------------------------------------------------------------------
-      # p99 model response time > 30 s
-      # -----------------------------------------------------------------------
-      - alert: HancockModelSlowP99
-        expr: |
-          histogram_quantile(
-            0.99,
-            sum(rate(hancock_model_response_time_seconds_bucket[5m])) by (le)
-          ) > 30
-        for: 5m
-        labels:
-          severity: warning
-          service: hancock
-        annotations:
-          summary: "Hancock model p99 response time above 30 s"
-          description: >
-            The p99 model inference latency has been above 30 seconds for
-            5 minutes. Current p99: {{ $value | printf "%.1f" }} s.
-
-  - name: hancock.rate_limits
-    interval: 30s
-    rules:
-      # -----------------------------------------------------------------------
-      # Rate-limit exhaustion — sustained spike
-      # -----------------------------------------------------------------------
-      - alert: HancockRateLimitExhaustion
-        expr: |
-          sum(rate(hancock_rate_limit_exceeded_total[5m])) > 1
-        for: 2m
-        labels:
-          severity: warning
-          service: hancock
-        annotations:
-          summary: "Hancock rate limits are being exceeded"
-          description: >
-            More than 1 request per second has been rejected by the rate
-            limiter over the last 5 minutes ({{ $value | printf "%.2f" }}
-            req/s). Check for abusive clients or capacity issues.
+            No requests have been recorded by Hancock in the last 5 minutes.
+            The agent or its backend may be down.
 
   - name: hancock.memory
     interval: 60s
     rules:
       # -----------------------------------------------------------------------
       # Memory growth — RSS increasing faster than 50 MiB/min
+      # NOTE: Requires hancock_memory_usage_bytes gauge (from metrics_exporter).
+      #       This alert will be pending/inactive until the gauge is wired in.
       # -----------------------------------------------------------------------
       - alert: HancockMemoryGrowth
         expr: |

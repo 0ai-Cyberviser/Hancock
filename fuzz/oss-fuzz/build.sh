@@ -1,25 +1,22 @@
 #!/bin/bash -eu
 # OSS-Fuzz build script for Hancock
 
-# Install dependencies and the project itself
-pip3 install --upgrade pip
-pip3 install atheris
+# Install project dependencies so fuzz targets can import modules
 pip3 install -r "$SRC/hancock/requirements.txt"
-pip3 install -e "$SRC/hancock" 2>/dev/null || true
 
 # Compile each fuzz target using the OSS-Fuzz Python helper
 FUZZ_DIR="$SRC/hancock/fuzz"
 
 for fuzzer in "$FUZZ_DIR"/fuzz_*.py; do
-    basename=$(basename "$fuzzer" .py)
+    fuzzer_basename=$(basename "$fuzzer" .py)
 
     # Compile the fuzzer
     compile_python_fuzzer "$fuzzer"
 
     # Copy seed corpus if it exists
-    corpus_name="${basename#fuzz_}"
+    corpus_name="${fuzzer_basename#fuzz_}"
     corpus_dir="$FUZZ_DIR/corpus/$corpus_name"
     if [ -d "$corpus_dir" ]; then
-        zip -j "$OUT/${basename}_seed_corpus.zip" "$corpus_dir"/* 2>/dev/null || true
+        zip -j "$OUT/${fuzzer_basename}_seed_corpus.zip" "$corpus_dir"/* 2>/dev/null || true
     fi
 done

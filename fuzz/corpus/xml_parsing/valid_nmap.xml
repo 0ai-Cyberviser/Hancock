@@ -1,19 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<nmaprun scanner="nmap" args="nmap -sV 192.168.1.1" start="1700000000" version="7.94">
-  <host starttime="1700000000" endtime="1700000060">
-    <address addr="192.168.1.1" addrtype="ipv4"/>
-    <hostnames>
-      <hostname name="gateway.local" type="PTR"/>
-    </hostnames>
-    <ports>
-      <port protocol="tcp" portid="22">
-        <state state="open" reason="syn-ack"/>
-        <service name="ssh" product="OpenSSH" version="8.9"/>
-      </port>
-      <port protocol="tcp" portid="80">
-        <state state="open" reason="syn-ack"/>
-        <service name="http" product="nginx" version="1.24.0"/>
-      </port>
-    </ports>
-  </host>
-</nmaprun>
+<nmaprun><host><address addr="192.168.1.1" addrtype="ipv4"/><hostnames><hostname name="router.local"/></hostnames><services><service name="http" port="80" protocol="tcp"/></services></host></nmaprun>

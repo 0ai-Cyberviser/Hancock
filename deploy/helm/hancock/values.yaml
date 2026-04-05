@@ -1,0 +1,117 @@
+# Hancock Helm chart — default values
+# Override with: helm install hancock ./deploy/helm/hancock -f my-values.yaml
+
+replicaCount: 2
+
+image:
+  repository: cyberviser/hancock
+  tag: "latest"
+  pullPolicy: Always
+
+nameOverride: ""
+fullnameOverride: ""
+
+# ── Hancock configuration ─────────────────────────────────────────────────────
+config:
+  llmBackend: "ollama"          # ollama | nvidia | openai
+  ollamaBaseUrl: "http://ollama:11434"
+  ollamaModel: "llama3.1:8b"
+  ollamaCoderModel: "qwen2.5-coder:7b"
+  port: 5000
+  rateLimit: 60
+  logLevel: "INFO"
+  logFormat: "json"
+
+# ── Secrets (set at install time — never commit real values) ──────────────────
+secrets:
+  hancockApiKey: ""
+  nvidiaApiKey: ""
+  openaiApiKey: ""
+  webhookSecret: ""
+  slackWebhook: ""
+  teamsWebhook: ""
+
+# ── Service ───────────────────────────────────────────────────────────────────
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 5000
+  metricsPort: 8001
+
+# ── Ingress ───────────────────────────────────────────────────────────────────
+ingress:
+  enabled: false
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: hancock.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# ── Resources ─────────────────────────────────────────────────────────────────
+resources:
+  requests:
+    cpu: "250m"
+    memory: "256Mi"
+  limits:
+    cpu: "1000m"
+    memory: "1Gi"
+
+# ── HPA ───────────────────────────────────────────────────────────────────────
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# ── Probes ────────────────────────────────────────────────────────────────────
+livenessProbe:
+  httpGet:
+    path: /health
+    port: http
+  initialDelaySeconds: 15
+  periodSeconds: 30
+  timeoutSeconds: 10
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: http
+  initialDelaySeconds: 10
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# ── Prometheus / Grafana (sub-charts or sibling deployments) ──────────────────
+prometheus:
+  enabled: true
+  retention: "15d"
+  storageSize: "20Gi"
+
+grafana:
+  enabled: true
+  # Set via -f my-values.yaml or CI/CD secrets; do NOT use a weak default.
+  adminPassword: ""
+  storageSize: "5Gi"
+
+# ── Node scheduling ───────────────────────────────────────────────────────────
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# ── Pod security ──────────────────────────────────────────────────────────────
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL

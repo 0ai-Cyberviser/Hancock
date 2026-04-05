@@ -27,8 +27,6 @@ These are the target latencies for Hancock endpoints under normal load. They are
 
 The **p99 threshold of 500 ms** is the hard CI gate. Any PR that breaches it will fail the benchmark job.
 
-The Prometheus alert `HancockHighP99Latency` fires when p99 exceeds **5 s** over a 10-minute window in production (see `monitoring/alerting_rules.yaml`).
-
 ---
 
 ## Benchmark Suite
@@ -125,7 +123,7 @@ Key metrics to watch during a load test:
 | p99 response time | < 500 ms | > 2 s |
 | Requests/s at target load | Stable | Declining |
 
-Monitor `hancock_active_connections` and `hancock_memory_usage_bytes` in Grafana during load tests to spot resource exhaustion early.
+Monitor process resource usage in Grafana during load tests (e.g., via `hancock_memory_usage_bytes` and `hancock_active_connections` if `metrics_exporter` middleware is wired into the agent).
 
 ### Running Against a Deployed Instance
 

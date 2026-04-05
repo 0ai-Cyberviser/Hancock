@@ -1,9 +1,8 @@
 """
-Fuzz target for GitHub Security Advisory (GHSA) parser.
+Fuzz target for GHSA advisory parser (collectors/ghsa_collector.py).
 
-Exercises parse_advisory() from collectors/ghsa_collector.py with arbitrary
-JSON structures to find crashes from unexpected types, missing keys, or
-malformed nested data (cwes, vulnerabilities, identifiers, references).
+Exercises the parse_advisory() function with arbitrary JSON structures to find
+crashes from unexpected types, missing keys, or malformed nested data.
 """
 import atheris
 import json

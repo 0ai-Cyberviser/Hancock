@@ -1,0 +1,163 @@
+---
+# Hancock API — Kubernetes Deployment
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hancock
+  labels:
+    app.kubernetes.io/name: hancock
+    app.kubernetes.io/managed-by: kubectl
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hancock-config
+  namespace: hancock
+data:
+  HANCOCK_LLM_BACKEND: "ollama"
+  OLLAMA_BASE_URL: "http://ollama:11434"
+  OLLAMA_MODEL: "llama3.1:8b"
+  OLLAMA_CODER_MODEL: "qwen2.5-coder:7b"
+  HANCOCK_PORT: "5000"
+  HANCOCK_RATE_LIMIT: "60"
+  LOG_LEVEL: "INFO"
+  LOG_FORMAT: "json"
+  PROMETHEUS_ENABLED: "true"
+  METRICS_PORT: "8001"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hancock
+  namespace: hancock
+  labels:
+    app: hancock
+    version: "0.5.0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hancock
+  template:
+    metadata:
+      labels:
+        app: hancock
+        version: "0.5.0"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8001"
+        prometheus.io/path: "/metrics"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: hancock
+          image: cyberviser/hancock:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+              name: http
+            - containerPort: 8001
+              name: metrics
+          envFrom:
+            - configMapRef:
+                name: hancock-config
+            - secretRef:
+                name: hancock-secrets
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hancock
+  namespace: hancock
+  labels:
+    app: hancock
+spec:
+  type: LoadBalancer
+  selector:
+    app: hancock
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+    - name: metrics
+      port: 8001
+      targetPort: 8001
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hancock-hpa
+  namespace: hancock
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: hancock
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+
+---
+# Example secret manifest — fill in real values and apply with:
+#   kubectl apply -f hancock-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hancock-secrets
+  namespace: hancock
+type: Opaque
+stringData:
+  HANCOCK_API_KEY: ""
+  NVIDIA_API_KEY: ""
+  OPENAI_API_KEY: ""
+  HANCOCK_WEBHOOK_SECRET: ""
+  HANCOCK_SLACK_WEBHOOK: ""
+  HANCOCK_TEAMS_WEBHOOK: ""

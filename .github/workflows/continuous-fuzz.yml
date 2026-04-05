@@ -1,63 +1,69 @@
-# ─── Continuous Fuzzing — Scheduled OSS-Fuzz integration for Google Bug Hunters ──
-# Runs fuzz targets on a recurring schedule using the same OSS-Fuzz Docker
-# environment, providing continuous coverage beyond PR-gated CIFuzz runs.
-# Eligible for Google Bug Hunters open-source rewards programme.
-#
-# References:
-#   https://google.github.io/oss-fuzz/
-#   https://bughunters.google.com/about/rules/6625378258649088
+# ─── Continuous Fuzzing — Scheduled daily runs ───────────────────
+# Runs all fuzz targets for a longer duration on a daily schedule
+# to catch issues that short CI runs may miss.
 name: Continuous Fuzzing
 
 on:
   schedule:
-    # Run every day at 03:00 UTC
-    - cron: "0 3 * * *"
-  workflow_dispatch:  # allow manual trigger
+    - cron: "15 3 * * *"          # daily at 03:15 UTC
+  workflow_dispatch:               # allow manual trigger
 
 permissions:
   contents: read
 
 jobs:
-  continuous-fuzz:
+  fuzz:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        sanitizer:
-          - address
-          - undefined
+        target:
+          - fuzz_nvd_parser
+          - fuzz_mitre_parser
+          - fuzz_formatter
+          - fuzz_formatter_v3
+          - fuzz_webhook_signature
+          - fuzz_api_inputs
+          - fuzz_ghsa_parser
+          - fuzz_xml_parsing
     steps:
-      - name: Build Fuzzers
-        id: build
-        uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
-        with:
-          oss-fuzz-project-name: hancock
-          language: python
-          sanitizer: ${{ matrix.sanitizer }}
-          dry-run: false
+      - uses: actions/checkout@v4
 
-      - name: Run Fuzzers
-        uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
         with:
-          oss-fuzz-project-name: hancock
-          language: python
-          fuzz-seconds: 3600
-          sanitizer: ${{ matrix.sanitizer }}
-          dry-run: false
-          output-sarif: true
+          python-version: "3.11"
+          cache: pip
 
-      - name: Upload SARIF
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: cifuzz-sarif/results.sarif
-        continue-on-error: true
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install atheris
 
-      - name: Upload Crash Artifacts
+      - name: Run fuzzer — ${{ matrix.target }} (extended)
+        env:
+          NVIDIA_API_KEY: "fuzz-test-key"
+          HANCOCK_API_KEY: ""
+        run: |
+          cd fuzz
+          CORPUS_NAME="${{ matrix.target }}"
+          CORPUS_NAME="${CORPUS_NAME#fuzz_}"
+          mkdir -p corpus/"${CORPUS_NAME}"
+          python "${{ matrix.target }}.py" \
+            -atheris_runs=100000 \
+            -max_total_time=600 \
+            corpus/"${CORPUS_NAME}" \
+            2>&1 | tail -80
+
+      - name: Upload crash artifacts
+        if: failure()
         uses: actions/upload-artifact@v4
-        if: failure() && steps.build.outcome == 'success'
         with:
-          name: continuous-fuzz-artifacts-${{ matrix.sanitizer }}
-          path: ./out/artifacts
-          retention-days: 30
+          name: fuzz-crash-${{ matrix.target }}
+          path: |
+            fuzz/crash-*
+            fuzz/oom-*
+            fuzz/timeout-*
+          retention-days: 90

@@ -1,9 +1,9 @@
 """
-Fuzz target for Dataset Formatter v3 (collectors/formatter_v3.py).
+Fuzz target for v3 dataset formatter (collectors/formatter_v3.py).
 
 Exercises format_nvd_cves(), format_kev_entries(), format_ghsa_advisories(),
-and format_atomic_tests() with arbitrary JSON data to find crashes from
-unexpected types, missing keys, or malformed nested structures.
+and format_atomic_tests() with arbitrary JSON data to find crashes caused
+by unexpected types, missing keys, or malformed nested structures.
 """
 import atheris
 import json
@@ -33,6 +33,9 @@ def TestOneInput(data: bytes) -> None:
 
     if not isinstance(decoded, list):
         return
+
+    # Limit list length to prevent excessive iteration
+    decoded = decoded[:50]
 
     try:
         if choice == 0:

@@ -47,7 +47,10 @@ jobs:
         run: pip install pip-audit
 
       - name: Audit production dependencies
-        run: pip-audit -r requirements.txt
+        run: |
+          # CVE-2026-4539: pygments <=2.19.2 ReDoS in AdlLexer (transitive dep, no fix available yet)
+          # Remove --ignore-vuln once pygments releases a patched version
+          pip-audit -r requirements.txt --ignore-vuln CVE-2026-4539
 
   trivy-image:
     name: Trivy container image scan
