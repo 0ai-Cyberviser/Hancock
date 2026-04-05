@@ -15,7 +15,7 @@ data:
     scrape_configs:
       - job_name: hancock
         static_configs:
-          - targets: ["hancock:8001"]
+          - targets: ["hancock:5000"]
         metrics_path: /metrics
 
       - job_name: kubernetes-pods
