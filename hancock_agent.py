@@ -985,13 +985,17 @@ def build_app(client, model: str):
         """OSINT geolocation — geolocate a list of IP/domain indicators."""
         ok, err, _ = _check_auth_and_rate()
         if not ok:
-            _inc("errors_total"); return jsonify({"error": err}), 401 if "Unauthorized" in err else 429
-        _inc("requests_total"); _inc("requests_by_endpoint", "/v1/geolocate"); _inc("requests_by_mode", "osint")
+            _inc("errors_total")
+            return jsonify({"error": err}), 401 if "Unauthorized" in err else 429
+        _inc("requests_total")
+        _inc("requests_by_endpoint", "/v1/geolocate")
+        _inc("requests_by_mode", "osint")
 
-        data = request.get_json(force=True)
+        data = request.get_json(force=True, silent=True) or {}
         indicators = data.get("indicators", [])
         if not indicators:
-            _inc("errors_total"); return jsonify({"error": "indicators required"}), 400
+            _inc("errors_total")
+            return jsonify({"error": "indicators required"}), 400
 
         try:
             from collectors.osint_geolocation import GeoIPLookup
@@ -1004,20 +1008,25 @@ def build_app(client, model: str):
             })
         except Exception as exc:
             logger.exception("Error in /v1/geolocate endpoint: %s", exc)
-            _inc("errors_total"); return jsonify({"error": "Internal server error"}), 500
+            _inc("errors_total")
+            return jsonify({"error": "Internal server error"}), 500
 
     @app.route("/v1/predict-locations", methods=["POST"])
     def predict_locations_endpoint():
         """OSINT predictive analytics — predict future threat infrastructure locations."""
         ok, err, _ = _check_auth_and_rate()
         if not ok:
-            _inc("errors_total"); return jsonify({"error": err}), 401 if "Unauthorized" in err else 429
-        _inc("requests_total"); _inc("requests_by_endpoint", "/v1/predict-locations"); _inc("requests_by_mode", "osint")
+            _inc("errors_total")
+            return jsonify({"error": err}), 401 if "Unauthorized" in err else 429
+        _inc("requests_total")
+        _inc("requests_by_endpoint", "/v1/predict-locations")
+        _inc("requests_by_mode", "osint")
 
-        data = request.get_json(force=True)
+        data = request.get_json(force=True, silent=True) or {}
         historical_data = data.get("historical_data", [])
         if not historical_data:
-            _inc("errors_total"); return jsonify({"error": "historical_data required"}), 400
+            _inc("errors_total")
+            return jsonify({"error": "historical_data required"}), 400
 
         try:
             from collectors.osint_geolocation import (
@@ -1043,20 +1052,25 @@ def build_app(client, model: str):
             return jsonify({"predictions": predictions, "count": len(predictions)})
         except Exception as exc:
             logger.exception("Error in /v1/predict-locations endpoint: %s", exc)
-            _inc("errors_total"); return jsonify({"error": "Internal server error"}), 500
+            _inc("errors_total")
+            return jsonify({"error": "Internal server error"}), 500
 
     @app.route("/v1/map-infrastructure", methods=["POST"])
     def map_infrastructure_endpoint():
         """OSINT infrastructure mapping — map and cluster threat infrastructure."""
         ok, err, _ = _check_auth_and_rate()
         if not ok:
-            _inc("errors_total"); return jsonify({"error": err}), 401 if "Unauthorized" in err else 429
-        _inc("requests_total"); _inc("requests_by_endpoint", "/v1/map-infrastructure"); _inc("requests_by_mode", "osint")
+            _inc("errors_total")
+            return jsonify({"error": err}), 401 if "Unauthorized" in err else 429
+        _inc("requests_total")
+        _inc("requests_by_endpoint", "/v1/map-infrastructure")
+        _inc("requests_by_mode", "osint")
 
-        data = request.get_json(force=True)
+        data = request.get_json(force=True, silent=True) or {}
         indicators = data.get("indicators", [])
         if not indicators:
-            _inc("errors_total"); return jsonify({"error": "indicators required"}), 400
+            _inc("errors_total")
+            return jsonify({"error": "indicators required"}), 400
 
         try:
             from collectors.osint_geolocation import InfrastructureMapper
@@ -1065,7 +1079,8 @@ def build_app(client, model: str):
             return jsonify(mapping)
         except Exception as exc:
             logger.exception("Error in /v1/map-infrastructure endpoint: %s", exc)
-            _inc("errors_total"); return jsonify({"error": "Internal server error"}), 500
+            _inc("errors_total")
+            return jsonify({"error": "Internal server error"}), 500
 
     return app  # ← returned for testing
 
