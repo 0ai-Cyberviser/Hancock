@@ -343,6 +343,13 @@ def _do_chat(client: OpenAI, messages: list[dict], model: str, stream: bool) -> 
     return resp.choices[0].message.content
 
 
+def _extract_content(resp) -> str:
+    """Safely extract message content from an OpenAI chat response."""
+    if not resp.choices:
+        return ""
+    return resp.choices[0].message.content or ""
+
+
 # ── CLI mode ──────────────────────────────────────────────────────────────────
 def run_cli(client: OpenAI, model: str):
     print(BANNER)
@@ -602,7 +609,7 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=1024,
             temperature=0.7, top_p=0.95,
         )
-        response_text = resp.choices[0].message.content
+        response_text = _extract_content(resp)
         if not response_text:
             return jsonify({"error": "model returned empty response"}), 502
         return jsonify({"response": response_text, "model": model, "mode": mode})
@@ -629,7 +636,7 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=1024,
             temperature=0.7, top_p=0.95,
         )
-        answer = resp.choices[0].message.content
+        answer = _extract_content(resp)
         if not answer:
             _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
         return jsonify({"answer": answer, "model": model, "mode": mode})
@@ -659,7 +666,7 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=1200,
             temperature=0.4, top_p=0.95,
         )
-        triage_text = resp.choices[0].message.content
+        triage_text = _extract_content(resp)
         if not triage_text:
             _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
         return jsonify({"triage": triage_text, "model": model})
@@ -690,7 +697,7 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=1200,
             temperature=0.4, top_p=0.95,
         )
-        query_text = resp.choices[0].message.content
+        query_text = _extract_content(resp)
         if not query_text:
             _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
         return jsonify({"query": query_text, "siem": siem, "model": model})
@@ -720,7 +727,7 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=1500,
             temperature=0.4, top_p=0.95,
         )
-        playbook_text = resp.choices[0].message.content
+        playbook_text = _extract_content(resp)
         if not playbook_text:
             _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
         return jsonify({"playbook": playbook_text, "incident": incident_type, "model": model})
@@ -750,7 +757,7 @@ def build_app(client, model: str):
             model=code_model, messages=messages, max_tokens=2048,
             temperature=0.2, top_p=0.7,
         )
-        code_text = resp.choices[0].message.content
+        code_text = _extract_content(resp)
         if not code_text:
             _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
         return jsonify({
@@ -792,7 +799,7 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=2048,
             temperature=0.3, top_p=0.95,
         )
-        answer = resp.choices[0].message.content
+        answer = _extract_content(resp)
         if not answer:
             _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
         return jsonify({"advice": answer, "output": output, "model": model})
@@ -833,7 +840,7 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=2048,
             temperature=0.2, top_p=0.7,
         )
-        rule_text = resp.choices[0].message.content
+        rule_text = _extract_content(resp)
         if not rule_text:
             _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
         return jsonify({
@@ -879,7 +886,7 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=2048,
             temperature=0.2, top_p=0.7,
         )
-        rule_text = resp.choices[0].message.content
+        rule_text = _extract_content(resp)
         if not rule_text:
             _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
         return jsonify({
@@ -921,7 +928,7 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=1000,
             temperature=0.3, top_p=0.9,
         )
-        report = resp.choices[0].message.content
+        report = _extract_content(resp)
         if not report:
             _inc("errors_total"); return jsonify({"error": "model returned empty response"}), 502
         return jsonify({"indicator": indicator, "type": ioc_type,
@@ -969,7 +976,7 @@ def build_app(client, model: str):
             model=model, messages=messages, max_tokens=1200,
             temperature=0.4, top_p=0.95,
         )
-        triage_text = resp.choices[0].message.content
+        triage_text = _extract_content(resp)
         if not triage_text:
             _inc("errors_total")
             return jsonify({"error": "model returned empty response"}), 502

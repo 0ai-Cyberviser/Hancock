@@ -100,6 +100,27 @@ class TestMessageValidation:
         assert "alert required" in r.get_json()["error"]
 
 
+# ── Empty model response handling ─────────────────────────────────────────────
+
+class TestEmptyModelResponse:
+    def test_ask_empty_choices_returns_502(self):
+        """When the model returns empty choices, /v1/ask returns 502."""
+        from unittest.mock import MagicMock
+        mock_client = MagicMock()
+        mock_resp = MagicMock()
+        mock_resp.choices = []
+        mock_client.chat.completions.create.return_value = mock_resp
+        import hancock_agent
+        app = hancock_agent.build_app(
+            mock_client, "mistralai/mistral-7b-instruct-v0.3"
+        )
+        app.testing = True
+        c = app.test_client()
+        r = c.post("/v1/ask", json={"question": "What is CVE-2021-44228?"})
+        assert r.status_code == 502
+        assert "empty" in r.get_json()["error"]
+
+
 # ── Mode validation ───────────────────────────────────────────────────────────
 
 class TestModeValidation:
