@@ -45,12 +45,15 @@ inputs. The fuzzer uses these as starting points to generate new interesting inp
 
 ## CI Integration
 
-- **CIFuzz**: The `.github/workflows/cifuzz.yml` workflow runs fuzz targets on every PR
-  that modifies relevant source files, catching regressions before merge.
+- **CIFuzz (ClusterFuzzLite)**: The `.github/workflows/cifuzz.yml` workflow uses
+  [ClusterFuzzLite](https://google.github.io/clusterfuzzlite/) to build and run fuzz
+  targets on every PR that modifies relevant source files, catching regressions before
+  merge. Configuration lives in `.clusterfuzzlite/`. Once hancock is accepted into
+  OSS-Fuzz, the workflow can be switched to the CIFuzz actions.
 - **Continuous Fuzzing**: The `.github/workflows/continuous-fuzz.yml` workflow runs all
   fuzz targets daily with extended duration (10 minutes each) to catch deeper bugs.
-- **OSS-Fuzz**: Configuration in `oss-fuzz/` for continuous fuzzing via Google's
-  OSS-Fuzz infrastructure.
+- **OSS-Fuzz**: Configuration in `fuzz/oss-fuzz/` for continuous fuzzing via Google's
+  OSS-Fuzz infrastructure (pending project registration).
 
 ## Google Bug Hunters
 
@@ -75,6 +78,15 @@ policy.
 fuzz/oss-fuzz/
 ├── project.yaml   # OSS-Fuzz project metadata
 ├── Dockerfile     # Build environment for OSS-Fuzz
+└── build.sh       # Compilation script for fuzz targets
+```
+
+## ClusterFuzzLite Config
+
+```
+.clusterfuzzlite/
+├── project.yaml   # ClusterFuzzLite project metadata
+├── Dockerfile     # Build environment for ClusterFuzzLite
 └── build.sh       # Compilation script for fuzz targets
 ```
 

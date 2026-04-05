@@ -1,6 +1,7 @@
-# ─── CIFuzz — Continuous fuzzing on pull requests (OSS-Fuzz integration) ─────
-# Uses the official google/oss-fuzz CIFuzz actions to build and run fuzz targets
-# inside the same Docker environment used by OSS-Fuzz for continuous fuzzing.
+# ─── CIFuzz — Continuous fuzzing on pull requests (ClusterFuzzLite) ──────────
+# Uses ClusterFuzzLite to build and run fuzz targets from .clusterfuzzlite/
+# without requiring the project to be registered in google/oss-fuzz.
+# Once hancock is accepted into OSS-Fuzz, switch to the CIFuzz actions.
 name: CIFuzz
 
 on:
@@ -14,6 +15,7 @@ on:
       - "fuzz/**"
       - "requirements*.txt"
       - "orchestration_controller.py"
+      - ".clusterfuzzlite/**"
 
 permissions:
   contents: read
@@ -26,33 +28,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target:
-          - fuzz_nvd_parser
-          - fuzz_mitre_parser
-          - fuzz_formatter
-          - fuzz_formatter_v3
-          - fuzz_webhook_signature
-          - fuzz_api_inputs
-          - fuzz_ghsa_parser
-          - fuzz_xml_parsing
+        sanitizer: [address, undefined]
     steps:
       - name: Build Fuzzers
         id: build
-        uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
+        uses: google/clusterfuzzlite/actions/build_fuzzers@v1
         with:
-          oss-fuzz-project-name: hancock
           language: python
           sanitizer: ${{ matrix.sanitizer }}
-          dry-run: false
 
       - name: Run Fuzzers
-        uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
+        if: steps.build.outcome == 'success'
+        uses: google/clusterfuzzlite/actions/run_fuzzers@v1
         with:
-          oss-fuzz-project-name: hancock
-          language: python
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           fuzz-seconds: 600
+          mode: code-change
           sanitizer: ${{ matrix.sanitizer }}
-          dry-run: false
 
       - name: Upload Crash Artifacts
         uses: actions/upload-artifact@v4
