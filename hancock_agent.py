@@ -991,7 +991,10 @@ def build_app(client, model: str):
         _inc("requests_by_endpoint", "/v1/geolocate")
         _inc("requests_by_mode", "osint")
 
-        data = request.get_json(force=True, silent=True) or {}
+        data = request.get_json(force=True, silent=True)
+        if not isinstance(data, dict):
+            _inc("errors_total")
+            return jsonify({"error": "JSON object required"}), 400
         indicators = data.get("indicators", [])
         if not indicators:
             _inc("errors_total")
