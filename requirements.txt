@@ -9,3 +9,4 @@ defusedxml
 pytest
 maxminddb
 python-nmap
+atheris
