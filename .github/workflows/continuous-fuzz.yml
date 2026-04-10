@@ -27,6 +27,8 @@ jobs:
           - fuzz_api_inputs
           - fuzz_ghsa_parser
           - fuzz_xml_parsing
+          - fuzz_input_validator
+          - fuzz_atomic_parser
     steps:
       - uses: actions/checkout@v4
 
