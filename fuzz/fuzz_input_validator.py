@@ -97,7 +97,7 @@ def TestOneInput(data: bytes) -> None:
         except Exception:
             return
         try:
-            max_len = len(text) % 50001 if text else 100
+            max_len = (len(text) % 50000) + 1 if text else 100
             sanitize_string(text, max_length=max_len)
         except (TypeError, ValueError, OverflowError):
             pass
