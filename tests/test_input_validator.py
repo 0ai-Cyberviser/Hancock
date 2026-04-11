@@ -193,8 +193,8 @@ class TestSanitizeString:
 class TestConstants:
     def test_valid_modes_frozen(self):
         with pytest.raises(AttributeError):
-            VALID_MODES.add("new")
+            VALID_MODES.add("new")  # pylint: disable=no-member
 
     def test_valid_siems_frozen(self):
         with pytest.raises(AttributeError):
-            VALID_SIEMS.add("new")
+            VALID_SIEMS.add("new")  # pylint: disable=no-member
