@@ -27,13 +27,17 @@ def TestOneInput(data: bytes) -> None:
             addr = host.find("address")
             if addr is not None:
                 addr.get("addr")
+                addr.get("addrtype")
             hostnames = host.find("hostnames/hostname")
             if hostnames is not None:
                 hostnames.get("name")
-            for svc in host.findall("services/service"):
-                svc.get("name")
-                svc.get("port")
-                svc.get("protocol")
+            # Nmap XML places services under ports/port/service
+            for port in host.findall("ports/port"):
+                port.get("portid")
+                port.get("protocol")
+                service_el = port.find("service")
+                if service_el is not None:
+                    service_el.get("name")
     except (AttributeError, TypeError, ValueError):
         pass
 

@@ -10,6 +10,7 @@ on:
     paths:
       - "hancock_agent.py"
       - "hancock_constants.py"
+      - "input_validator.py"
       - "collectors/**"
       - "formatter/**"
       - "fuzz/**"

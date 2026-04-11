@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nmaprun scanner="nmap" args="nmap -sV 10.0.0.0/24" start="1700000000">
+  <host starttime="1700000001" endtime="1700000002">
+    <status state="up" reason="syn-ack"/>
+    <address addr="10.0.0.1" addrtype="ipv4"/>
+    <address addr="AA:BB:CC:DD:EE:FF" addrtype="mac"/>
+    <hostnames>
+      <hostname name="gateway.local" type="PTR"/>
+    </hostnames>
+    <ports>
+      <port protocol="tcp" portid="22">
+        <state state="open" reason="syn-ack"/>
+        <service name="ssh" product="OpenSSH" version="8.9p1"/>
+      </port>
+      <port protocol="tcp" portid="80">
+        <state state="open" reason="syn-ack"/>
+        <service name="http" product="nginx" version="1.24.0"/>
+      </port>
+      <port protocol="tcp" portid="443">
+        <state state="open" reason="syn-ack"/>
+        <service name="https" product="nginx" version="1.24.0" tunnel="ssl"/>
+      </port>
+    </ports>
+  </host>
+  <host starttime="1700000003" endtime="1700000004">
+    <status state="up" reason="syn-ack"/>
+    <address addr="10.0.0.2" addrtype="ipv4"/>
+    <hostnames/>
+    <ports>
+      <port protocol="tcp" portid="3306">
+        <state state="open" reason="syn-ack"/>
+        <service name="mysql" product="MySQL" version="8.0"/>
+      </port>
+    </ports>
+  </host>
+</nmaprun>
