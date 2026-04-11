@@ -134,7 +134,7 @@ def run_full_assessment(target: str) -> None:
                 print(f"[pipeline] sqlmap step skipped: {exc}")
         elif tool == "burp":
             try:
-                from collectors.burp_post_exploit import BurpCollector
+                from collectors.burp_post_exploit import BurpAPI
                 print(f"[pipeline] burp step ready for {target}")
             except Exception as exc:
                 print(f"[pipeline] burp step skipped: {exc}")
