@@ -1,0 +1,3 @@
+key-with-special-chars-!@#$%^&*()
+sha256=0000000000000000000000000000000000000000000000000000000000000000
+{"event": "alert", "data": {"id": 12345, "severity": "critical", "description": "test webhook with unicode: éàüñ"}}

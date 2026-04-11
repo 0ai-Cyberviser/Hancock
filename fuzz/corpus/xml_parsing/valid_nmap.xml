@@ -1,11 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<nmaprun scanner="nmap">
-  <host>
-    <address addr="192.168.1.1" addrtype="ipv4"/>
-    <hostnames><hostname name="router.local"/></hostnames>
-    <ports>
-      <port portid="80" protocol="tcp"><service name="http"/></port>
-      <port portid="443" protocol="tcp"><service name="https"/></port>
-    </ports>
-  </host>
-</nmaprun>
+<nmaprun><host><address addr="192.168.1.1" addrtype="ipv4"/><hostnames><hostname name="router.local"/></hostnames><ports><port portid="80" protocol="tcp"><service name="http"/></port><port portid="443" protocol="tcp"><service name="https"/></port></ports></host></nmaprun>

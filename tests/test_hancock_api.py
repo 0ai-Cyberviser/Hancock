@@ -524,7 +524,9 @@ class TestSigma:
                         }),
                         content_type="application/json")
         assert r.status_code == 200
-        assert d["technique"] == "T1558.003" if (d := r.get_json()) else True
+        d = r.get_json()
+        if d:
+            assert d["technique"] == "T1558.003"
 
     def test_sigma_ttp_alias(self, client):
         """Accepts 'ttp' field as alias for 'description'."""

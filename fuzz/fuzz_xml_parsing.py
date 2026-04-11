@@ -31,12 +31,13 @@ def TestOneInput(data: bytes) -> None:
             hostnames = host.find("hostnames/hostname")
             if hostnames is not None:
                 hostnames.get("name")
+            # Match actual nmap_recon.py: ports/port -> service child
             for port in host.findall("ports/port"):
                 port.get("portid")
                 port.get("protocol")
-                svc = port.find("service")
-                if svc is not None:
-                    svc.get("name")
+                service_el = port.find("service")
+                if service_el is not None:
+                    service_el.get("name")
     except (AttributeError, TypeError, ValueError):
         pass
 

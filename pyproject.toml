@@ -39,3 +39,6 @@ where = ["clients/python"]
 
 [tool.setuptools.package-dir]
 "" = "clients/python"
+
+[tool.pylint."messages_control"]
+disable = ["import-error"]

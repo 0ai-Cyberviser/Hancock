@@ -1,9 +1,9 @@
 """
-Fuzz target for input validation utilities (input_validator.py).
+Fuzz target for input validation (input_validator.py).
 
-Exercises detect_ioc_type, validate_payload, validate_mode, validate_siem,
-validate_ciso_output, validate_ioc_type, and sanitize_string with arbitrary
-byte data to find crashes, hangs, or unexpected exceptions.
+Exercises detect_ioc_type() with arbitrary strings and validate_payload()
+with arbitrary JSON dicts to find crashes in regex matching, IP address
+parsing, or dict traversal.
 """
 import atheris
 import json
@@ -24,36 +24,83 @@ from input_validator import (  # noqa: E402
 
 
 def TestOneInput(data: bytes) -> None:
-    """Fuzz input_validator functions with arbitrary data."""
+    """Fuzz input validation functions with arbitrary data."""
     fdp = atheris.FuzzedDataProvider(data)
-    choice = fdp.ConsumeIntInRange(0, 6)
-    remaining = fdp.ConsumeBytes(fdp.remaining_bytes())
+    choice = fdp.ConsumeIntInRange(0, 5)
+    payload_bytes = fdp.ConsumeBytes(fdp.remaining_bytes())
 
-    try:
-        if choice == 0:
-            # detect_ioc_type with arbitrary string
-            detect_ioc_type(remaining.decode("utf-8", errors="replace"))
-        elif choice == 1:
-            # validate_payload with fuzzed JSON dict
-            decoded = json.loads(remaining)
-            if isinstance(decoded, dict):
-                validate_payload(decoded, required=["alert", "mode"])
-        elif choice == 2:
-            # validate_payload with non-dict input
-            validate_payload(remaining.decode("utf-8", errors="replace"))
-        elif choice == 3:
-            validate_mode(remaining.decode("utf-8", errors="replace"))
-        elif choice == 4:
-            validate_siem(remaining.decode("utf-8", errors="replace"))
-        elif choice == 5:
-            validate_ciso_output(remaining.decode("utf-8", errors="replace"))
-        elif choice == 6:
-            text = remaining.decode("utf-8", errors="replace")
+    if choice == 0:
+        # Fuzz detect_ioc_type with arbitrary strings
+        try:
+            text = payload_bytes.decode("utf-8", errors="replace")
+        except Exception:
+            return
+        try:
+            detect_ioc_type(text)
+        except (ValueError, TypeError, AttributeError, OverflowError):
+            pass
+
+    elif choice == 1:
+        # Fuzz validate_payload with arbitrary JSON
+        try:
+            decoded = json.loads(payload_bytes)
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return
+        if not isinstance(decoded, dict):
+            return
+        try:
+            validate_payload(
+                decoded,
+                required=["id", "type", "value", "source", "timestamp"],
+            )
+        except (KeyError, TypeError, IndexError, AttributeError, ValueError):
+            pass
+
+    elif choice == 2:
+        # Fuzz validate_mode
+        try:
+            text = payload_bytes.decode("utf-8", errors="replace")
+        except Exception:
+            return
+        try:
+            validate_mode(text)
+        except (TypeError, AttributeError):
+            pass
+
+    elif choice == 3:
+        # Fuzz validate_siem
+        try:
+            text = payload_bytes.decode("utf-8", errors="replace")
+        except Exception:
+            return
+        try:
+            validate_siem(text)
+        except (TypeError, AttributeError):
+            pass
+
+    elif choice == 4:
+        # Fuzz validate_ciso_output / validate_ioc_type
+        try:
+            text = payload_bytes.decode("utf-8", errors="replace")
+        except Exception:
+            return
+        try:
+            validate_ciso_output(text)
             validate_ioc_type(text)
-            sanitize_string(text)
-    except (json.JSONDecodeError, UnicodeDecodeError, TypeError,
-            ValueError, AttributeError):
-        pass
+        except (TypeError, AttributeError):
+            pass
+
+    elif choice == 5:
+        # Fuzz sanitize_string
+        try:
+            text = payload_bytes.decode("utf-8", errors="replace")
+        except Exception:
+            return
+        try:
+            max_len = (len(text) % 50000) + 1 if text else 100
+            sanitize_string(text, max_length=max_len)
+        except (TypeError, ValueError, OverflowError):
+            pass
 
 
 def main() -> None:

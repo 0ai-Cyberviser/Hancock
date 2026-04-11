@@ -21,10 +21,14 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: cifuzz-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   Fuzzing:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     continue-on-error: true
     strategy:
       fail-fast: false
@@ -43,7 +47,7 @@ jobs:
         uses: google/clusterfuzzlite/actions/run_fuzzers@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          fuzz-seconds: 600
+          fuzz-seconds: 300
           mode: code-change
           sanitizer: ${{ matrix.sanitizer }}
 

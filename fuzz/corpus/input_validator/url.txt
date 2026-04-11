@@ -1,1 +1,1 @@
-https://example.com/malware.exe
+https://evil.example.com/malware.exe

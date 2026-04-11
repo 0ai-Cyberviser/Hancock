@@ -21,8 +21,8 @@ Bug Hunters.
 | `fuzz_webhook_signature.py` | `hancock_agent.py` | HMAC-SHA256 webhook signature verification |
 | `fuzz_ghsa_parser.py` | `collectors/ghsa_collector.py` | GitHub Security Advisory parsing |
 | `fuzz_xml_parsing.py` | `collectors/nmap_recon.py` | XML parsing via defusedxml |
-| `fuzz_input_validator.py` | `input_validator.py` | IOC detection, payload validation, mode/SIEM/CISO checks |
-| `fuzz_atomic_parser.py` | `collectors/atomic_collector.py` | Atomic Red Team YAML test parsing |
+| `fuzz_input_validator.py` | `input_validator.py` | IOC type detection, payload validation, regex matching |
+| `fuzz_atomic_parser.py` | `collectors/atomic_collector.py` | Atomic Red Team YAML test parsing (regex-heavy) |
 
 ## Quick Start
 
