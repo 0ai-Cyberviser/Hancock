@@ -200,7 +200,7 @@ CyberViser is seeking **$500,000 in seed funding** to accelerate:
 
 **GitHub:** [github.com/cyberviser/Hancock](https://github.com/cyberviser/Hancock)  
 **Website:** [cyberviser.netlify.app](https://cyberviser.netlify.app)  
-**Email:** contact@cyberviser.ai  
+**Email:** 0ai@cyberviser.com  
 
 ---
 
