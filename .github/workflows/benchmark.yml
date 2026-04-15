@@ -33,9 +33,24 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      - name: Run p99 benchmark tests
-        run: pytest tests/benchmark_suite.py -v --tb=short -s
+      - name: Run benchmark and performance gates
+        env:
+          HANCOCK_PERF_ARTIFACT: artifacts/performance-latency.json
+        run: |
+          mkdir -p artifacts
+          pytest tests/benchmark_suite.py tests/test_performance.py \
+            -v --tb=short -s \
+            --junitxml=artifacts/benchmark-junit.xml
 
-      - name: Print latency summary table
-        run: python tests/benchmark_suite.py
+      - name: Print benchmark summary table
+        if: always()
+        run: |
+          python tests/benchmark_suite.py | tee artifacts/benchmark-summary.txt
 
+      - name: Upload benchmark artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-artifacts
+          path: artifacts/
+          if-no-files-found: error

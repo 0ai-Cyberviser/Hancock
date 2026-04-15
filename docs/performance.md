@@ -10,6 +10,7 @@ This guide covers Hancock's latency targets, benchmark suite, and load testing t
 - [Benchmark Suite](#benchmark-suite)
 - [Load Testing with Locust](#load-testing-with-locust)
 - [Performance Tests](#performance-tests)
+- [CI Hardware Profile](#ci-hardware-profile)
 - [Tuning Recommendations](#tuning-recommendations)
 
 ---
@@ -23,9 +24,11 @@ These are the target latencies for Hancock endpoints under normal load. They are
 | `GET /health` | < 10 ms | < 25 ms | < 50 ms |
 | `GET /models` | < 20 ms | < 50 ms | < 100 ms |
 | `GET /mode` | < 20 ms | < 50 ms | < 100 ms |
-| `POST /chat` (LLM mocked) | < 50 ms | < 150 ms | < 500 ms |
+| `POST /v1/chat` (LLM mocked) | < 120 ms | < 260 ms | < 500 ms |
 
-The **p99 threshold of 500 ms** is the hard CI gate. Any PR that breaches it will fail the benchmark job.
+The benchmark suite keeps the **p99 threshold of 500 ms** as a hard CI gate.
+
+`tests/test_performance.py` additionally enforces endpoint-level **p50/p95 regression thresholds** and validates burst + concurrency behavior around rate limiting and webhook HMAC checks.
 
 ---
 
@@ -146,9 +149,9 @@ If API authentication is enabled, set `HANCOCK_API_KEY` in the environment — t
 
 It asserts:
 
-- `GET /health` responds within 100 ms (per request)
-- `GET /models` responds within 200 ms
-- Memory usage stays within an acceptable baseline + delta threshold
+- Burst behavior for `POST /v1/ask` and `POST /v1/chat` around `HANCOCK_RATE_LIMIT`.
+- Concurrent `POST /v1/webhook` HMAC validation under load (mixed valid/invalid signatures).
+- Endpoint p50/p95 latency thresholds for regression gating in CI.
 
 These tests use the Flask test client (no real network), so they measure application logic overhead, not network latency.
 
@@ -157,6 +160,32 @@ pytest tests/test_performance.py -v
 ```
 
 ---
+
+
+## CI Hardware Profile
+
+To keep results comparable across contributors and CI, run the performance suite with this profile (or as close as possible):
+
+- **CPU:** 2-4 vCPU x86_64 (GitHub `ubuntu-latest` hosted runner class).
+- **RAM:** 7-16 GB.
+- **Disk:** SSD-backed ephemeral workspace with at least 10 GB free.
+- **Python:** 3.12.x with dependencies from `requirements.txt` and `requirements-dev.txt`.
+- **Backend mode:** Flask test client + mocked LLM responses (no network model calls).
+
+Recommended local replication command:
+
+```bash
+HANCOCK_PERF_ARTIFACT=artifacts/performance-latency.json \
+pytest tests/benchmark_suite.py tests/test_performance.py -v --tb=short -s \
+  --junitxml=artifacts/benchmark-junit.xml
+```
+
+The CI workflow stores the following benchmark artifacts:
+
+- `artifacts/performance-latency.json` (p50/p95 stats from `tests/test_performance.py`)
+- `artifacts/benchmark-junit.xml` (pytest results)
+- `artifacts/benchmark-summary.txt` (standalone benchmark table)
+
 
 ## Tuning Recommendations
 
