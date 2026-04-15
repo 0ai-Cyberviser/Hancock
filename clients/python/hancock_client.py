@@ -18,6 +18,7 @@ Usage:
 from __future__ import annotations
 
 import os
+import warnings
 from typing import Optional
 
 # Canonical definitions for OpenAI dependency handling. These are defined
@@ -93,6 +94,13 @@ IOC_SYSTEM = (
     "When given an indicator of compromise (IP, domain, URL, hash, or email), produce a structured "
     "enrichment report: indicator type, threat intel context, associated MITRE ATT&CK techniques, "
     "risk score 1-10 with justification, recommended defensive actions, and relevant CVEs/GHSA."
+)
+
+OSINT_SYSTEM = (
+    "You are Hancock OSINT, CyberViser's intelligence analyst. "
+    "Focus on open-source intelligence collection and analysis using publicly available data. "
+    "Correlate domains, IPs, WHOIS, passive DNS, certificates, and infrastructure overlaps. "
+    "Provide structured findings, confidence levels, and practical next investigative steps."
 )
 
 
@@ -254,8 +262,36 @@ class HancockClient:
                               temperature=0.3, top_p=0.9, max_tokens=1000)
 
     def chat(self, message: str, history: Optional[list] = None, mode: str = "auto") -> str:
-        """Multi-turn conversation with history."""
-        system = SECURITY_SYSTEM
+        """
+        Multi-turn conversation with history.
+
+        The ``mode`` argument selects the system prompt used for the conversation:
+        ``auto``, ``pentest``, ``soc``, ``code``, ``ciso``, ``sigma``, ``yara``,
+        ``ioc``, and ``osint``.
+
+        Unknown mode values are supported for backward compatibility by falling
+        back to ``auto`` and emitting a ``RuntimeWarning``.
+        """
+        mode_to_system = {
+            "auto": SECURITY_SYSTEM,
+            "pentest": SECURITY_SYSTEM + " Focus on offensive security and penetration testing.",
+            "soc": SECURITY_SYSTEM + " Focus on SOC operations, alert triage, and incident response.",
+            "code": CODE_SYSTEM,
+            "ciso": CISO_SYSTEM,
+            "sigma": SIGMA_SYSTEM,
+            "yara": YARA_SYSTEM,
+            "ioc": IOC_SYSTEM,
+            "osint": OSINT_SYSTEM,
+        }
+        normalized_mode = (mode or "auto").strip().lower()
+        if normalized_mode not in mode_to_system:
+            warnings.warn(
+                f"Unsupported mode '{mode}' passed to chat(); falling back to 'auto'.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            normalized_mode = "auto"
+        system = mode_to_system[normalized_mode]
         messages = [{"role": "system", "content": system}]
         if history:
             messages.extend(history)
