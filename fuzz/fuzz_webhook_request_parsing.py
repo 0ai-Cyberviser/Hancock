@@ -56,6 +56,10 @@ def TestOneInput(data: bytes) -> None:
     body_len = fdp.ConsumeIntInRange(0, 32768)
     body = fdp.ConsumeBytes(body_len)
     sig_header = fdp.ConsumeUnicodeNoSurrogates(256)
+    # Werkzeug rejects raw control characters in header values; normalize them
+    # so fuzzing still reaches the webhook handler instead of failing in the
+    # request builder.
+    sig_header = sig_header.replace("\r", " ").replace("\n", " ")
     content_type = fdp.PickValueInList([
         "application/json",
         "application/json; charset=utf-8",

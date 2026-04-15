@@ -2,8 +2,11 @@
 
 from pathlib import Path
 import re
-import tomllib
 
+try:
+    import tomllib
+except ImportError:  # Python 3.10
+    import tomli as tomllib
 import pytest
 import yaml
 
