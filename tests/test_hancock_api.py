@@ -528,9 +528,39 @@ class TestInternalDiagnostics:
                 app.testing = True
                 return app
 
+    @pytest.fixture
+    def diagnostics_without_auth_app(self):
+        """App with diagnostics enabled but API auth not configured."""
+        from unittest.mock import MagicMock, patch
+        import importlib
+        import os
+
+        mock_client = MagicMock()
+        mock_resp = MagicMock()
+        mock_resp.choices[0].message.content = "response"
+        mock_client.chat.completions.create.return_value = mock_resp
+
+        with patch.dict(os.environ, {
+            "HANCOCK_ENABLE_INTERNAL_DIAGNOSTICS": "true",
+            "HANCOCK_LLM_BACKEND": "ollama",
+            "HANCOCK_RATE_LIMIT": "7",
+        }, clear=False):
+            os.environ.pop("HANCOCK_API_KEY", None)
+            with patch("hancock_agent.OpenAI", return_value=mock_client):
+                import hancock_agent
+                importlib.reload(hancock_agent)
+                app = hancock_agent.build_app(mock_client, "mistralai/mistral-7b-instruct-v0.3")
+                app.testing = True
+                return app
+
     def test_diagnostics_disabled_returns_404(self, client):
         r = client.get("/internal/diagnostics")
         assert r.status_code == 404
+
+    def test_diagnostics_requires_server_auth_configuration(self, diagnostics_without_auth_app):
+        c = diagnostics_without_auth_app.test_client()
+        r = c.get("/internal/diagnostics")
+        assert r.status_code == 403
 
     def test_diagnostics_requires_auth_when_configured(self, diagnostics_app):
         c = diagnostics_app.test_client()
@@ -549,6 +579,7 @@ class TestInternalDiagnostics:
         assert payload["backend_mode"] == "ollama"
         assert payload["current_model"] == "mistralai/mistral-7b-instruct-v0.3"
         assert "loaded_model_aliases" in payload
+        assert isinstance(payload["loaded_model_aliases"], list)
         assert "mistral" in payload["loaded_model_aliases"]
         assert payload["rate_limit"]["requests_per_minute"] == 7
         assert payload["rate_limit"]["window_seconds"] == 60

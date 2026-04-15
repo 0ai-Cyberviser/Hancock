@@ -581,6 +581,12 @@ def build_app(client, model: str):
         if not _INTERNAL_DIAGNOSTICS_ENABLED:
             _inc("errors_total")
             return _error_response("Not Found", 404)
+        if not _HANCOCK_API_KEY:
+            _inc("errors_total")
+            return _error_response(
+                "Internal diagnostics requires HANCOCK_API_KEY authentication to be configured",
+                403,
+            )
 
         ok, err, _ = _check_auth_and_rate()
         if not ok:
@@ -593,7 +599,7 @@ def build_app(client, model: str):
         return jsonify({
             "backend_mode": os.getenv("HANCOCK_LLM_BACKEND", "ollama").lower(),
             "current_model": model,
-            "loaded_model_aliases": MODELS,
+            "loaded_model_aliases": sorted(MODELS.keys()),
             "rate_limit": {
                 "requests_per_minute": _RATE_LIMIT,
                 "window_seconds": _RATE_WINDOW,

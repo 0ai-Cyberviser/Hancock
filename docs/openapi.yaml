@@ -107,7 +107,8 @@ paths:
       description: |
         Returns runtime metadata for internal visibility only. This endpoint is
         available only when `HANCOCK_ENABLE_INTERNAL_DIAGNOSTICS=true` and follows
-        the same auth and rate-limit controls as other protected endpoints.
+        the same auth and rate-limit controls as other protected endpoints. The
+        server must also have `HANCOCK_API_KEY` configured.
       responses:
         "200":
           description: Runtime diagnostics
@@ -119,8 +120,8 @@ paths:
                   backend_mode: { type: string, example: ollama }
                   current_model: { type: string }
                   loaded_model_aliases:
-                    type: object
-                    additionalProperties: { type: string }
+                    type: array
+                    items: { type: string }
                   rate_limit:
                     type: object
                     properties:
@@ -133,6 +134,7 @@ paths:
                       seconds: { type: integer, example: 1234 }
                       started_at_unix: { type: integer, example: 1717412185 }
         "401": { description: Unauthorized }
+        "403": { description: Endpoint misconfigured without HANCOCK_API_KEY }
         "404": { description: Endpoint disabled }
         "429": { description: Rate limit exceeded }
 

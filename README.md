@@ -142,7 +142,7 @@ Start the server: `python hancock_agent.py --server`
 |--------|----------|-------------|
 | `GET`  | `/health`       | Agent status and capabilities |
 | `GET`  | `/metrics`      | Prometheus-compatible request counters |
-| `GET`  | `/internal/diagnostics` | Internal runtime diagnostics (requires `HANCOCK_ENABLE_INTERNAL_DIAGNOSTICS=true`) |
+| `GET`  | `/internal/diagnostics` | Internal runtime diagnostics (requires `HANCOCK_ENABLE_INTERNAL_DIAGNOSTICS=true` and `HANCOCK_API_KEY`) |
 | `GET`  | `/v1/agents`    | All agent system prompts and defaults |
 | `POST` | `/v1/chat`      | Conversational AI with history + streaming |
 | `POST` | `/v1/ask`       | Single-shot question |
