@@ -70,6 +70,56 @@ class TestHancockClient:
         result = client.chat("How do I detect it?", history=history)
         assert isinstance(result, str)
 
+    @pytest.mark.parametrize(
+        "mode,expected_system",
+        [
+            ("auto", "You are Hancock, an elite AI cybersecurity agent built by CyberViser."),
+            ("pentest", "Focus on offensive security and penetration testing."),
+            ("soc", "Focus on SOC operations, alert triage, and incident response."),
+            ("code", "You are Hancock Code, an elite security code specialist built by CyberViser."),
+            ("ciso", "You are Hancock CISO, CyberViser's AI-powered CISO advisor."),
+            ("sigma", "You are Hancock Sigma, an expert detection engineer."),
+            ("yara", "You are Hancock YARA, CyberViser's expert malware analyst."),
+            ("ioc", "You are Hancock IOC, CyberViser's threat intelligence analyst."),
+            ("osint", "You are Hancock OSINT, CyberViser's intelligence analyst."),
+        ],
+    )
+    def test_chat_selects_system_prompt_by_mode(self, client, mode, expected_system):
+        client.chat("test message", mode=mode)
+        create_kwargs = client._client.chat.completions.create.call_args.kwargs
+        messages = create_kwargs["messages"]
+        assert messages[0]["role"] == "system"
+        assert expected_system in messages[0]["content"]
+
+    def test_chat_history_order_and_user_message_append(self, client):
+        history = [
+            {"role": "user", "content": "first user message"},
+            {"role": "assistant", "content": "assistant reply"},
+            {"role": "user", "content": "second user message"},
+        ]
+        current_message = "latest user message"
+
+        client.chat(current_message, history=history, mode="soc")
+
+        create_kwargs = client._client.chat.completions.create.call_args.kwargs
+        messages = create_kwargs["messages"]
+
+        assert messages[1:4] == history
+        assert messages[-1] == {"role": "user", "content": current_message}
+        assert messages[-2] == history[-1]
+
+    def test_chat_invalid_mode_warns_and_falls_back_to_auto(self, client):
+        with pytest.warns(RuntimeWarning, match="Unsupported mode"):
+            client.chat("fallback test", mode="invalid-mode")
+
+        create_kwargs = client._client.chat.completions.create.call_args.kwargs
+        messages = create_kwargs["messages"]
+
+        assert messages[0]["role"] == "system"
+        assert messages[0]["content"].startswith(
+            "You are Hancock, an elite AI cybersecurity agent built by CyberViser."
+        )
+
     def test_no_api_key_raises(self, monkeypatch):
         monkeypatch.delenv("NVIDIA_API_KEY", raising=False)
         from hancock_client import HancockClient

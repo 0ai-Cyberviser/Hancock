@@ -277,3 +277,9 @@ class TestIocEndpoint:
             "/v1/ioc", json={"ioc": "cobaltstrikebeacon.com"}
         )
         assert r.status_code == 200
+
+    def test_ioc_auto_detects_type(self, hancock_client):
+        data = hancock_client.post(
+            "/v1/ioc", json={"indicator": "185.220.101.35"}
+        ).get_json()
+        assert data["type"] == "ipv4"

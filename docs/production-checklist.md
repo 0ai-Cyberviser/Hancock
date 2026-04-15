@@ -15,7 +15,7 @@ Use this checklist before promoting Hancock to a production environment.
 ## Configuration & Secrets
 
 - [ ] All secrets stored in the platform secrets manager (AWS Secrets Manager, Kubernetes Secrets, Fly secrets) — never in environment files or source control
-- [ ] `HANCOCK_LLM_BACKEND` set explicitly (`ollama` or `nvidia_nim`)
+- [ ] `HANCOCK_LLM_BACKEND` set explicitly (`ollama`, `nvidia`, or `openai`) and aligned with your credential configuration
 - [ ] `HANCOCK_API_KEY` set to a strong random value if the API is publicly accessible
 - [ ] `HANCOCK_WEBHOOK_SECRET` set if webhook integrations are enabled
 - [ ] `LOG_LEVEL` set to `INFO` (not `DEBUG`) in production
@@ -62,7 +62,7 @@ Use this checklist before promoting Hancock to a production environment.
 ## Pre-Deployment Validation
 
 - [ ] Pre-flight checks pass — `python deploy/startup_checks.py`
-- [ ] Smoke test against staging environment confirms `/health`, `/models`, and `/chat` return expected responses
+- [ ] Smoke test against staging environment confirms `/health`, `/v1/agents`, and `/v1/chat` return expected responses
 - [ ] Rollback plan documented — previous image tag noted; `helm rollback` or `kubectl rollout undo` command ready
 
 ## Post-Deployment

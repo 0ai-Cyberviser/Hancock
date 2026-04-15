@@ -39,18 +39,25 @@ This validates Python version, required packages, environment variables, and Han
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
-| `HANCOCK_LLM_BACKEND` | No | `ollama` | Backend: `ollama` or `nvidia_nim` |
-| `OLLAMA_URL` | No | `http://localhost:11434` | Ollama server URL |
+| `HANCOCK_LLM_BACKEND` | No | `ollama` | Backend: `ollama`, `nvidia`, or `openai` |
+| `OLLAMA_BASE_URL` | No | `http://localhost:11434` | Ollama server URL (without `/v1`) |
 | `OLLAMA_MODEL` | No | `llama3.1:8b` | Default chat model |
 | `OLLAMA_CODER_MODEL` | No | `qwen2.5-coder:7b` | Code generation model |
-| `NVIDIA_API_KEY` | Conditional | — | Required when `HANCOCK_LLM_BACKEND=nvidia_nim` |
-| `OPENAI_API_KEY` | Conditional | — | Required for OpenAI-compatible backends |
+| `NVIDIA_API_KEY` | Conditional | — | Required when `HANCOCK_LLM_BACKEND=nvidia` |
+| `OPENAI_API_KEY` | Conditional | — | Required for `HANCOCK_LLM_BACKEND=openai` and OpenAI fallback |
+| `OPENAI_ORG_ID` | No | — | Optional OpenAI organization ID |
+| `OPENAI_MODEL` | No | `gpt-4o-mini` | Default OpenAI chat model |
+| `OPENAI_CODER_MODEL` | No | `gpt-4o` | OpenAI code generation model |
+| `HANCOCK_MODEL` | No | `mistralai/mistral-7b-instruct-v0.3` | NVIDIA model override |
+| `HANCOCK_CODER_MODEL` | No | `qwen/qwen2.5-coder-32b-instruct` | NVIDIA coder model override |
 | `HANCOCK_API_KEY` | No | — | Bearer token for API authentication |
 | `HANCOCK_WEBHOOK_SECRET` | No | — | HMAC secret for webhook signature verification |
 | `LOG_LEVEL` | No | `INFO` | Logging level (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
-| `PORT` | No | `5000` | Server port |
+| `HANCOCK_PORT` | No | `5000` | Server port |
 
 Store secrets in a `.env` file (never commit it) or use your platform's secrets manager.
+
+For the canonical fallback behavior and precedence order, see **Backend Selection** in the repository `README.md`.
 
 ---
 
@@ -67,14 +74,14 @@ docker run -d \
   --name hancock \
   -p 5000:5000 \
   -e HANCOCK_LLM_BACKEND=ollama \
-  -e OLLAMA_URL=http://host.docker.internal:11434 \
+  -e OLLAMA_BASE_URL=http://host.docker.internal:11434 \
   hancock:latest
 
 # Run with NVIDIA NIM backend
 docker run -d \
   --name hancock \
   -p 5000:5000 \
-  -e HANCOCK_LLM_BACKEND=nvidia_nim \
+  -e HANCOCK_LLM_BACKEND=nvidia \
   -e NVIDIA_API_KEY=<your-key> \
   hancock:latest
 ```
@@ -250,7 +257,7 @@ fly deploy
 # Set secrets (required for cloud LLM backends)
 fly secrets set NVIDIA_API_KEY=<your-key>
 fly secrets set HANCOCK_API_KEY=<your-key>
-fly secrets set HANCOCK_LLM_BACKEND=nvidia_nim
+fly secrets set HANCOCK_LLM_BACKEND=nvidia
 
 # Check status
 fly status

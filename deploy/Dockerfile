@@ -24,6 +24,8 @@ COPY --from=builder /install /usr/local
 # Copy application source
 COPY hancock_agent.py .
 COPY hancock_constants.py .
+COPY input_validator.py .
+COPY orchestration_controller.py .
 COPY collectors/ collectors/
 COPY formatter/ formatter/
 

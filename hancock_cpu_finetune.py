@@ -13,6 +13,7 @@ Usage:
     python hancock_cpu_finetune.py                  # full run
     python hancock_cpu_finetune.py --max-steps 20   # smoke test
     python hancock_cpu_finetune.py --debug          # verbose + 10 steps
+    python hancock_cpu_finetune.py --test           # load saved adapter
 
 Output: hancock-cpu-adapter/
 """
@@ -27,6 +28,7 @@ from pathlib import Path
 DATASET_PATH = Path(__file__).parent / "data" / "hancock_v2.jsonl"
 OUTPUT_DIR   = Path(__file__).parent / "hancock-cpu-adapter"
 MODEL_NAME   = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+MODEL_REVISION = "fe8a4ea1ffedaf415f4da2f062534de366a451e6"
 MAX_SEQ_LEN  = 1024   # keep low for CPU RAM
 LORA_R       = 8
 LORA_ALPHA   = 16
@@ -36,6 +38,11 @@ HANCOCK_SYSTEM = (
     "You operate as both a penetration tester and SOC analyst. "
     "You operate STRICTLY within authorized scope. You always confirm authorization "
     "before suggesting active techniques and recommend responsible disclosure."
+)
+
+FINETUNE_DEPS_HINT = (
+    "Missing fine-tuning dependency. Run `make finetune-install` "
+    "or `pip install -r requirements-finetune.txt` first."
 )
 
 
@@ -60,6 +67,8 @@ def parse_args():
                    help="HuggingFace repo to push adapter after training (e.g. cyberviser/hancock-tinyllama)")
     p.add_argument("--debug", action="store_true",
                    help="Debug mode: 10 steps, 50 samples, verbose")
+    p.add_argument("--test", action="store_true",
+                   help="Load the saved adapter and run sample prompts")
     return p.parse_args()
 
 
@@ -120,6 +129,10 @@ def print_banner():
 def main():
     args = parse_args()
 
+    if args.test:
+        run_test()
+        return
+
     if args.debug:
         args.max_steps = 10
         args.max_samples = 50
@@ -138,20 +151,18 @@ def main():
 
     # ── Imports ────────────────────────────────────────────────────────────────
     print("\n[1/6] Loading libraries...")
-    import torch
-    from transformers import (
-        AutoTokenizer,
-        AutoModelForCausalLM,
-        TrainingArguments,
-        EarlyStoppingCallback,
-    )
-    from peft import LoraConfig, get_peft_model, TaskType
-    from trl import SFTTrainer, SFTConfig
-
-    print(f"      PyTorch {torch.__version__} | Threads: {torch.get_num_threads()}")
-    torch.set_num_threads(os.cpu_count() or 8)
-    print(f"      Set threads → {torch.get_num_threads()}")
-
+    try:
+        import torch
+        from transformers import (
+            AutoTokenizer,
+            AutoModelForCausalLM,
+            EarlyStoppingCallback,
+            BitsAndBytesConfig,
+        )
+        from peft import LoraConfig, get_peft_model, TaskType
+        from trl import SFTTrainer, SFTConfig
+    except ImportError as exc:
+        sys.exit(f"{FINETUNE_DEPS_HINT}\nOriginal error: {exc}")
     # ── Dataset ────────────────────────────────────────────────────────────────
     print("\n[2/6] Loading dataset...")
     if not DATASET_PATH.exists():
@@ -162,7 +173,10 @@ def main():
     # ── Tokenizer ──────────────────────────────────────────────────────────────
     print(f"\n[3/6] Loading tokenizer: {MODEL_NAME}")
     print("      (first run downloads ~500MB — subsequent runs use cache)")
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)  # nosec B615
+    tokenizer = AutoTokenizer.from_pretrained(
+        MODEL_NAME,
+        revision=MODEL_REVISION,
+    )
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
 
@@ -182,17 +196,27 @@ def main():
     eval_dataset   = split["test"]
     print(f"      Train: {len(train_dataset):,} | Eval: {len(eval_dataset):,}")
 
-    # ── Model ──────────────────────────────────────────────────────────────────
-    print(f"\n[4/6] Loading model: {MODEL_NAME} (float32, CPU)")
+    # ── Model (CPU-Optimized 8-bit QLoRA) ──────────────────────────────────────
+    print(f"\n[4/6] Loading model: {MODEL_NAME} (8-bit quantized, CPU)")
     print("      (first run downloads ~2.2GB — subsequent runs use cache)")
     t0 = time.time()
-    model = AutoModelForCausalLM.from_pretrained(  # nosec B615
+
+    quant_config = BitsAndBytesConfig(
+        load_in_8bit=True,              # CPU-safe 8-bit quantization
+        llm_int8_threshold=6.0,
+        llm_int8_skip_modules=['lm_head']
+    )
+
+    model = AutoModelForCausalLM.from_pretrained(
         MODEL_NAME,
+        revision=MODEL_REVISION,
+        quantization_config=quant_config,   # ← QLoRA enabled
+        device_map='cpu',
         torch_dtype=torch.float32,
         low_cpu_mem_usage=True,
     )
     print(f"      Loaded in {time.time()-t0:.1f}s | Params: {sum(p.numel() for p in model.parameters()):,}")
-
+    
     # ── LoRA ───────────────────────────────────────────────────────────────────
     print(f"\n[5/6] Applying LoRA (r={args.lora_r}, alpha={args.lora_r * 2})...")
     lora_config = LoraConfig(
@@ -320,15 +344,22 @@ def main():
 
 # ── Quick inference test ────────────────────────────────────────────────────────
 def run_test():
-    import torch
-    from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
-    from peft import PeftModel
+    try:
+        import torch
+        from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+        from peft import PeftModel
+    except ImportError as exc:
+        sys.exit(f"{FINETUNE_DEPS_HINT}\nOriginal error: {exc}")
 
     print("\n[test] Loading Hancock CPU adapter...")
     if not OUTPUT_DIR.exists():
         sys.exit(f"ERROR: No adapter at {OUTPUT_DIR}. Run fine-tune first.")
 
-    base_model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=torch.float32)  # nosec B615
+    base_model = AutoModelForCausalLM.from_pretrained(
+        MODEL_NAME,
+        revision=MODEL_REVISION,
+        torch_dtype=torch.float32,
+    )
     tokenizer  = AutoTokenizer.from_pretrained(OUTPUT_DIR)  # nosec B615
     model      = PeftModel.from_pretrained(base_model, str(OUTPUT_DIR))
     model.eval()
@@ -354,7 +385,4 @@ def run_test():
 
 
 if __name__ == "__main__":
-    if "--test" in sys.argv:
-        run_test()
-    else:
-        main()
+    main()

@@ -49,6 +49,7 @@ It operates in nine specialist modes and exposes a clean REST API.
 - [API Reference](#-api-reference)
 - [CLI Commands](#-cli-commands)
 - [Environment Variables](#-environment-variables)
+- [Backend Selection](#-backend-selection)
 - [OSINT Geolocation Intelligence](#-osint-geolocation-intelligence)
 - [Security Tool Integrations](#-security-tool-integrations)
 - [Client SDKs](#-client-sdks)
@@ -205,7 +206,7 @@ curl -X POST http://localhost:5000/v1/geolocate \
 ```bash
 curl -X POST http://localhost:5000/v1/predict-locations \
   -H "Content-Type: application/json" \
-  -d '{"indicators": ["185.220.101.35", "45.33.32.156"], "campaign": "APT29-infra"}'
+  -d '{"historical_data": [{"indicator": "185.220.101.35", "indicator_type": "ip", "geo_results": [{"ip": "185.220.101.35", "country_code": "NL", "asn": "AS9009"}], "first_seen": "2025-01-01T00:00:00Z", "last_seen": "2025-03-01T00:00:00Z"}]}'
 ```
 
 **Map Threat Infrastructure:**
@@ -258,7 +259,7 @@ curl -X POST http://localhost:5000/v1/respond \
 /mode osint     — OSINT geolocation intelligence analyst
 /clear          — clear conversation history
 /history        — show history
-/model <id>     — switch NVIDIA NIM model
+/model <id>     — switch active model
 /exit           — quit
 ```
 
@@ -289,9 +290,26 @@ cp .env.example .env
 | `HANCOCK_WEBHOOK_SECRET` | HMAC-SHA256 secret for `/v1/webhook` | — |
 | `HANCOCK_SLACK_WEBHOOK` | Slack incoming webhook URL | — |
 | `HANCOCK_TEAMS_WEBHOOK` | Microsoft Teams incoming webhook URL | — |
-| `IPINFO_TOKEN` | ipinfo.io API token (OSINT geolocation fallback) | — |
+| `IPINFO_TOKEN` | ipinfo.io API token (OSINT geolocation primary source) | — |
+| `HANCOCK_ALLOW_INSECURE_GEOIP` | Allow plaintext `ip-api.com` fallback for OSINT lookups | disabled |
 | `ABUSEIPDB_KEY` | AbuseIPDB API key (threat enrichment) | — |
 | `VT_API_KEY` | VirusTotal API key (threat enrichment) | — |
+
+---
+
+## 🔀 Backend Selection
+
+Hancock uses one canonical backend selection strategy:
+
+1. **Primary backend** from `HANCOCK_LLM_BACKEND` (default: `ollama`).
+   - `ollama` uses `OLLAMA_BASE_URL` + `OLLAMA_MODEL` / `OLLAMA_CODER_MODEL`
+   - `nvidia` uses NVIDIA NIM (`NVIDIA_API_KEY`) and `HANCOCK_MODEL` / `HANCOCK_CODER_MODEL`
+   - `openai` uses `OPENAI_API_KEY` and `OPENAI_MODEL` / `OPENAI_CODER_MODEL`
+2. **Automatic runtime fallback**: if a primary Ollama or NVIDIA request fails, Hancock retries with OpenAI when `OPENAI_API_KEY` is configured.
+3. **Startup fallback**: if the configured backend cannot initialize, Hancock attempts OpenAI before exiting.
+
+This fallback order is therefore:
+**configured primary (`ollama`/`nvidia`/`openai`) → OpenAI (if configured) → exit with configuration error.**
 
 ---
 
@@ -301,7 +319,7 @@ The OSINT module (`collectors/osint_geolocation.py`) provides multi-source IP/do
 
 ### Capabilities
 
-- **Multi-source geolocation** — ip-api.com (primary), ipinfo.io (fallback), ipapi.co (secondary fallback)
+- **Multi-source geolocation** — ipinfo.io (primary HTTPS), ipapi.co (secondary HTTPS), optional plaintext ip-api.com fallback
 - **Threat enrichment** — AbuseIPDB + VirusTotal integration for risk scoring
 - **Infrastructure mapping** — Geographic clustering via Haversine distance, ASN/ISP grouping
 - **Predictive analytics** — Forecast future threat infrastructure locations based on historical patterns
@@ -541,9 +559,11 @@ python hancock_finetune_v3.py --steps 300 --export-gguf --push-to-hub
 
 ### CPU Fine-Tuning (No GPU Required)
 
-Run on any machine — trains TinyLlama-1.1B with LoRA (adapter already included):
+Install the optional training stack, then run on any machine to fine-tune TinyLlama-1.1B with LoRA:
 
 ```bash
+make finetune-install
+
 # Quick test (10 steps, ~40 min)
 python hancock_cpu_finetune.py --debug
 

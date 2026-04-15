@@ -3,7 +3,7 @@
 PYTHON        := .venv/bin/python
 PIP           := .venv/bin/pip
 
-.PHONY: help setup install dev-install run server pipeline pipeline-v3 finetune lint test test-cov fuzz fuzz-target clean docker docker-up fly-deploy client-python client-node
+.PHONY: help setup install dev-install finetune-install run server pipeline pipeline-v3 finetune lint test test-cov fuzz fuzz-target clean docker docker-up fly-deploy client-python client-node
 
 help:
 	@echo ""
@@ -21,6 +21,7 @@ help:
 	@echo "    setup          Create virtualenv and install all dependencies"
 	@echo "    install        Install runtime dependencies only"
 	@echo "    dev-install    Install runtime + dev dependencies"
+	@echo "    finetune-install Install CPU fine-tuning dependencies"
 	@echo ""
 	@echo "  Run:"
 	@echo "    run            Start Hancock CLI (interactive)"
@@ -63,6 +64,9 @@ install:
 
 dev-install:
 	$(PIP) install -r requirements.txt -r requirements-dev.txt
+
+finetune-install:
+	$(PIP) install -r requirements-finetune.txt
 
 # ─── Run ─────────────────────────────────────────────────────
 run:

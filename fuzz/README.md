@@ -23,6 +23,9 @@ Bug Hunters.
 | `fuzz_xml_parsing.py` | `collectors/nmap_recon.py` | XML parsing via defusedxml |
 | `fuzz_input_validator.py` | `input_validator.py` | IOC type detection, payload validation, regex matching |
 | `fuzz_atomic_parser.py` | `collectors/atomic_collector.py` | Atomic Red Team YAML test parsing (regex-heavy) |
+| `fuzz_graphql_security_tester.py` | `collectors/graphql_security_tester.py` | GraphQL CLI/identifier input parsing and report generation paths |
+| `fuzz_osint_geolocation.py` | `collectors/osint_geolocation.py` | Multi-provider geolocation response parsing fallback chain |
+| `fuzz_webhook_request_parsing.py` | `hancock_agent.py` | `/v1/webhook` signature + body parsing with malformed/oversized input |
 
 ## Quick Start
 
@@ -43,7 +46,9 @@ python fuzz/fuzz_nvd_parser.py -atheris_runs=100000 -max_total_time=600 fuzz/cor
 ## Seed Corpus
 
 Each target has a seed corpus in `corpus/<target_name>/` containing valid and edge-case
-inputs. The fuzzer uses these as starting points to generate new interesting inputs.
+inputs. New corpora now include malformed JSON, oversized payloads, invalid encodings, and
+edge Unicode samples to quickly reach parser edge conditions. The fuzzer uses these as
+starting points to generate new interesting inputs.
 
 ## CI Integration
 
@@ -91,6 +96,29 @@ fuzz/oss-fuzz/
 ├── Dockerfile     # Build environment for ClusterFuzzLite
 └── build.sh       # Compilation script for fuzz targets
 ```
+
+## Local Crash Repro Workflow
+
+```bash
+# 1) Reproduce quickly with existing corpus
+python fuzz/fuzz_webhook_request_parsing.py \
+  -atheris_runs=100000 \
+  -max_total_time=300 \
+  fuzz/corpus/webhook_request_parsing
+
+# 2) Re-run a specific crashing input from CI/ClusterFuzzLite artifacts
+python fuzz/fuzz_webhook_request_parsing.py \
+  out/artifacts/fuzz_webhook_request_parsing/crash-*
+
+# 3) Minimize a crashing input (optional)
+python fuzz/fuzz_webhook_request_parsing.py \
+  -atheris_runs=0 \
+  -reduce_inputs=1 \
+  out/artifacts/fuzz_webhook_request_parsing/crash-*
+```
+
+For corpus growth tracking in CI, inspect uploaded `cifuzz-corpus-*` artifacts (`out/corpus` and
+`out/new_corpus`) alongside `cifuzz-crashes-*` artifacts (`out/artifacts`).
 
 ## Adding a New Fuzz Target
 

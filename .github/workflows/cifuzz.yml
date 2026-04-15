@@ -29,7 +29,6 @@ jobs:
   Fuzzing:
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
@@ -42,7 +41,7 @@ jobs:
           language: python
           sanitizer: ${{ matrix.sanitizer }}
 
-      - name: Run Fuzzers
+      - name: Run Fuzzers (Smoke)
         if: steps.build.outcome == 'success'
         uses: google/clusterfuzzlite/actions/run_fuzzers@v1
         with:
@@ -51,10 +50,22 @@ jobs:
           mode: code-change
           sanitizer: ${{ matrix.sanitizer }}
 
+      - name: Upload Corpus Artifacts
+        if: always() && steps.build.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: cifuzz-corpus-${{ matrix.sanitizer }}
+          path: |
+            ./out/corpus
+            ./out/new_corpus
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Upload Crash Artifacts
         uses: actions/upload-artifact@v4
         if: failure() && steps.build.outcome == 'success'
         with:
-          name: cifuzz-artifacts-${{ matrix.sanitizer }}
+          name: cifuzz-crashes-${{ matrix.sanitizer }}
           path: ./out/artifacts
+          if-no-files-found: ignore
           retention-days: 14

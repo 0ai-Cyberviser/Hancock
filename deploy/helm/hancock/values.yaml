@@ -36,7 +36,7 @@ service:
   type: LoadBalancer
   port: 80
   targetPort: 5000
-  metricsPort: 8001
+  metricsPort: 5000
 
 # ── Ingress ───────────────────────────────────────────────────────────────────
 ingress:

@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "hancock-client"
@@ -34,8 +34,8 @@ Documentation = "https://cyberviser.netlify.app/api"
 [project.scripts]
 hancock = "hancock_cli:main"
 
-[tool.setuptools.packages.find]
-where = ["clients/python"]
+[tool.setuptools]
+py-modules = ["hancock_client", "hancock_cli"]
 
 [tool.setuptools.package-dir]
 "" = "clients/python"
