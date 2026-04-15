@@ -440,6 +440,7 @@ def build_app(client, model: str):
 
     app = Flask("hancock")
     init_flask_logging(app)
+    backend = os.getenv("HANCOCK_LLM_BACKEND", "ollama").lower()
 
     def _mode_from_request(default_mode: str = "n/a") -> str:
         payload = request.get_json(silent=True) if request.is_json else {}
@@ -455,6 +456,7 @@ def build_app(client, model: str):
                 "event": "request_error",
                 "endpoint": request.path,
                 "mode": mode,
+                "backend": backend,
                 "status": status_code,
                 "request_id": request_id,
                 "error": message,

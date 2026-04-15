@@ -17,6 +17,7 @@ automatically carries the request-ID without explicit passing.
 import datetime
 import json
 import logging
+import os
 import time
 import uuid
 from contextvars import ContextVar
@@ -149,11 +150,15 @@ def init_flask_logging(app):
     except ImportError:
         return
 
+    request_id_header = "X-Request-ID"
+    backend = os.getenv("HANCOCK_LLM_BACKEND", "ollama").lower()
+
     @app.before_request
     def _on_request_start():
-        rid = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        rid = request.headers.get(request_id_header) or str(uuid.uuid4())
         g.request_id = set_request_id(rid)
         g.request_start_perf = time.perf_counter()
+        g.request_backend = backend
 
         payload = request.get_json(silent=True) if request.is_json else {}
         mode = payload.get("mode", "n/a") if isinstance(payload, dict) else "n/a"
@@ -165,6 +170,7 @@ def init_flask_logging(app):
                 "method": request.method,
                 "endpoint": request.path,
                 "mode": mode,
+                "backend": backend,
                 "request_id": g.request_id,
             },
         )
@@ -175,7 +181,8 @@ def init_flask_logging(app):
         started = getattr(g, "request_start_perf", None)
         latency_ms = round((time.perf_counter() - started) * 1000, 2) if started else None
         mode = getattr(g, "request_mode", "n/a")
-        response.headers["X-Request-ID"] = rid
+        request_backend = getattr(g, "request_backend", backend)
+        response.headers[request_id_header] = rid
 
         logging.getLogger("hancock.request").info(
             "request_completed",
@@ -184,6 +191,7 @@ def init_flask_logging(app):
                 "method": request.method,
                 "endpoint": request.path,
                 "mode": mode,
+                "backend": request_backend,
                 "status": response.status_code,
                 "latency_ms": latency_ms,
                 "request_id": rid,
