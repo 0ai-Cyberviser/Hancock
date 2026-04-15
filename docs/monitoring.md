@@ -236,11 +236,13 @@ HTTP status codes: `200` (ok/degraded), `503` (error).
   "timestamp": "2024-01-15T10:23:45.123Z",
   "level": "INFO",
   "request_id": "req-a1b2c3d4",
-  "message": "POST /chat 200 142ms",
+  "message": "request_completed",
+  "event": "request_completed",
   "method": "POST",
-  "path": "/chat",
+  "endpoint": "/v1/chat",
+  "mode": "soc",
   "status": 200,
-  "duration_ms": 142
+  "latency_ms": 142.31
 }
 ```
 
@@ -253,6 +255,29 @@ configure_logging(app, log_level="INFO")
 ```
 
 The `request_id` is generated per request and injected into every log line via `RequestIdFilter`. Noisy third-party libraries (`urllib3`, `werkzeug`, `httpx`) are silenced by default.
+
+### Request Correlation Behavior
+
+When Flask logging hooks are enabled with `init_flask_logging(app)`:
+
+- Every inbound request reads `X-Request-ID` if present; otherwise Hancock creates a UUIDv4.
+- `request_started` and `request_completed` JSON log events are emitted with:
+  - `endpoint`
+  - `mode` (from JSON payload where available)
+  - `status` (after request)
+  - `latency_ms` (after request)
+  - `request_id`
+- The active request ID is echoed in every API response header as `X-Request-ID`.
+- All API error responses include both:
+
+```json
+{
+  "error": "message required",
+  "request_id": "7b3bbf54-d0a4-4db2-9d79-b93f8f2cd67d"
+}
+```
+
+- Webhook failures (invalid signature, empty model response, Slack/Teams notification errors) are logged with explicit `request_id` and structured `event` fields for ingestion by Grafana/Loki/ELK.
 
 ### Log Level
 

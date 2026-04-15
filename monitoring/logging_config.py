@@ -17,6 +17,7 @@ automatically carries the request-ID without explicit passing.
 import datetime
 import json
 import logging
+import time
 import uuid
 from contextvars import ContextVar
 
@@ -144,23 +145,52 @@ def init_flask_logging(app):
     The same ID is echoed back in the response as ``X-Request-ID``.
     """
     try:
-        from flask import g, request, request_started, request_tearing_down
-
-        @request_started.connect_via(app)
-        def _on_request_start(sender, **kwargs):
-            rid = request.headers.get("X-Request-ID") or str(uuid.uuid4())
-            set_request_id(rid)
-            g.request_id = rid
-
-        @request_tearing_down.connect_via(app)
-        def _on_request_teardown(sender, **kwargs):
-            clear_request_id()
-
-        @app.after_request
-        def _add_request_id_header(response):
-            rid = getattr(g, "request_id", get_request_id())
-            response.headers["X-Request-ID"] = rid
-            return response
-
+        from flask import g, request
     except ImportError:
-        pass
+        return
+
+    @app.before_request
+    def _on_request_start():
+        rid = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        g.request_id = set_request_id(rid)
+        g.request_start_perf = time.perf_counter()
+
+        payload = request.get_json(silent=True) if request.is_json else {}
+        mode = payload.get("mode", "n/a") if isinstance(payload, dict) else "n/a"
+        g.request_mode = mode
+        logging.getLogger("hancock.request").info(
+            "request_started",
+            extra={
+                "event": "request_started",
+                "method": request.method,
+                "endpoint": request.path,
+                "mode": mode,
+                "request_id": g.request_id,
+            },
+        )
+
+    @app.after_request
+    def _after_request(response):
+        rid = getattr(g, "request_id", get_request_id())
+        started = getattr(g, "request_start_perf", None)
+        latency_ms = round((time.perf_counter() - started) * 1000, 2) if started else None
+        mode = getattr(g, "request_mode", "n/a")
+        response.headers["X-Request-ID"] = rid
+
+        logging.getLogger("hancock.request").info(
+            "request_completed",
+            extra={
+                "event": "request_completed",
+                "method": request.method,
+                "endpoint": request.path,
+                "mode": mode,
+                "status": response.status_code,
+                "latency_ms": latency_ms,
+                "request_id": rid,
+            },
+        )
+        return response
+
+    @app.teardown_request
+    def _on_request_teardown(_exc):
+        clear_request_id()
