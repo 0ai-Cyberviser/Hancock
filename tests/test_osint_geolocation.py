@@ -324,6 +324,27 @@ class TestGeoIPLookupBulkLookup:
         assert len(results) == 2
 
     @patch("collectors.osint_geolocation.requests.get")
+    def test_bulk_lookup_ipv6_address(self, mock_get):
+        mock_resp = MagicMock()
+        mock_resp.json.return_value = {
+            "ip": "2001:db8::1",
+            "city": "Example City",
+            "region": "Example Region",
+            "country": "US",
+            "loc": "10.0,10.0",
+            "org": "AS64500 Example",
+            "timezone": "UTC",
+        }
+        mock_resp.raise_for_status = MagicMock()
+        mock_get.return_value = mock_resp
+
+        geo = GeoIPLookup()
+        results = geo.bulk_lookup(["2001:db8::1"])
+
+        assert len(results) == 1
+        assert results[0].ip == "2001:db8::1"
+
+    @patch("collectors.osint_geolocation.requests.get")
     @patch("collectors.osint_geolocation.socket.getaddrinfo")
     def test_bulk_lookup_mixed_ip_and_domain(self, mock_dns, mock_get):
         mock_dns.return_value = [(None, None, None, None, ("9.9.9.9", 0))]

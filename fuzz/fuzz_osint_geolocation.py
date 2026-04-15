@@ -52,13 +52,10 @@ def TestOneInput(data: bytes) -> None:
 
     # Patch network calls so fuzzing focuses on response parsing logic.
     with mock.patch("collectors.osint_geolocation.requests.get", return_value=_FakeResponse(payload, status_ok)):
-        try:
-            lookup._lookup_ipapi(ip)
-            lookup._lookup_ipinfo(ip)
-            lookup._lookup_ipapiсo(ip)
-            lookup.lookup_ip(ip)
-        except (TypeError, ValueError, AttributeError, IndexError, KeyError, RuntimeError):
-            pass
+        lookup._lookup_ipapi(ip)
+        lookup._lookup_ipinfo(ip)
+        lookup._lookup_ipapico(ip)
+        lookup.lookup_ip(ip)
 
 
 def main() -> None:

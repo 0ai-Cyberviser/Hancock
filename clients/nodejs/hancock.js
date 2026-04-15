@@ -23,6 +23,10 @@ const MODELS = {
 const DEFAULT_MODEL  = process.env.HANCOCK_MODEL        || MODELS['mistral-7b'];
 const CODER_MODEL    = process.env.HANCOCK_CODER_MODEL  || MODELS['qwen-coder'];
 
+function modelForMode(mode, defaultModel, coderModel) {
+  return mode === 'code' ? coderModel : defaultModel;
+}
+
 // ── System Prompts ──────────────────────────────────────────────────────────
 const SECURITY_SYSTEM = `You are Hancock, an elite AI cybersecurity agent built by CyberViser.
 Your expertise spans penetration testing, threat intelligence, SOC analysis, incident response,
@@ -67,13 +71,13 @@ function createClient() {
 }
 
 // ── Ask ──────────────────────────────────────────────────────────────────────
-async function ask(client, prompt, mode = 'security') {
+async function ask(client, prompt, mode = 'security', defaultModel = DEFAULT_MODEL, coderModel = CODER_MODEL) {
   const isCode  = mode === 'code';
   const isSigma = mode === 'sigma';
   const isCiso  = mode === 'ciso';
   const isYara  = mode === 'yara';
   const isIoc   = mode === 'ioc';
-  const model   = isCode ? CODER_MODEL : DEFAULT_MODEL;
+  const model   = modelForMode(mode, defaultModel, coderModel);
   const system  = isCode ? CODE_SYSTEM : isSigma ? SIGMA_SYSTEM : isCiso ? CISO_SYSTEM : isYara ? YARA_SYSTEM : isIoc ? IOC_SYSTEM : SECURITY_SYSTEM;
   const temp    = isCode || isSigma || isYara ? 0.2 : isCiso || isIoc ? 0.3 : 0.7;
   const topP    = isCode || isSigma || isYara ? 0.7 : 0.95;
@@ -100,13 +104,13 @@ async function ask(client, prompt, mode = 'security') {
 }
 
 // ── Stream Ask ────────────────────────────────────────────────────────────────
-async function askStream(client, prompt, mode = 'security') {
+async function askStream(client, prompt, mode = 'security', defaultModel = DEFAULT_MODEL, coderModel = CODER_MODEL) {
   const isCode  = mode === 'code';
   const isSigma = mode === 'sigma';
   const isCiso  = mode === 'ciso';
   const isYara  = mode === 'yara';
   const isIoc   = mode === 'ioc';
-  const model   = isCode ? CODER_MODEL : DEFAULT_MODEL;
+  const model   = modelForMode(mode, defaultModel, coderModel);
   const system  = isCode ? CODE_SYSTEM : isSigma ? SIGMA_SYSTEM : isCiso ? CISO_SYSTEM : isYara ? YARA_SYSTEM : isIoc ? IOC_SYSTEM : SECURITY_SYSTEM;
   const temp    = isCode || isSigma || isYara ? 0.2 : isCiso || isIoc ? 0.3 : 0.7;
   const topP    = isCode || isSigma || isYara ? 0.7 : 0.95;
@@ -135,13 +139,15 @@ async function askStream(client, prompt, mode = 'security') {
 // ── Interactive CLI ───────────────────────────────────────────────────────────
 async function interactiveCLI(client, initialMode) {
   let mode = initialMode ?? 'security';
+  let defaultModel = DEFAULT_MODEL;
+  let coderModel = CODER_MODEL;
 
   console.log(`
 ╔══════════════════════════════════════════════════════════╗
 ║   HANCOCK  —  AI Cybersecurity Agent  (Node.js client)  ║
 ║   Powered by NVIDIA NIM + CyberViser                    ║
 ╚══════════════════════════════════════════════════════════╝
-Mode: ${mode} | Model: ${mode === 'code' ? CODER_MODEL : DEFAULT_MODEL}
+Mode: ${mode} | Model: ${modelForMode(mode, defaultModel, coderModel)}
 
 Commands: /mode security | /mode code | /mode sigma | /mode ciso | /mode yara | /mode ioc | /model <alias> | /exit
 Aliases:  mistral-7b | qwen-coder | llama-8b | mixtral-8x7b
@@ -159,20 +165,24 @@ Aliases:  mistral-7b | qwen-coder | llama-8b | mixtral-8x7b
 
     if (input.startsWith('/mode ')) {
       mode = input.slice(6).trim();
-      console.log(`Switched to ${mode} mode — model: ${mode === 'code' ? CODER_MODEL : DEFAULT_MODEL}\n`);
+      console.log(`Switched to ${mode} mode — model: ${modelForMode(mode, defaultModel, coderModel)}\n`);
       continue;
     }
 
     if (input.startsWith('/model ')) {
       const alias = input.slice(7).trim();
       const resolved = MODELS[alias] ?? alias;
-      process.env.HANCOCK_MODEL = resolved;
+      if (mode === 'code') {
+        coderModel = resolved;
+      } else {
+        defaultModel = resolved;
+      }
       console.log(`Model set to ${resolved}\n`);
       continue;
     }
 
     try {
-      await askStream(client, input, mode);
+      await askStream(client, input, mode, defaultModel, coderModel);
     } catch (err) {
       console.error(`\n⚠️  API error: ${err.message}\n`);
     }

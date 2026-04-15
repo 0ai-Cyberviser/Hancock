@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 
 import pytest
+import yaml
 
 EXPECTED_ENDPOINTS = {
     "/health",
@@ -59,6 +60,10 @@ def _documented_paths() -> set[str]:
     return set(re.findall(r"^\s{2}(/[^:]+):\s*$", openapi_text, flags=re.MULTILINE))
 
 
+def _openapi_spec() -> dict:
+    return yaml.safe_load(Path("docs/openapi.yaml").read_text(encoding="utf-8"))
+
+
 def _assert_error_schema(response) -> None:
     assert response.status_code in {400, 401}, (
         f"Expected 400/401 for invalid request, got {response.status_code}: {response.get_data(as_text=True)}"
@@ -106,12 +111,49 @@ def test_health_strict_contract_snapshot(hancock_client):
         assert endpoint in endpoints, f"/health endpoints list missing: {endpoint}"
 
 
-def test_docs_do_not_contain_obsolete_endpoints(hancock_app):
+def test_docs_match_implemented_routes(hancock_app):
     documented = _documented_paths()
     implemented = _public_routes(hancock_app)
-
-    undocumented_or_obsolete = documented - implemented
-    assert not undocumented_or_obsolete, (
-        "docs/openapi.yaml includes endpoints not implemented by app: "
-        f"{sorted(undocumented_or_obsolete)}"
+    assert documented == implemented, (
+        "docs/openapi.yaml and Flask routes are out of sync:\n"
+        f"missing in docs: {sorted(implemented - documented)}\n"
+        f"obsolete in docs: {sorted(documented - implemented)}"
     )
+
+
+def test_openapi_chat_mode_enum_matches_runtime():
+    spec = _openapi_spec()
+    mode_enum = spec["paths"]["/v1/chat"]["post"]["requestBody"]["content"]["application/json"]["schema"]["properties"]["mode"]["enum"]
+    assert mode_enum == ["pentest", "soc", "auto", "code", "ciso", "sigma", "yara", "ioc", "osint"]
+
+
+def test_openapi_error_schema_includes_request_id():
+    spec = _openapi_spec()
+    error_schema = spec["components"]["schemas"]["Error"]
+    assert set(error_schema["required"]) == {"error", "request_id"}
+    assert "request_id" in error_schema["properties"]
+
+
+def test_openapi_chat_stream_response_documented():
+    spec = _openapi_spec()
+    content = spec["paths"]["/v1/chat"]["post"]["responses"]["200"]["content"]
+    assert "application/json" in content
+    assert "text/event-stream" in content
+
+
+def test_openapi_permissive_modes_are_documented_as_strings():
+    spec = _openapi_spec()
+    ask_mode = spec["paths"]["/v1/ask"]["post"]["requestBody"]["content"]["application/json"]["schema"]["properties"]["mode"]
+    hunt_siem = spec["paths"]["/v1/hunt"]["post"]["requestBody"]["content"]["application/json"]["schema"]["properties"]["siem"]
+    ciso_output = spec["paths"]["/v1/ciso"]["post"]["requestBody"]["content"]["application/json"]["schema"]["properties"]["output"]
+
+    assert "enum" not in ask_mode
+    assert "enum" not in hunt_siem
+    assert "enum" not in ciso_output
+
+
+def test_openapi_contains_osint_endpoints():
+    spec = _openapi_spec()
+    paths = spec["paths"]
+    for endpoint in ["/v1/ioc", "/v1/geolocate", "/v1/predict-locations", "/v1/map-infrastructure"]:
+        assert endpoint in paths

@@ -66,15 +66,12 @@ def TestOneInput(data: bytes) -> None:
 
     headers = {"X-Hancock-Signature": sig_header}
 
-    try:
-        client.post(
-            "/v1/webhook",
-            data=body,
-            headers=headers,
-            content_type=content_type,
-        )
-    except Exception:
-        pass
+    client.post(
+        "/v1/webhook",
+        data=body,
+        headers=headers,
+        content_type=content_type,
+    )
 
 
 def main() -> None:

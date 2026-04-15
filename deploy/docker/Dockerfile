@@ -18,7 +18,7 @@ FROM python:3.11-slim AS runtime
 LABEL maintainer="CyberViser <contact@cyberviser.ai>"
 LABEL description="Hancock — AI-powered cybersecurity agent by CyberViser"
 LABEL org.opencontainers.image.source="https://github.com/0ai-Cyberviser/Hancock"
-LABEL org.opencontainers.image.version="0.5.0"
+LABEL org.opencontainers.image.version="0.6.0"
 
 WORKDIR /app
 

@@ -44,7 +44,7 @@ services:
       retries: 3
     labels:
       - "com.cyberviser.project=hancock"
-      - "com.cyberviser.version=0.5.0"
+      - "com.cyberviser.version=0.6.0"
 
   prometheus:
     image: prom/prometheus:latest

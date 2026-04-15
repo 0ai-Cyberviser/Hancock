@@ -88,7 +88,7 @@ docker run -d \
 
 The container exposes port `5000` and includes a built-in health check (`GET /health`, 30 s interval, 10 s timeout, 3 retries).
 
-Published images are available at `ghcr.io/cyberviser/hancock` and tagged with semver (e.g., `ghcr.io/cyberviser/hancock:v0.5.0`).
+Published images are available at `ghcr.io/cyberviser/hancock` and tagged with semver (e.g., `ghcr.io/cyberviser/hancock:v0.6.0`).
 
 ---
 
@@ -178,7 +178,7 @@ helm install hancock ./deploy/helm
 # Install with overrides
 helm install hancock ./deploy/helm \
   --set replicaCount=3 \
-  --set image.tag=v0.5.0 \
+  --set image.tag=v0.6.0 \
   --set autoscaling.enabled=true \
   --set autoscaling.maxReplicas=10
 
