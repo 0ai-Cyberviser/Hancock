@@ -28,20 +28,20 @@ EXPECTED_ENDPOINTS = {
 }
 
 POST_INVALID_PAYLOADS = {
-    "/v1/chat": {},
-    "/v1/ask": {},
-    "/v1/triage": {},
-    "/v1/hunt": {},
-    "/v1/respond": {},
-    "/v1/code": {},
-    "/v1/ciso": {},
-    "/v1/sigma": {},
-    "/v1/yara": {},
-    "/v1/ioc": {},
-    "/v1/geolocate": {},
-    "/v1/predict-locations": {},
-    "/v1/map-infrastructure": {},
-    "/v1/webhook": {},
+    "/v1/chat": {"message": "", "history": "not-a-list"},
+    "/v1/ask": {"question": ""},
+    "/v1/triage": {"alert": ""},
+    "/v1/hunt": {"target": ""},
+    "/v1/respond": {"incident": ""},
+    "/v1/code": {"task": ""},
+    "/v1/ciso": {"question": ""},
+    "/v1/sigma": {"description": ""},
+    "/v1/yara": {"description": ""},
+    "/v1/ioc": {"indicator": "   "},
+    "/v1/geolocate": {"indicators": []},
+    "/v1/predict-locations": {"historical_data": []},
+    "/v1/map-infrastructure": {"indicators": []},
+    "/v1/webhook": {"alert": ""},
 }
 
 
@@ -64,9 +64,13 @@ def _assert_error_schema(response) -> None:
     )
     payload = response.get_json()
     assert isinstance(payload, dict), "Error responses must be JSON objects"
-    assert set(payload.keys()) == {"error"}, f"Unexpected error schema keys: {sorted(payload.keys())}"
+    assert set(payload.keys()) == {"error", "request_id"}, (
+        f"Unexpected error schema keys: {sorted(payload.keys())}"
+    )
     assert isinstance(payload["error"], str)
     assert payload["error"].strip()
+    assert isinstance(payload["request_id"], str)
+    assert payload["request_id"].strip()
 
 
 def test_expected_routes_are_present(hancock_app):
@@ -86,10 +90,14 @@ def test_health_strict_contract_snapshot(hancock_client):
     assert response.status_code == 200
     payload = response.get_json()
 
-    required_keys = {"status", "agent", "model", "company", "modes", "endpoints"}
-    assert required_keys.issubset(payload.keys())
+    expected_keys = {"status", "agent", "model", "company", "modes", "models_available", "endpoints"}
+    assert set(payload.keys()) == expected_keys
     assert payload["status"] == "ok"
+    assert payload["agent"] == "Hancock"
+    assert payload["company"] == "CyberViser"
+    assert isinstance(payload["model"], str) and payload["model"].strip()
     assert isinstance(payload["modes"], list) and payload["modes"]
+    assert isinstance(payload["models_available"], dict) and payload["models_available"]
     assert isinstance(payload["endpoints"], list) and payload["endpoints"]
 
     endpoints = set(payload["endpoints"])

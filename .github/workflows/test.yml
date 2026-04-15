@@ -46,5 +46,8 @@ jobs:
       - name: Docs backend/endpoint consistency lint
         run: python qa/docs_lint.py
 
+      - name: Contract tests (fail on API drift)
+        run: pytest tests/test_api_contract.py -q --maxfail=1
+
       - name: Run tests
         run: pytest tests/ -q
