@@ -687,3 +687,10 @@ class TestIoc:
         assert r.status_code == 200
         d = r.get_json()
         assert d["type"] == "md5"
+
+    def test_ioc_auto_detects_type(self, client):
+        r = client.post("/v1/ioc",
+                     data=json.dumps({"indicator": "185.220.101.35"}),
+                     content_type="application/json")
+        assert r.status_code == 200
+        assert r.get_json()["type"] == "ipv4"

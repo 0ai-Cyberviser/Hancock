@@ -14,4 +14,4 @@ spec:
       targetPort: {{ .Values.service.targetPort }}
     - name: metrics
       port: {{ .Values.service.metricsPort }}
-      targetPort: 8001
+      targetPort: http

@@ -1,0 +1,10 @@
+# Optional local fine-tuning dependencies for Hancock CPU/GPU training scripts.
+# Install with: make finetune-install
+torch>=2.4.0
+transformers>=4.50.0
+datasets>=2.20.0
+peft>=0.14.0
+trl>=0.24.0
+accelerate>=1.0.0
+bitsandbytes>=0.48.0
+sentencepiece>=0.2.0

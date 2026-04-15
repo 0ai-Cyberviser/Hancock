@@ -35,9 +35,9 @@ osint_geolocation.py
 
 | Source | API Key Required | Rate Limit | Notes |
 |---|---|---|---|
-| ip-api.com | No | 45 req/min | Primary free source |
-| ipinfo.io | Optional (`IPINFO_TOKEN`) | 50k req/month free | Fallback |
-| ipapi.co | No | 1000 req/day | Secondary fallback |
+| ipinfo.io | Optional (`IPINFO_TOKEN`) | 50k req/month free | Primary HTTPS source |
+| ipapi.co | No | 1000 req/day | Secondary HTTPS fallback |
+| ip-api.com | No | 45 req/min | Plaintext fallback, disabled by default |
 | AbuseIPDB | Yes (`ABUSEIPDB_KEY`) | 1000 req/day free | Threat enrichment |
 | VirusTotal | Yes (`VT_API_KEY`) | 500 req/day free | Threat enrichment |
 
@@ -58,6 +58,7 @@ pip install -r requirements.txt
 | Variable | Required | Description |
 |---|---|---|
 | `IPINFO_TOKEN` | No | ipinfo.io API token for improved accuracy and higher rate limits |
+| `HANCOCK_ALLOW_INSECURE_GEOIP` | No | Enable plaintext `ip-api.com` fallback (`1`, `true`, `yes`) |
 | `ABUSEIPDB_KEY` | No | AbuseIPDB API key for threat intelligence enrichment |
 | `VT_API_KEY` | No | VirusTotal API key for malware/threat enrichment |
 
@@ -65,6 +66,7 @@ Set environment variables via `.env` file or shell export:
 
 ```bash
 export IPINFO_TOKEN="your_ipinfo_token"
+export HANCOCK_ALLOW_INSECURE_GEOIP="false"
 export ABUSEIPDB_KEY="your_abuseipdb_key"
 export VT_API_KEY="your_virustotal_api_key"
 ```

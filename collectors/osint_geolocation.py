@@ -12,6 +12,8 @@ Environment variables:
     IPINFO_TOKEN    — ipinfo.io API token (optional fallback)
     ABUSEIPDB_KEY   — AbuseIPDB API key for threat enrichment (optional)
     VT_API_KEY      — VirusTotal API key for threat enrichment (optional)
+    HANCOCK_ALLOW_INSECURE_GEOIP — set to 1/true/yes to allow plaintext
+        ip-api.com fallback requests when HTTPS sources fail
 """
 from __future__ import annotations
 
@@ -112,12 +114,13 @@ class ThreatInfrastructure:
 class GeoIPLookup:
     """Multi-source IP geolocation with threat intelligence enrichment."""
 
-    # ip-api.com free tier: 45 req/min
-    _IPAPI_URL     = "http://ip-api.com/json/{ip}?fields=status,message,country,countryCode,region,city,lat,lon,isp,org,as,timezone,proxy,hosting"
-    _IPINFO_URL    = "https://ipinfo.io/{ip}/json"
-    _IPAPIСO_URL   = "https://ipapi.co/{ip}/json/"
+    # Secure HTTPS sources are used by default. The plaintext ip-api.com free
+    # tier remains available only as an explicit opt-in fallback.
+    _IPINFO_URL = "https://ipinfo.io/{ip}/json"
+    _IPAPICO_URL = "https://ipapi.co/{ip}/json/"
+    _IPAPI_URL = "http://ip-api.com/json/{ip}?fields=status,message,country,countryCode,region,city,lat,lon,isp,org,as,timezone,proxy,hosting"
     _ABUSEIPDB_URL = "https://api.abuseipdb.com/api/v2/check"
-    _VT_URL        = "https://www.virustotal.com/api/v3/ip_addresses/{ip}"
+    _VT_URL = "https://www.virustotal.com/api/v3/ip_addresses/{ip}"
 
     # Rate limiting: track request timestamps for ip-api.com free tier
     _req_times: list[float] = []
@@ -137,25 +140,37 @@ class GeoIPLookup:
     def lookup_ip(self, ip: str) -> GeoLocationResult:
         """Look up geolocation for a single IP using multi-source fallback chain.
 
-        Primary: ip-api.com (free, no key needed)
-        Fallback 1: ipinfo.io (IPINFO_TOKEN env var)
-        Fallback 2: ipapi.co
+        Primary: ipinfo.io (HTTPS, IPINFO_TOKEN optional)
+        Fallback 1: ipapi.co (HTTPS)
+        Fallback 2: ip-api.com (HTTP only, opt-in via env var)
         """
-        result = self._lookup_ipapi(ip)
-        if result and result.latitude is not None:
-            return result
-
         result = self._lookup_ipinfo(ip)
         if result and result.latitude is not None:
             return result
 
-        result = self._lookup_ipapiсo(ip)
+        result = self._lookup_ipapico(ip)
         if result and result.latitude is not None:
             return result
+
+        if self._allow_insecure_ipapi():
+            result = self._lookup_ipapi(ip)
+            if result and result.latitude is not None:
+                return result
+        else:
+            logger.debug(
+                "[osint-geo] Skipping insecure ip-api.com fallback for %s",
+                ip,
+            )
 
         # Return a stub if all sources fail
         logger.warning("[osint-geo] All geolocation sources failed for %s", ip)
         return GeoLocationResult(ip=ip, confidence=0.0, source="none")
+
+    @staticmethod
+    def _allow_insecure_ipapi() -> bool:
+        """Return True when plaintext ip-api.com fallback is explicitly enabled."""
+        value = os.getenv("HANCOCK_ALLOW_INSECURE_GEOIP", "").strip().lower()
+        return value in {"1", "true", "yes", "on"}
 
     def _lookup_ipapi(self, ip: str) -> Optional[GeoLocationResult]:
         """Query ip-api.com (primary free source)."""
@@ -228,10 +243,10 @@ class GeoIPLookup:
             logger.warning("[osint-geo] ipinfo.io error for %s: %s", ip, exc)
             return None
 
-    def _lookup_ipapiсo(self, ip: str) -> Optional[GeoLocationResult]:
+    def _lookup_ipapico(self, ip: str) -> Optional[GeoLocationResult]:
         """Query ipapi.co (free fallback, no key required)."""
         try:
-            url = self._IPAPIСO_URL.format(ip=ip)
+            url = self._IPAPICO_URL.format(ip=ip)
             resp = requests.get(url, timeout=10)
             resp.raise_for_status()
             data = resp.json()

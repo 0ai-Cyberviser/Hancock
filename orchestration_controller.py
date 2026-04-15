@@ -29,12 +29,16 @@ Usage
 
 from __future__ import annotations
 
+import importlib
 import logging
+import multiprocessing
+import os
 import threading
 import time
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
+from queue import Empty
 from typing import Any, Callable
 
 logger = logging.getLogger(__name__)
@@ -412,29 +416,14 @@ class OrchestrationController:
     # ── Internal helpers ──────────────────────────────────────────────────────
 
     def _execute_with_timeout(self, config: ToolConfig, params: dict) -> dict:
-        """Run the tool handler in a thread with a timeout."""
-        result_holder: list[dict] = []
-        error_holder: list[Exception] = []
-
-        def _target():
-            try:
-                result_holder.append(config.handler(params))
-            except Exception as exc:
-                error_holder.append(exc)
-
-        thread = threading.Thread(target=_target, daemon=True)
-        thread.start()
-        thread.join(timeout=config.timeout)
-
-        if thread.is_alive():
-            raise TimeoutError(
-                f"Tool '{config.name}' exceeded {config.timeout}s timeout"
-            )
-        if error_holder:
-            raise error_holder[0]
-        if not result_holder:
-            return {}
-        return result_holder[0]
+        """Run the tool handler with real timeout enforcement when possible."""
+        if _can_execute_out_of_process(config.handler):
+            return _execute_in_subprocess(config, params)
+        logger.warning(
+            "Tool '%s' uses a non-importable handler; falling back to thread timeout",
+            config.name,
+        )
+        return _execute_in_thread(config, params)
 
     def _get_cached(self, key: str) -> dict | None:
         with self._lock:
@@ -481,6 +470,160 @@ class OrchestrationController:
             self._history.append(record)
             if len(self._history) > self._max_history:
                 self._history = self._history[-self._max_history:]
+
+
+def _execute_in_thread(config: ToolConfig, params: dict) -> dict:
+    """Run a handler in-process when it cannot be isolated."""
+    result_holder: list[dict] = []
+    error_holder: list[Exception] = []
+
+    def _target():
+        try:
+            result_holder.append(config.handler(params))
+        except Exception as exc:
+            error_holder.append(exc)
+
+    thread = threading.Thread(target=_target, daemon=True)
+    thread.start()
+    thread.join(timeout=config.timeout)
+
+    if thread.is_alive():
+        raise TimeoutError(
+            f"Tool '{config.name}' exceeded {config.timeout}s timeout"
+        )
+    if error_holder:
+        raise error_holder[0]
+    if not result_holder:
+        return {}
+    return result_holder[0]
+
+
+def _execute_in_subprocess(config: ToolConfig, params: dict) -> dict:
+    """Run an importable handler in a subprocess so timeouts can terminate it."""
+    ctx = _get_process_context()
+    handler_ref = _resolve_handler_reference(config.handler)
+    if handler_ref is None:
+        raise RuntimeError(
+            f"Tool '{config.name}' requires an importable handler for subprocess execution"
+        )
+    result_queue = ctx.Queue(maxsize=1)
+    process = ctx.Process(
+        target=_subprocess_target_by_name,
+        args=(*handler_ref, params, result_queue),
+        daemon=True,
+    )
+    process.start()
+    process.join(timeout=config.timeout)
+
+    if process.is_alive():
+        process.terminate()
+        process.join(timeout=1)
+        if process.is_alive() and hasattr(process, "kill"):
+            process.kill()
+            process.join(timeout=1)
+        raise TimeoutError(
+            f"Tool '{config.name}' exceeded {config.timeout}s timeout"
+        )
+
+    try:
+        status, payload = result_queue.get(timeout=0.2)
+        if status == "ok":
+            return payload
+        raise RuntimeError(payload)
+    except Empty:
+        pass
+
+    if process.exitcode == 0:
+        return {}
+    raise RuntimeError(
+        f"Tool '{config.name}' exited unexpectedly with code {process.exitcode}"
+    )
+
+
+def _subprocess_target(
+    handler: Callable[[dict[str, Any]], dict[str, Any]],
+    params: dict[str, Any],
+    result_queue: Any,
+) -> None:
+    """Execute a handler in a subprocess and marshal a simple result payload."""
+    try:
+        result_queue.put(("ok", handler(params)))
+    except Exception as exc:
+        result_queue.put(("error", str(exc)))
+
+
+def _subprocess_target_by_name(
+    module_name: str,
+    qualname: str,
+    params: dict[str, Any],
+    result_queue: Any,
+) -> None:
+    """Resolve an importable handler inside the child process and execute it."""
+    try:
+        handler: Any = importlib.import_module(module_name)
+        for part in qualname.split("."):
+            handler = getattr(handler, part)
+    except Exception as exc:
+        result_queue.put(("error", str(exc)))
+        return
+    _subprocess_target(handler, params, result_queue)
+
+
+def _can_execute_out_of_process(handler: Callable[[dict[str, Any]], dict[str, Any]]) -> bool:
+    """Return True when the handler can be resolved by import path on this runtime."""
+    return _resolve_handler_reference(handler) is not None
+
+
+def _resolve_handler_reference(
+    handler: Callable[[dict[str, Any]], dict[str, Any]],
+) -> tuple[str, str] | None:
+    """Return the module and qualname for handlers that can be re-imported."""
+    module_name = getattr(handler, "__module__", "")
+    qualname = getattr(handler, "__qualname__", "")
+    if (
+        not module_name
+        or not qualname
+        or "<locals>" in qualname
+        or "<lambda>" in qualname
+    ):
+        return None
+    try:
+        obj: Any = importlib.import_module(module_name)
+        for part in qualname.split("."):
+            obj = getattr(obj, part)
+    except Exception:
+        return None
+    return (module_name, qualname) if obj is handler else None
+
+
+def _choose_process_start_method() -> str:
+    """Prefer non-fork start methods when the current process can be re-imported."""
+    available = multiprocessing.get_all_start_methods()
+    if _main_module_is_file_backed():
+        # ``forkserver`` is attractive in theory, but some restricted runtimes
+        # block the listener socket it needs to bootstrap child processes.
+        # ``spawn`` keeps the same isolation guarantees while working reliably
+        # in CI and sandboxed environments.
+        for method in ("spawn", "forkserver", "fork"):
+            if method in available:
+                return method
+    for method in ("fork", "forkserver", "spawn"):
+        if method in available:
+            return method
+    return multiprocessing.get_start_method()
+
+
+def _main_module_is_file_backed() -> bool:
+    """Return True when multiprocessing can safely re-import the current main module."""
+    import __main__
+
+    main_path = getattr(__main__, "__file__", "")
+    return bool(main_path) and os.path.exists(main_path)
+
+
+def _get_process_context() -> multiprocessing.context.BaseContext:
+    """Return the safest available multiprocessing context for tool isolation."""
+    return multiprocessing.get_context(_choose_process_start_method())
 
 
 def _stable_hash(params: dict) -> str:

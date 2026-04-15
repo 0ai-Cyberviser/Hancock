@@ -28,6 +28,8 @@ COPY --from=builder /install /usr/local
 # Copy application source (ordered by change frequency — stable layers first)
 COPY hancock_constants.py .
 COPY hancock_agent.py .
+COPY input_validator.py .
+COPY orchestration_controller.py .
 COPY collectors/ collectors/
 COPY formatter/ formatter/
 COPY monitoring/ monitoring/

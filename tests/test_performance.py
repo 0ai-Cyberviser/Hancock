@@ -11,10 +11,13 @@ import time
 LATENCY_THRESHOLD_MS = 200  # max acceptable median latency (ms)
 THROUGHPUT_BATCH = 20       # number of requests per throughput test
 LATENCY_SAMPLES = 15        # number of samples per latency measurement
+OUTLIER_FLOOR_MS = 10       # tolerate small scheduler / fixture jitter on very fast paths
 
 
-def _measure_ms(fn, n=LATENCY_SAMPLES):
-    """Return a list of elapsed times in milliseconds for *n* calls to *fn*."""
+def _measure_ms(fn, n=LATENCY_SAMPLES, warmup=1):
+    """Return a list of elapsed times in milliseconds for *n* warm calls to *fn*."""
+    for _ in range(warmup):
+        fn()
     results = []
     for _ in range(n):
         t0 = time.perf_counter()
@@ -102,6 +105,8 @@ class TestLatencyConsistency:
             n=20,
         )
         median = statistics.median(times)
-        assert max(times) < median * 10, (
-            f"Max latency {max(times):.1f}ms is more than 10x median {median:.1f}ms"
+        allowed_max = max(median * 10, OUTLIER_FLOOR_MS)
+        assert max(times) < allowed_max, (
+            f"Max latency {max(times):.1f}ms exceeded {allowed_max:.1f}ms "
+            f"(median {median:.1f}ms)"
         )

@@ -15,7 +15,7 @@ spec:
         {{- include "hancock.labels" . | nindent 8 }}
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: {{ .Values.service.metricsPort | quote }}
+        prometheus.io/port: {{ .Values.config.port | quote }}
         prometheus.io/path: "/metrics"
     spec:
       securityContext:
@@ -27,8 +27,6 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.config.port }}
-            - name: metrics
-              containerPort: 8001
           env:
             - name: HANCOCK_LLM_BACKEND
               value: {{ .Values.config.llmBackend | quote }}

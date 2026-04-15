@@ -93,6 +93,35 @@ def _make_ipapi_response(ip="1.2.3.4"):
     }
 
 
+def _make_ipinfo_response(ip="1.2.3.4"):
+    """Return a mock ipinfo.io successful response body."""
+    return {
+        "ip": ip,
+        "city": "New York",
+        "region": "New York",
+        "country": "US",
+        "loc": "40.7128,-74.0060",
+        "org": "AS15169 Google",
+        "timezone": "America/New_York",
+    }
+
+
+def _make_ipapico_response(ip="1.2.3.4"):
+    """Return a mock ipapi.co successful response body."""
+    return {
+        "ip": ip,
+        "city": "Amsterdam",
+        "region": "North Holland",
+        "country_name": "Netherlands",
+        "country_code": "NL",
+        "latitude": 52.3676,
+        "longitude": 4.9041,
+        "org": "AS9009 M247 Europe",
+        "asn": "AS9009",
+        "timezone": "Europe/Amsterdam",
+    }
+
+
 # ── GeoLocationResult dataclass ───────────────────────────────────────────────
 
 class TestGeoLocationResult:
@@ -139,9 +168,9 @@ class TestThreatInfrastructure:
 
 class TestGeoIPLookupLookupIp:
     @patch("collectors.osint_geolocation.requests.get")
-    def test_lookup_ip_success_from_ipapi(self, mock_get):
+    def test_lookup_ip_success_from_ipinfo(self, mock_get):
         mock_resp = MagicMock()
-        mock_resp.json.return_value = _make_ipapi_response()
+        mock_resp.json.return_value = _make_ipinfo_response()
         mock_resp.raise_for_status = MagicMock()
         mock_get.return_value = mock_resp
 
@@ -149,40 +178,30 @@ class TestGeoIPLookupLookupIp:
         result = geo.lookup_ip("1.2.3.4")
 
         assert result.ip == "1.2.3.4"
-        assert result.city == "London"
-        assert result.country_code == "GB"
-        assert result.latitude == 51.5
-        assert result.longitude == -0.1
-        assert result.source == "ip-api.com"
-        assert result.confidence == 0.85
+        assert result.city == "New York"
+        assert result.country_code == "US"
+        assert result.latitude == 40.7128
+        assert result.longitude == -74.0060
+        assert result.source == "ipinfo.io"
+        assert result.confidence == 0.80
 
     @patch("collectors.osint_geolocation.requests.get")
-    def test_lookup_ip_fallback_to_ipinfo_when_ipapi_fails(self, mock_get):
-        # First call (ip-api.com) fails
-        fail_resp = MagicMock()
-        fail_resp.json.return_value = {"status": "fail", "message": "private range"}
-        fail_resp.raise_for_status = MagicMock()
-
-        # Second call (ipinfo.io) succeeds
+    def test_lookup_ip_fallback_to_ipapico_when_ipinfo_fails(self, mock_get):
         ipinfo_resp = MagicMock()
-        ipinfo_resp.json.return_value = {
-            "ip": "1.2.3.4",
-            "city": "New York",
-            "region": "New York",
-            "country": "US",
-            "loc": "40.7128,-74.0060",
-            "org": "AS15169 Google",
-            "timezone": "America/New_York",
-        }
+        ipinfo_resp.json.return_value = {"error": True, "reason": "no data"}
         ipinfo_resp.raise_for_status = MagicMock()
 
-        mock_get.side_effect = [fail_resp, ipinfo_resp]
+        ipapico_resp = MagicMock()
+        ipapico_resp.json.return_value = _make_ipapico_response()
+        ipapico_resp.raise_for_status = MagicMock()
+
+        mock_get.side_effect = [ipinfo_resp, ipapico_resp]
 
         geo = GeoIPLookup()
         result = geo.lookup_ip("1.2.3.4")
 
-        assert result.city == "New York"
-        assert result.source == "ipinfo.io"
+        assert result.city == "Amsterdam"
+        assert result.source == "ipapi.co"
 
     @patch("collectors.osint_geolocation.requests.get")
     def test_lookup_ip_all_sources_fail_returns_stub(self, mock_get):
@@ -196,17 +215,39 @@ class TestGeoIPLookupLookupIp:
         assert result.source == "none"
         assert result.confidence == 0.0
 
+    @patch.dict(os.environ, {"HANCOCK_ALLOW_INSECURE_GEOIP": "true"})
     @patch("collectors.osint_geolocation.requests.get")
-    def test_lookup_ip_asn_parsed_from_as_field(self, mock_get):
+    def test_lookup_ip_uses_insecure_ipapi_only_when_opted_in(self, mock_get):
+        ipinfo_resp = MagicMock()
+        ipinfo_resp.json.return_value = {"error": True, "reason": "no data"}
+        ipinfo_resp.raise_for_status = MagicMock()
+
+        ipapico_resp = MagicMock()
+        ipapico_resp.json.return_value = {"error": True}
+        ipapico_resp.raise_for_status = MagicMock()
+
+        ipapi_resp = MagicMock()
+        ipapi_resp.json.return_value = _make_ipapi_response()
+        ipapi_resp.raise_for_status = MagicMock()
+
+        mock_get.side_effect = [ipinfo_resp, ipapico_resp, ipapi_resp]
+
+        geo = GeoIPLookup()
+        result = geo.lookup_ip("1.2.3.4")
+
+        assert result.source == "ip-api.com"
+        assert result.country_code == "GB"
+
+    @patch("collectors.osint_geolocation.requests.get")
+    def test_lookup_ip_asn_parsed_from_org_field(self, mock_get):
         mock_resp = MagicMock()
-        mock_resp.json.return_value = _make_ipapi_response()
+        mock_resp.json.return_value = _make_ipinfo_response()
         mock_resp.raise_for_status = MagicMock()
         mock_get.return_value = mock_resp
 
         geo = GeoIPLookup()
         result = geo.lookup_ip("1.2.3.4")
-        # "AS12345 Test AS" → asn should be "AS12345"
-        assert result.asn == "AS12345"
+        assert result.asn == "AS15169"
 
     @patch("collectors.osint_geolocation.requests.get")
     def test_lookup_ip_proxy_flag_preserved(self, mock_get):
@@ -218,7 +259,7 @@ class TestGeoIPLookupLookupIp:
         mock_get.return_value = mock_resp
 
         geo = GeoIPLookup()
-        result = geo.lookup_ip("1.2.3.4")
+        result = geo._lookup_ipapi("1.2.3.4")
         assert result.is_proxy is True
 
 
@@ -232,7 +273,7 @@ class TestGeoIPLookupLookupDomain:
             (None, None, None, None, ("1.2.3.4", 0)),
         ]
         mock_resp = MagicMock()
-        mock_resp.json.return_value = _make_ipapi_response()
+        mock_resp.json.return_value = _make_ipinfo_response()
         mock_resp.raise_for_status = MagicMock()
         mock_get.return_value = mock_resp
 
@@ -259,7 +300,7 @@ class TestGeoIPLookupLookupDomain:
             (None, None, None, None, ("1.2.3.4", 0)),
         ]
         mock_resp = MagicMock()
-        mock_resp.json.return_value = _make_ipapi_response()
+        mock_resp.json.return_value = _make_ipinfo_response()
         mock_resp.raise_for_status = MagicMock()
         mock_get.return_value = mock_resp
 
@@ -274,7 +315,7 @@ class TestGeoIPLookupBulkLookup:
     @patch("collectors.osint_geolocation.requests.get")
     def test_bulk_lookup_ips(self, mock_get):
         mock_resp = MagicMock()
-        mock_resp.json.return_value = _make_ipapi_response()
+        mock_resp.json.return_value = _make_ipinfo_response()
         mock_resp.raise_for_status = MagicMock()
         mock_get.return_value = mock_resp
 
@@ -287,7 +328,7 @@ class TestGeoIPLookupBulkLookup:
     def test_bulk_lookup_mixed_ip_and_domain(self, mock_dns, mock_get):
         mock_dns.return_value = [(None, None, None, None, ("9.9.9.9", 0))]
         mock_resp = MagicMock()
-        mock_resp.json.return_value = _make_ipapi_response()
+        mock_resp.json.return_value = _make_ipinfo_response()
         mock_resp.raise_for_status = MagicMock()
         mock_get.return_value = mock_resp
 
@@ -383,7 +424,7 @@ class TestInfrastructureMapper:
     @patch("collectors.osint_geolocation.requests.get")
     def test_map_infrastructure_groups_by_country(self, mock_get):
         mock_resp = MagicMock()
-        mock_resp.json.return_value = _make_ipapi_response()
+        mock_resp.json.return_value = _make_ipinfo_response()
         mock_resp.raise_for_status = MagicMock()
         mock_get.return_value = mock_resp
 
@@ -583,7 +624,7 @@ class TestConvenienceFunctions:
     @patch("collectors.osint_geolocation.requests.get")
     def test_lookup_ip_convenience(self, mock_get):
         mock_resp = MagicMock()
-        mock_resp.json.return_value = _make_ipapi_response()
+        mock_resp.json.return_value = _make_ipinfo_response()
         mock_resp.raise_for_status = MagicMock()
         mock_get.return_value = mock_resp
 
@@ -596,7 +637,7 @@ class TestConvenienceFunctions:
     def test_lookup_domain_convenience(self, mock_dns, mock_get):
         mock_dns.return_value = [(None, None, None, None, ("1.2.3.4", 0))]
         mock_resp = MagicMock()
-        mock_resp.json.return_value = _make_ipapi_response()
+        mock_resp.json.return_value = _make_ipinfo_response()
         mock_resp.raise_for_status = MagicMock()
         mock_get.return_value = mock_resp
 
@@ -615,7 +656,7 @@ class TestConvenienceFunctions:
     @patch("collectors.osint_geolocation.requests.get")
     def test_map_threat_infrastructure_convenience(self, mock_get):
         mock_resp = MagicMock()
-        mock_resp.json.return_value = _make_ipapi_response()
+        mock_resp.json.return_value = _make_ipinfo_response()
         mock_resp.raise_for_status = MagicMock()
         mock_get.return_value = mock_resp
 
@@ -693,5 +734,5 @@ class TestEdgeCases:
         geo._req_times = []  # reset rate limit state
         # Should not raise for a small number of lookups
         for _ in range(3):
-            geo.lookup_ip("1.2.3.4")
+            geo._lookup_ipapi("1.2.3.4")
         assert mock_get.call_count >= 3

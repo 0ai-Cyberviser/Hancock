@@ -24,7 +24,7 @@ data:
   LOG_LEVEL: "INFO"
   LOG_FORMAT: "json"
   PROMETHEUS_ENABLED: "true"
-  METRICS_PORT: "8001"
+  METRICS_PORT: "5000"
 
 ---
 apiVersion: apps/v1
@@ -47,7 +47,7 @@ spec:
         version: "0.5.0"
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "8001"
+        prometheus.io/port: "5000"
         prometheus.io/path: "/metrics"
     spec:
       securityContext:
@@ -61,8 +61,6 @@ spec:
           ports:
             - containerPort: 5000
               name: http
-            - containerPort: 8001
-              name: metrics
           envFrom:
             - configMapRef:
                 name: hancock-config
@@ -115,8 +113,8 @@ spec:
       port: 80
       targetPort: 5000
     - name: metrics
-      port: 8001
-      targetPort: 8001
+      port: 5000
+      targetPort: 5000
 
 ---
 apiVersion: autoscaling/v2

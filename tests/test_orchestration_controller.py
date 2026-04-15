@@ -9,6 +9,8 @@ from orchestration_controller import (
     ToolConfig,
     ToolCategory,
     ExecutionStatus,
+    _choose_process_start_method,
+    _main_module_is_file_backed,
 )
 
 
@@ -27,6 +29,14 @@ def _failing_handler(params):
 def _slow_handler(params):
     """Handler that sleeps for longer than any reasonable timeout."""
     time.sleep(10)
+    return {"done": True}
+
+
+def _delayed_file_write_handler(params):
+    """Write a marker file after a delay to verify timeout termination."""
+    time.sleep(params["delay"])
+    with open(params["path"], "w", encoding="utf-8") as fh:
+        fh.write("done")
     return {"done": True}
 
 
@@ -186,9 +196,53 @@ class TestExecution:
         assert result["status"] == ExecutionStatus.TIMEOUT
         assert "timed out" in result["error"]
 
+    def test_execute_timeout_terminates_subprocess(self, controller, tmp_path):
+        marker = tmp_path / "timed_out_marker.txt"
+        controller.register_tool(ToolConfig(
+            name="delayed_write",
+            handler=_delayed_file_write_handler,
+            timeout=0.1,
+            max_retries=0,
+        ))
+        controller.allow_tool("delayed_write")
+        result = controller.execute(
+            "delayed_write",
+            {"path": str(marker), "delay": 0.4},
+        )
+        assert result["status"] == ExecutionStatus.TIMEOUT
+        time.sleep(0.5)
+        assert not marker.exists()
+
     def test_backward_compat_method(self, controller):
         result = controller.coordinate_tool_integration("echo", {"a": 1})
         assert result["status"] == ExecutionStatus.SUCCESS
+
+
+class TestSubprocessIsolation:
+    def test_choose_process_start_method_avoids_fork_when_safer_available(self, monkeypatch):
+        monkeypatch.setattr(
+            "orchestration_controller.multiprocessing.get_all_start_methods",
+            lambda: ["fork", "spawn"],
+        )
+        monkeypatch.setattr(
+            "orchestration_controller._main_module_is_file_backed",
+            lambda: True,
+        )
+        assert _choose_process_start_method() == "spawn"
+
+    def test_choose_process_start_method_falls_back_to_fork_without_main_file(self, monkeypatch):
+        monkeypatch.setattr(
+            "orchestration_controller.multiprocessing.get_all_start_methods",
+            lambda: ["fork", "spawn"],
+        )
+        monkeypatch.setattr(
+            "orchestration_controller._main_module_is_file_backed",
+            lambda: False,
+        )
+        assert _choose_process_start_method() == "fork"
+
+    def test_main_module_is_file_backed_detects_real_path(self):
+        assert _main_module_is_file_backed() is True
 
 
 # ── Caching ───────────────────────────────────────────────────────────────────
