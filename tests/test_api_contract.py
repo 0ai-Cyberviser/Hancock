@@ -10,6 +10,7 @@ import pytest
 EXPECTED_ENDPOINTS = {
     "/health",
     "/metrics",
+    "/internal/diagnostics",
     "/v1/agents",
     "/v1/chat",
     "/v1/ask",
@@ -49,7 +50,7 @@ def _public_routes(flask_app) -> set[str]:
     return {
         rule.rule
         for rule in flask_app.url_map.iter_rules()
-        if rule.rule.startswith("/v1/") or rule.rule in {"/health", "/metrics"}
+        if rule.rule.startswith("/v1/") or rule.rule in {"/health", "/metrics", "/internal/diagnostics"}
     }
 
 

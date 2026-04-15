@@ -35,6 +35,7 @@ import json
 import logging
 import os
 import sys
+import time
 import readline  # noqa: F401 — enables arrow-key history in CLI
 from hancock_constants import require_openai, OPENAI_IMPORT_ERROR_MSG
 from monitoring.logging_config import (
@@ -238,6 +239,8 @@ OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434") + "/v1"
 DEFAULT_MODEL   = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
 CODER_MODEL     = os.getenv("OLLAMA_CODER_MODEL", "qwen2.5-coder:7b")
 VERSION         = "0.5.0"
+PROCESS_STARTED_AT_UNIX = time.time()
+PROCESS_STARTED_AT_MONOTONIC = time.monotonic()
 
 # ── Available models ──────────────────────────────────────────────────────────
 MODELS = {
@@ -486,6 +489,9 @@ def build_app(client, model: str):
     _rate_counts: dict = {}  # ip → [timestamp, ...]
     _RATE_LIMIT  = int(os.getenv("HANCOCK_RATE_LIMIT", "60"))   # requests/min
     _RATE_WINDOW = 60  # seconds
+    _ENABLE_INTERNAL_DIAGNOSTICS = os.getenv(
+        "HANCOCK_ENABLE_INTERNAL_DIAGNOSTICS", "false"
+    ).strip().lower() in {"1", "true", "yes", "on"}
 
     def _check_auth_and_rate() -> "tuple[bool, str, int]":
         """Returns (ok, error_message, remaining). Empty HANCOCK_API_KEY disables auth."""
@@ -538,7 +544,7 @@ def build_app(client, model: str):
                           "/v1/hunt", "/v1/respond", "/v1/code",
                           "/v1/ciso", "/v1/sigma", "/v1/yara", "/v1/ioc",
                           "/v1/geolocate", "/v1/predict-locations", "/v1/map-infrastructure",
-                          "/v1/agents", "/v1/webhook", "/metrics"],
+                          "/v1/agents", "/v1/webhook", "/metrics", "/internal/diagnostics"],
         })
 
     @app.route("/metrics", methods=["GET"])
@@ -570,6 +576,36 @@ def build_app(client, model: str):
         for m, cnt in snap["by_mode"].items():
             lines.append(f'hancock_requests_by_mode{{mode="{m}"}} {cnt}')
         return Response("\n".join(lines) + "\n", mimetype="text/plain; version=0.0.4")
+
+    @app.route("/internal/diagnostics", methods=["GET"])
+    def internal_diagnostics_endpoint():
+        """Auth-gated runtime diagnostics endpoint."""
+        if not _ENABLE_INTERNAL_DIAGNOSTICS:
+            return _error_response("Not Found", 404)
+
+        ok, err, _ = _check_auth_and_rate()
+        if not ok:
+            _inc("errors_total")
+            return _error_response(err, 401 if "Unauthorized" in err else 429)
+
+        _inc("requests_total")
+        _inc("requests_by_endpoint", "/internal/diagnostics")
+
+        uptime_seconds = round(max(0.0, time.monotonic() - PROCESS_STARTED_AT_MONOTONIC), 3)
+        return jsonify({
+            "backend_mode": backend,
+            "current_model": model,
+            "model_aliases": MODELS,
+            "rate_limit": {
+                "requests_per_minute": _RATE_LIMIT,
+                "window_seconds": _RATE_WINDOW,
+                "auth_enabled": bool(_HANCOCK_API_KEY),
+            },
+            "uptime": {
+                "seconds": uptime_seconds,
+                "started_at_unix": PROCESS_STARTED_AT_UNIX,
+            },
+        })
 
     @app.route("/v1/agents", methods=["GET"])
     def agents_endpoint():
