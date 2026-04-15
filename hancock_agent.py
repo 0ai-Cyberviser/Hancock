@@ -582,6 +582,12 @@ def build_app(client, model: str):
         """Auth-gated runtime diagnostics endpoint."""
         if not _ENABLE_INTERNAL_DIAGNOSTICS:
             return _error_response("Not found", 404)
+        if not _HANCOCK_API_KEY:
+            _inc("errors_total")
+            return _error_response(
+                "Internal diagnostics requires HANCOCK_API_KEY authentication to be configured",
+                403,
+            )
 
         ok, err, _ = _check_auth_and_rate()
         if not ok:

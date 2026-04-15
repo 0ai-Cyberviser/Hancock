@@ -530,6 +530,17 @@ class TestInternalDiagnostics:
             }
         )
 
+    @pytest.fixture
+    def diagnostics_without_auth_app(self):
+        return _build_mocked_app(
+            env={
+                "HANCOCK_ENABLE_INTERNAL_DIAGNOSTICS": "true",
+                "HANCOCK_RATE_LIMIT": "7",
+                "HANCOCK_LLM_BACKEND": "ollama",
+            },
+            unset=("HANCOCK_API_KEY",),
+        )
+
     def test_diagnostics_disabled_returns_404(self):
         app = _build_mocked_app(
             unset=("HANCOCK_ENABLE_INTERNAL_DIAGNOSTICS", "HANCOCK_API_KEY")
@@ -537,6 +548,12 @@ class TestInternalDiagnostics:
         c = app.test_client()
         r = c.get("/internal/diagnostics")
         assert r.status_code == 404
+
+    def test_diagnostics_requires_server_auth_configuration(self, diagnostics_without_auth_app):
+        c = diagnostics_without_auth_app.test_client()
+        r = c.get("/internal/diagnostics")
+        assert r.status_code == 403
+        assert "HANCOCK_API_KEY" in r.get_json()["error"]
 
     def test_diagnostics_requires_auth_when_enabled(self, diagnostics_app):
         c = diagnostics_app.test_client()

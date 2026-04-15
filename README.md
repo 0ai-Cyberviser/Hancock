@@ -138,7 +138,8 @@ Start the server: `python hancock_agent.py --server`
 
 `/internal/diagnostics` stays hidden unless `HANCOCK_ENABLE_INTERNAL_DIAGNOSTICS`
 is set to a truthy value (`1`, `true`, `yes`, or `on`). When enabled, it still
-uses the normal Bearer auth and rate-limit checks.
+requires `HANCOCK_API_KEY` to be configured and uses the normal Bearer auth and
+rate-limit checks.
 
 ### Endpoints
 
