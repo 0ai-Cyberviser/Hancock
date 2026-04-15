@@ -56,6 +56,10 @@ def TestOneInput(data: bytes) -> None:
     body_len = fdp.ConsumeIntInRange(0, 32768)
     body = fdp.ConsumeBytes(body_len)
     sig_header = fdp.ConsumeUnicodeNoSurrogates(256)
+    # Werkzeug rejects raw control characters in header values; normalize them
+    # so fuzzing still reaches the webhook handler instead of failing in the
+    # request builder.
+    sig_header = sig_header.replace("\r", " ").replace("\n", " ")
     content_type = fdp.PickValueInList([
         "application/json",
         "application/json; charset=utf-8",
@@ -66,15 +70,12 @@ def TestOneInput(data: bytes) -> None:
 
     headers = {"X-Hancock-Signature": sig_header}
 
-    try:
-        client.post(
-            "/v1/webhook",
-            data=body,
-            headers=headers,
-            content_type=content_type,
-        )
-    except Exception:
-        pass
+    client.post(
+        "/v1/webhook",
+        data=body,
+        headers=headers,
+        content_type=content_type,
+    )
 
 
 def main() -> None:

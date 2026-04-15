@@ -1,6 +1,14 @@
 """Tests for the enhanced hancock_constants module."""
 
+from pathlib import Path
+import re
+
+try:
+    import tomllib
+except ImportError:  # Python 3.10
+    import tomli as tomllib
 import pytest
+import yaml
 
 from hancock_constants import (
     VERSION,
@@ -19,6 +27,12 @@ from hancock_constants import (
     require_openai,
     OPENAI_IMPORT_ERROR_MSG,
 )
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+
+
+def _read_text(relative_path: str) -> str:
+    return (REPO_ROOT / relative_path).read_text()
 
 
 class TestVersion:
@@ -99,3 +113,41 @@ class TestRequireOpenai:
 class TestDefaultPort:
     def test_default_port(self):
         assert DEFAULT_PORT == 5000
+
+
+class TestReleaseVersionSync:
+    def test_runtime_version_matches_source_of_truth(self):
+        import hancock_agent
+
+        assert hancock_agent.VERSION == VERSION
+
+    def test_python_package_versions_match_source_of_truth(self):
+        pyproject = tomllib.loads(_read_text("pyproject.toml"))
+        assert pyproject["project"]["version"] == VERSION
+
+        init_text = _read_text("clients/python/__init__.py")
+        match = re.search(r'__version__\s*=\s*"([^"]+)"', init_text)
+        assert match and match.group(1) == VERSION
+
+    def test_openapi_version_matches_source_of_truth(self):
+        openapi = yaml.safe_load(_read_text("docs/openapi.yaml"))
+        assert openapi["info"]["version"] == VERSION
+
+    @pytest.mark.parametrize(
+        "path, expected",
+        [
+            ("docker-compose.yml", f"com.cyberviser.version={VERSION}"),
+            ("deploy/docker/docker-compose.yml", f"com.cyberviser.version={VERSION}"),
+            ("deploy/docker/Dockerfile", f'org.opencontainers.image.version="{VERSION}"'),
+            ("deploy/kubernetes/hancock-deployment.yaml", f'version: "{VERSION}"'),
+            ("deploy/k8s/deployment.yaml", f'app.kubernetes.io/version: "{VERSION}"'),
+            ("deploy/helm/Chart.yaml", f'version: "{VERSION}"'),
+            ("deploy/helm/Chart.yaml", f'appVersion: "{VERSION}"'),
+            ("deploy/helm/hancock/Chart.yaml", f"version: {VERSION}"),
+            ("deploy/helm/hancock/Chart.yaml", f'appVersion: "{VERSION}"'),
+            ("docs/deployment.md", f"ghcr.io/cyberviser/hancock:v{VERSION}"),
+            ("docs/deployment.md", f"--set image.tag=v{VERSION}"),
+        ],
+    )
+    def test_release_surfaces_contain_current_version(self, path, expected):
+        assert expected in _read_text(path)

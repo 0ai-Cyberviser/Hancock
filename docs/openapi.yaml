@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Hancock — CyberViser AI Security Agent
-  version: 0.5.0
+  version: 0.6.0
   description: |
     Hancock is an AI-powered cybersecurity agent by CyberViser. It provides
     REST endpoints for SOC triage, penetration testing guidance, threat hunting,
@@ -36,7 +36,9 @@ components:
       properties:
         error:
           type: string
-      required: [error]
+        request_id:
+          type: string
+      required: [error, request_id]
     ModelRef:
       type: object
       properties:
@@ -177,7 +179,7 @@ paths:
                       content: { type: string }
                 mode:
                   type: string
-                  enum: [pentest, soc, auto, code, ciso, sigma]
+                  enum: [pentest, soc, auto, code, ciso, sigma, yara, ioc, osint]
                   default: auto
                 stream:
                   type: boolean
@@ -195,6 +197,10 @@ paths:
                     properties:
                       response: { type: string }
                       mode:     { type: string }
+            text/event-stream:
+              schema:
+                type: string
+              description: Server-sent events stream emitted when `stream=true`
         "400": { description: Bad request, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
         "401": { description: Unauthorized }
         "429": { description: Rate limit exceeded }
@@ -213,7 +219,10 @@ paths:
               required: [question]
               properties:
                 question: { type: string }
-                mode:     { type: string, enum: [pentest, soc, auto, code, ciso, sigma], default: auto }
+                mode:
+                  type: string
+                  default: auto
+                  description: Supports the same chat modes as `/v1/chat`; invalid values fall back to `auto`.
       responses:
         "200":
           description: Answer
@@ -268,7 +277,10 @@ paths:
               required: [target]
               properties:
                 target: { type: string, description: "TTP or behaviour to hunt, e.g. lateral movement with PsExec" }
-                siem:   { type: string, enum: [splunk, elastic, sentinel], default: splunk }
+                siem:
+                  type: string
+                  default: splunk
+                  description: SIEM platform label. Common values are splunk, elastic, and sentinel.
       responses:
         "200":
           description: SIEM query with explanation
@@ -352,8 +364,8 @@ paths:
                 context:  { type: string, description: "Optional: org size, industry, current frameworks" }
                 output:
                   type: string
-                  enum: [advice, report, gap-analysis, board-summary]
                   default: advice
+                  description: Formatting hint. Valid values include advice, report, gap-analysis, and board-summary.
       responses:
         "200":
           description: CISO advice or structured output
@@ -469,3 +481,146 @@ paths:
                       rule:      { type: string, description: Full YARA rule + explanation }
                       file_type: { type: string }
         "400": { description: Bad request }
+
+  /v1/ioc:
+    post:
+      summary: IOC enrichment
+      tags: [IOC]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [indicator]
+              properties:
+                indicator:
+                  type: string
+                  description: "IOC value. Also accepts 'ioc' or 'query' as alias."
+                type:
+                  type: string
+                  default: auto
+                  description: "Indicator type hint such as ip, domain, url, hash, email, or auto."
+                context:
+                  type: string
+                  description: "Optional additional context."
+      responses:
+        "200":
+          description: Threat intel enrichment report
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ModelRef"
+                  - type: object
+                    properties:
+                      indicator: { type: string }
+                      type:      { type: string }
+                      report:    { type: string }
+        "400": { description: Bad request }
+        "401": { description: Unauthorized }
+        "429": { description: Rate limit exceeded }
+        "502": { description: Model returned empty response }
+
+  /v1/geolocate:
+    post:
+      summary: Geolocate IP and domain indicators
+      tags: [OSINT]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [indicators]
+              properties:
+                indicators:
+                  type: array
+                  items: { type: string }
+      responses:
+        "200":
+          description: Geolocation results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  indicators:
+                    type: array
+                    items: { type: string }
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+                  count:
+                    type: integer
+        "400": { description: Bad request }
+        "401": { description: Unauthorized }
+        "429": { description: Rate limit exceeded }
+        "500": { description: Internal server error }
+
+  /v1/predict-locations:
+    post:
+      summary: Predict future threat infrastructure locations
+      tags: [OSINT]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [historical_data]
+              properties:
+                historical_data:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: true
+      responses:
+        "200":
+          description: Predictive location analysis
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  predictions:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+                  count:
+                    type: integer
+        "400": { description: Bad request }
+        "401": { description: Unauthorized }
+        "429": { description: Rate limit exceeded }
+        "500": { description: Internal server error }
+
+  /v1/map-infrastructure:
+    post:
+      summary: Map and cluster threat infrastructure
+      tags: [OSINT]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [indicators]
+              properties:
+                indicators:
+                  type: array
+                  items: { type: string }
+      responses:
+        "200":
+          description: Infrastructure mapping result
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "400": { description: Bad request }
+        "401": { description: Unauthorized }
+        "429": { description: Rate limit exceeded }
+        "500": { description: Internal server error }

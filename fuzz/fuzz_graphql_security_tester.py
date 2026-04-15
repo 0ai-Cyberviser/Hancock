@@ -32,7 +32,7 @@ def TestOneInput(data: bytes) -> None:
     raw_args = [fdp.ConsumeUnicodeNoSurrogates(64) for _ in range(arg_count)]
     try:
         parser.parse_known_args(raw_args)
-    except (SystemExit, ValueError, TypeError):
+    except SystemExit:
         pass
 
     url = fdp.ConsumeUnicodeNoSurrogates(256) or "https://example/graphql"
@@ -41,20 +41,16 @@ def TestOneInput(data: bytes) -> None:
 
     tester = GraphQLSecurityTester(url=url, token=token, verbose=verbose)
 
-    try:
-        tester.test_idor(fdp.ConsumeUnicodeNoSurrogates(128))
+    tester.test_idor(fdp.ConsumeUnicodeNoSurrogates(128))
 
-        ids = [fdp.ConsumeUnicodeNoSurrogates(64) for _ in range(fdp.ConsumeIntInRange(0, 32))]
-        tester.test_idor_batch(ids)
+    ids = [fdp.ConsumeUnicodeNoSurrogates(64) for _ in range(fdp.ConsumeIntInRange(0, 32))]
+    tester.test_idor_batch(ids)
 
-        tester.test_mutation_authorization(fdp.ConsumeUnicodeNoSurrogates(128))
-        tester.test_jwt_algorithm_confusion()
-        tester.test_field_level_authorization()
-        tester.test_rate_limiting()
-        tester.generate_report()
-    except (KeyError, ValueError, TypeError, IndexError, AttributeError):
-        # Ignore expected parser/validation exceptions from malformed inputs.
-        pass
+    tester.test_mutation_authorization(fdp.ConsumeUnicodeNoSurrogates(128))
+    tester.test_jwt_algorithm_confusion()
+    tester.test_field_level_authorization()
+    tester.test_rate_limiting()
+    tester.generate_report()
 
 
 def main() -> None:

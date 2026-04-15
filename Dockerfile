@@ -16,6 +16,7 @@ COPY input_validator.py .
 COPY orchestration_controller.py .
 COPY collectors/ collectors/
 COPY formatter/ formatter/
+COPY monitoring/ monitoring/
 
 # Expose API port
 EXPOSE 5000

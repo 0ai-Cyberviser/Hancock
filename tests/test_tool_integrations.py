@@ -1,14 +1,16 @@
+import shutil
+
 import pytest
 from collectors.nmap_recon import run_nmap
 
 def test_nmap_localhost():
     """Smoke test for Nmap reconnaissance on localhost"""
-    try:
-        out = run_nmap("127.0.0.1")
-        assert "result" in out or out["returncode"] == 0
-        print("✅ Nmap integration test passed")
-    except Exception as e:
-        print(f"⚠️ Nmap test skipped (nmap not installed): {e}")
+    if shutil.which("nmap") is None:
+        pytest.skip("nmap not installed")
+
+    out = run_nmap("127.0.0.1")
+    assert "result" in out or out["returncode"] == 0
+    print("✅ Nmap integration test passed")
 
 def test_tool_imports():
     """Verify all tool modules can be imported"""

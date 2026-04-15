@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hancock-client"
-version = "0.4.0"
+version = "0.6.0"
 description = "Hancock AI Cybersecurity Agent — Python SDK (NVIDIA NIM backend)"
 readme = "clients/python/README.md"
 license = { file = "LICENSE" }

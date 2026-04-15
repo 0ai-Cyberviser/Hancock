@@ -75,15 +75,11 @@ def TestOneInput(data: bytes) -> None:
     endpoint = _ENDPOINTS[idx]
     client = _get_client()
 
-    try:
-        client.post(
-            endpoint,
-            data=payload_bytes,
-            content_type="application/json",
-        )
-    except Exception:
-        # We only care about uncaught crashes / memory issues, not HTTP errors
-        pass
+    client.post(
+        endpoint,
+        data=payload_bytes,
+        content_type="application/json",
+    )
 
 
 def main() -> None:

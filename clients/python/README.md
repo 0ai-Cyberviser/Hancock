@@ -38,7 +38,7 @@ print(h.code("KQL query to detect Pass-the-Hash attacks", language="kql"))
 ## CLI
 
 ```bash
-# Interactive security mode
+# Interactive default mode (auto)
 python hancock_cli.py
 
 # Interactive code mode
@@ -48,6 +48,9 @@ python hancock_cli.py --mode code
 python hancock_cli.py --task "explain Kerberoasting"
 python hancock_cli.py --mode code --task "write a Sigma rule for Kerberoasting"
 python hancock_cli.py --model mixtral-8x7b --task "CISO risk framework"
+
+Supported chat modes: `auto`, `pentest`, `soc`, `code`, `ciso`, `sigma`, `yara`, `ioc`, `osint`
+(`security` remains accepted as an alias for `auto`).
 ```
 
 ## Models

@@ -37,7 +37,7 @@ import os
 import sys
 import time
 import readline  # noqa: F401 — enables arrow-key history in CLI
-from hancock_constants import require_openai, OPENAI_IMPORT_ERROR_MSG
+from hancock_constants import VERSION, require_openai, OPENAI_IMPORT_ERROR_MSG
 from monitoring.logging_config import (
     get_request_id,
     init_flask_logging,
@@ -238,7 +238,6 @@ NIM_BASE_URL    = "https://integrate.api.nvidia.com/v1"
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434") + "/v1"
 DEFAULT_MODEL   = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
 CODER_MODEL     = os.getenv("OLLAMA_CODER_MODEL", "qwen2.5-coder:7b")
-VERSION         = "0.5.0"
 PROCESS_STARTED_AT_UNIX = int(time.time())
 PROCESS_STARTED_AT_MONOTONIC = time.monotonic()
 
@@ -575,7 +574,7 @@ def build_app(client, model: str):
         ]
         for m, cnt in snap["by_mode"].items():
             lines.append(f'hancock_requests_by_mode{{mode="{m}"}} {cnt}')
-        return Response("\n".join(lines) + "\n", mimetype="text/plain; version=0.0.4")
+        return Response("\n".join(lines) + "\n", mimetype=f"text/plain; version={VERSION}")
 
     @app.route("/internal/diagnostics", methods=["GET"])
     def internal_diagnostics_endpoint():

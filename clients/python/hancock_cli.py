@@ -4,7 +4,15 @@ from __future__ import annotations
 import os
 import sys
 import argparse
-from hancock_client import HancockClient, MODELS
+from hancock_client import CHAT_MODE_TO_SYSTEM, HancockClient, MODELS
+
+
+SUPPORTED_MODES = tuple(CHAT_MODE_TO_SYSTEM.keys())
+
+
+def _normalize_mode(mode: str) -> str:
+    normalized = (mode or "auto").strip().lower()
+    return "auto" if normalized == "security" else normalized
 
 
 def main() -> None:
@@ -12,12 +20,17 @@ def main() -> None:
         prog="hancock",
         description="Hancock AI Security Agent — Python CLI",
     )
-    parser.add_argument("--mode",  default="security", choices=["security", "code"],
-                        help="Interaction mode (default: security)")
+    parser.add_argument(
+        "--mode",
+        default="auto",
+        choices=["security", *SUPPORTED_MODES],
+        help="Interaction mode (default: auto; security is an alias for auto)",
+    )
     parser.add_argument("--task",  help="One-shot: task or question to answer")
     parser.add_argument("--model", default="mistral-7b",
                         help=f"Model alias. Options: {', '.join(MODELS)}")
     args = parser.parse_args()
+    mode = _normalize_mode(args.mode)
 
     try:
         client = HancockClient(model=args.model)
@@ -26,7 +39,7 @@ def main() -> None:
         sys.exit(1)
 
     if args.task:
-        result = client.code(args.task) if args.mode == "code" else client.ask(args.task)
+        result = client.code(args.task) if mode == "code" else client.chat(args.task, mode=mode)
         print(result)
         return
 
@@ -36,12 +49,11 @@ def main() -> None:
 ║   HANCOCK  —  AI Cybersecurity Agent  (Python client)   ║
 ║   Powered by NVIDIA NIM + CyberViser                    ║
 ╚══════════════════════════════════════════════════════════╝
-Mode: {args.mode} | Model: {args.model}
-Commands: /mode security | /mode code | /model <alias> | /exit
+Mode: {mode} | Model: {args.model}
+Commands: /mode auto | /mode pentest | /mode soc | /mode code | /mode ciso | /mode sigma | /mode yara | /mode ioc | /mode osint | /mode security | /model <alias> | /exit
 Aliases:  {' | '.join(MODELS)}
 """)
 
-    mode = args.mode
     history = []
 
     while True:
@@ -57,7 +69,11 @@ Aliases:  {' | '.join(MODELS)}
             print("Goodbye.")
             break
         if user_input.startswith("/mode "):
-            mode = user_input[6:].strip()
+            requested_mode = user_input[6:].strip()
+            mode = _normalize_mode(requested_mode)
+            if mode not in SUPPORTED_MODES:
+                print(f"Unsupported mode: {requested_mode}\n")
+                continue
             print(f"Switched to {mode} mode\n")
             history = []
             continue

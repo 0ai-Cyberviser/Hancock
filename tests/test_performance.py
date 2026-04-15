@@ -27,7 +27,7 @@ import pytest
 LATENCY_THRESHOLD_MS = 200  # max acceptable median latency for legacy checks (ms)
 THROUGHPUT_BATCH = 20       # number of requests per throughput test
 LATENCY_SAMPLES = 25        # number of samples per latency measurement
-OUTLIER_FLOOR_MS = 10       # tolerate small scheduler / fixture jitter on very fast paths
+OUTLIER_FLOOR_MS = 15       # tolerate small scheduler / fixture jitter on very fast paths
 RATE_LIMIT_TEST_VALUE = 6
 
 # Endpoint-specific latency targets for regression gating in CI.

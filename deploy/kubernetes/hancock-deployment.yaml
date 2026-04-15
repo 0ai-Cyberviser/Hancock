@@ -34,7 +34,7 @@ metadata:
   namespace: hancock
   labels:
     app: hancock
-    version: "0.5.0"
+    version: "0.6.0"
 spec:
   replicas: 2
   selector:
@@ -44,7 +44,7 @@ spec:
     metadata:
       labels:
         app: hancock
-        version: "0.5.0"
+        version: "0.6.0"
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "5000"

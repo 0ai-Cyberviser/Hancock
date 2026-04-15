@@ -6,7 +6,7 @@ metadata:
   labels:
     app: hancock
     app.kubernetes.io/name: hancock
-    app.kubernetes.io/version: "0.5.0"
+    app.kubernetes.io/version: "0.6.0"
     app.kubernetes.io/managed-by: kubectl
 spec:
   replicas: 2
@@ -23,7 +23,7 @@ spec:
       labels:
         app: hancock
         app.kubernetes.io/name: hancock
-        app.kubernetes.io/version: "0.5.0"
+        app.kubernetes.io/version: "0.6.0"
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "5000"

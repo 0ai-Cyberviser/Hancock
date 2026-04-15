@@ -18,6 +18,7 @@ Environment variables:
 from __future__ import annotations
 
 import logging
+import ipaddress
 import math
 import os
 import socket
@@ -289,11 +290,11 @@ class GeoIPLookup:
         results: list[GeoLocationResult] = []
         for indicator in indicators:
             try:
-                # Detect whether indicator is an IP or domain
-                socket.inet_aton(indicator)
+                # Detect whether indicator is an IP (IPv4 or IPv6) or domain.
+                ipaddress.ip_address(indicator)
                 results.append(self.lookup_ip(indicator))
-            except OSError:
-                # Not a plain IPv4 — treat as domain
+            except ValueError:
+                # Not an IP address — treat as domain
                 results.extend(self.lookup_domain(indicator))
         return results
 

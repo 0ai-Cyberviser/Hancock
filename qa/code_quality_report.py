@@ -70,14 +70,16 @@ def collect_tests() -> dict:
         "--tb=no", "-q",
         "--co", "-q",  # collect only — fast
     ])
-    tests_collected = 0
-    for line in output.splitlines():
-        if "test" in line.lower() and "selected" in line.lower():
-            parts = line.split()
-            try:
-                tests_collected = int(parts[0])
-            except (ValueError, IndexError):
-                pass
+    tests_collected = sum(1 for line in output.splitlines() if "::" in line)
+    if tests_collected == 0:
+        for line in output.splitlines():
+            if "tests collected" in line.lower():
+                parts = line.split()
+                try:
+                    tests_collected = int(parts[0])
+                    break
+                except (ValueError, IndexError):
+                    continue
     return {"tests_collected": tests_collected, "returncode": rc}
 
 
@@ -107,6 +109,8 @@ def run_flake8() -> dict:
         display_lines = lines[:count_index] + lines[count_index + 1:]
 
     return {"issues": issues, "returncode": rc, "output": "\n".join(display_lines[:20])}
+
+
 def generate_report() -> dict:
     timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     report = {
