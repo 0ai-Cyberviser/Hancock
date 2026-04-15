@@ -108,17 +108,36 @@ class TestHancockClient:
         assert messages[-1] == {"role": "user", "content": current_message}
         assert messages[-2] == history[-1]
 
-    def test_chat_invalid_mode_warns_and_falls_back_to_auto(self, client):
-        with pytest.warns(RuntimeWarning, match="Unsupported mode"):
+    def test_chat_invalid_mode_raises(self, client):
+        with pytest.raises(ValueError, match="Unsupported mode"):
             client.chat("fallback test", mode="invalid-mode")
+
+    def test_chat_message_order_is_system_then_history_then_latest_user(self, client):
+        history = [
+            {"role": "user", "content": "u1"},
+            {"role": "assistant", "content": "a1"},
+        ]
+        client.chat("u2", history=history, mode="soc")
 
         create_kwargs = client._client.chat.completions.create.call_args.kwargs
         messages = create_kwargs["messages"]
-
-        assert messages[0]["role"] == "system"
-        assert messages[0]["content"].startswith(
-            "You are Hancock, an elite AI cybersecurity agent built by CyberViser."
-        )
+        expected_messages = [
+            {
+                "role": "system",
+                "content": (
+                    "You are Hancock, an elite AI cybersecurity agent built by CyberViser. "
+                    "Your expertise spans penetration testing, threat intelligence, SOC analysis, "
+                    "incident response, CISO strategy, and security architecture. "
+                    "Respond with actionable, technically precise guidance. "
+                    "Use MITRE ATT&CK framework, CVE data, and industry best practices."
+                    " Focus on SOC operations, alert triage, and incident response."
+                ),
+            },
+            {"role": "user", "content": "u1"},
+            {"role": "assistant", "content": "a1"},
+            {"role": "user", "content": "u2"},
+        ]
+        assert messages == expected_messages
 
     def test_no_api_key_raises(self, monkeypatch):
         monkeypatch.delenv("NVIDIA_API_KEY", raising=False)

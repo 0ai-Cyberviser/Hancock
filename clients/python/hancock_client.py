@@ -18,7 +18,6 @@ Usage:
 from __future__ import annotations
 
 import os
-import warnings
 from typing import Optional
 
 # Canonical definitions for OpenAI dependency handling. These are defined
@@ -102,6 +101,18 @@ OSINT_SYSTEM = (
     "Correlate domains, IPs, WHOIS, passive DNS, certificates, and infrastructure overlaps. "
     "Provide structured findings, confidence levels, and practical next investigative steps."
 )
+
+CHAT_MODE_TO_SYSTEM: dict[str, str] = {
+    "auto": SECURITY_SYSTEM,
+    "pentest": SECURITY_SYSTEM + " Focus on offensive security and penetration testing.",
+    "soc": SECURITY_SYSTEM + " Focus on SOC operations, alert triage, and incident response.",
+    "code": CODE_SYSTEM,
+    "ciso": CISO_SYSTEM,
+    "sigma": SIGMA_SYSTEM,
+    "yara": YARA_SYSTEM,
+    "ioc": IOC_SYSTEM,
+    "osint": OSINT_SYSTEM,
+}
 
 
 class HancockClient:
@@ -269,29 +280,16 @@ class HancockClient:
         ``auto``, ``pentest``, ``soc``, ``code``, ``ciso``, ``sigma``, ``yara``,
         ``ioc``, and ``osint``.
 
-        Unknown mode values are supported for backward compatibility by falling
-        back to ``auto`` and emitting a ``RuntimeWarning``.
+        Unknown mode values raise a ``ValueError``.
         """
-        mode_to_system = {
-            "auto": SECURITY_SYSTEM,
-            "pentest": SECURITY_SYSTEM + " Focus on offensive security and penetration testing.",
-            "soc": SECURITY_SYSTEM + " Focus on SOC operations, alert triage, and incident response.",
-            "code": CODE_SYSTEM,
-            "ciso": CISO_SYSTEM,
-            "sigma": SIGMA_SYSTEM,
-            "yara": YARA_SYSTEM,
-            "ioc": IOC_SYSTEM,
-            "osint": OSINT_SYSTEM,
-        }
         normalized_mode = (mode or "auto").strip().lower()
-        if normalized_mode not in mode_to_system:
-            warnings.warn(
-                f"Unsupported mode '{mode}' passed to chat(); falling back to 'auto'.",
-                RuntimeWarning,
-                stacklevel=2,
+        if normalized_mode not in CHAT_MODE_TO_SYSTEM:
+            supported_modes = ", ".join(sorted(CHAT_MODE_TO_SYSTEM.keys()))
+            raise ValueError(
+                f"Unsupported mode '{mode}' passed to chat(). "
+                f"Supported modes: {supported_modes}."
             )
-            normalized_mode = "auto"
-        system = mode_to_system[normalized_mode]
+        system = CHAT_MODE_TO_SYSTEM[normalized_mode]
         messages = [{"role": "system", "content": system}]
         if history:
             messages.extend(history)

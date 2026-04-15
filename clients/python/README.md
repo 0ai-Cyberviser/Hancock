@@ -17,6 +17,10 @@ h = HancockClient()
 # Security Q&A
 print(h.ask("Explain CVE-2021-44228 Log4Shell"))
 
+# Multi-turn chat with explicit mode selection
+history = [{"role": "user", "content": "How do I investigate Kerberoasting?"}]
+print(h.chat("Give me SOC triage steps.", history=history, mode="soc"))
+
 # Alert triage
 print(h.triage("Mimikatz.exe detected on DC01 at 03:14 UTC. lsass dump."))
 
@@ -64,4 +68,17 @@ python hancock_cli.py --model mixtral-8x7b --task "CISO risk framework"
 | `h.triage(alert)` | SOC alert triage + MITRE mapping |
 | `h.hunt(target, siem="splunk")` | Threat hunting query generation |
 | `h.respond(incident)` | Full PICERL IR playbook |
-| `h.chat(message, history=[])` | Multi-turn conversation |
+| `h.chat(message, history=[], mode="auto")` | Multi-turn conversation with explicit mode (`auto`, `pentest`, `soc`, `code`, `ciso`, `sigma`, `yara`, `ioc`, `osint`) |
+
+### Chat mode validation
+
+```python
+from hancock_client import HancockClient
+
+h = HancockClient()
+
+try:
+    h.chat("test", mode="not-a-mode")
+except ValueError as exc:
+    print(exc)  # Unsupported mode 'not-a-mode' passed to chat(). Supported modes: ...
+```
