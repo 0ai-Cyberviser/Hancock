@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Hancock — CyberViser AI Security Agent
-  version: 0.4.0
+  version: 0.5.0
   description: |
     Hancock is an AI-powered cybersecurity agent by CyberViser. It provides
     REST endpoints for SOC triage, penetration testing guidance, threat hunting,
@@ -99,6 +99,43 @@ paths:
             text/plain:
               schema:
                 type: string
+
+  /internal/diagnostics:
+    get:
+      summary: Internal runtime diagnostics (gated)
+      tags: [System]
+      description: >
+        Returns non-secret runtime metadata when HANCOCK_ENABLE_INTERNAL_DIAGNOSTICS=true.
+      responses:
+        "200":
+          description: Runtime diagnostics payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  backend_mode:
+                    type: string
+                  current_model:
+                    type: string
+                  model_aliases:
+                    type: object
+                    description: Mapping of model alias names to resolved model IDs.
+                    additionalProperties:
+                      type: string
+                  rate_limit:
+                    type: object
+                    properties:
+                      requests_per_minute: { type: integer }
+                      window_seconds: { type: integer }
+                      auth_enabled: { type: boolean }
+                  uptime:
+                    type: object
+                    properties:
+                      seconds: { type: number }
+                      started_at_unix: { type: number }
+        "401": { description: Unauthorized }
+        "404": { description: Endpoint disabled }
 
   /v1/chat:
     post:
