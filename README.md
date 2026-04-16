@@ -4,7 +4,7 @@
 
 ![Hancock Banner](https://img.shields.io/badge/CyberViser-Hancock-00ff88?style=for-the-badge&logo=hackthebox&logoColor=black)
 
-[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
+[![License: Apache%202.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
 [![Model](https://img.shields.io/badge/Model-Mistral%207B-orange?logo=huggingface)](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3)
 [![NVIDIA NIM](https://img.shields.io/badge/NVIDIA-NIM-76b900?logo=nvidia)](https://build.nvidia.com)
@@ -13,7 +13,7 @@
 
 **Automate cybersecurity through specialized LLMs — from pentesting to SOC analysis.**
 
-[🌐 Website](https://cyberviser.netlify.app) · [📖 API Docs](https://cyberviser.netlify.app/api) · [📋 Business Proposal](BUSINESS_PROPOSAL.md) · [🐛 Report Bug](https://github.com/cyberviser/Hancock/issues) · [✨ Request Feature](https://github.com/cyberviser/Hancock/issues)
+[🌐 Website](https://cyberviser.netlify.app) · [📖 API Docs](https://cyberviser.netlify.app/api) · [📋 Business Proposal](BUSINESS_PROPOSAL.md) · [🐛 Report Bug](https://github.com/0ai-Cyberviser/Hancock/issues) · [✨ Request Feature](https://github.com/cyberviser/Hancock/issues)
 
 </div>
 
@@ -87,7 +87,7 @@ It operates in nine specialist modes and exposes a clean REST API.
 ### 1. Install dependencies
 
 ```bash
-git clone https://github.com/cyberviser/Hancock.git
+git clone https://github.com/0ai-Cyberviser/Hancock.git
 cd Hancock
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
@@ -670,21 +670,20 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
 ## 📄 License
 
-**CyberViser Proprietary License** — see [LICENSE](LICENSE) for full terms.
+**Apache-2.0** — see [LICENSE](LICENSE) for the repository license and
+[OWNERSHIP.md](OWNERSHIP.md) for the maintainer-control notice.
 
-- ✅ View and study the code
-- ✅ Run locally for personal/research use
-- ✅ Submit contributions (assigned to CyberViser)
-- ❌ Commercial use without a written license agreement
-- ❌ Redistribution or reselling
-- ❌ Building competing products or services
-- ❌ Training AI/ML models on the code or datasets
-- ❌ White-labeling or removing CyberViser branding
+- ✅ Use, modify, and redistribute the code under Apache-2.0
+- ✅ Submit contributions for maintainer review
+- ✅ Retain your own copyright in your contribution unless separately assigned
+- ❗ Preserve required notices and license text when redistributing
+- ❗ Branding, repository administration, and merge approval remain controlled by Johnny Watters / `0ai-Cyberviser`
+- ❗ Maintainers may require additional written rights confirmation before merging a contribution
 
-**For commercial licensing:** contact@cyberviser.ai
+**Project contacts:** `0ai@cyberviserai.com` · `cyberviser@proton.me`
 
 ---
 
 <div align="center">
-Built by <a href="https://github.com/cyberviser">CyberViser</a> · Powered by NVIDIA NIM · Mistral 7B · LoRA
+Maintained by <a href="https://github.com/0ai-Cyberviser">Johnny Watters (0ai-Cyberviser)</a> · Powered by NVIDIA NIM · Mistral 7B · LoRA
 </div>
