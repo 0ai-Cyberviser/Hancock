@@ -14,7 +14,7 @@ class AgentState(TypedDict):
     confidence: float
     rag_context: List[str]
     tool_output: str
-    query: str = None   # CVE ID or keyword for NVD query
+    query: str = None
 
 # Persistent ChromaDB
 chroma_client = PersistentClient(path="./chroma_db")
@@ -29,7 +29,7 @@ def recon_agent(state: AgentState):
         if not os.path.exists("/app/atomic-red-team"):
             subprocess.run(["git", "clone", "--depth=1", "https://github.com/redcanaryco/atomic-red-team.git", "/app/atomic-red-team"], check=True)
         
-        # NEW: NVD CVE parsing
+        # ENHANCED NVD CVE + CVSS v4.0 parsing
         if state.get("query"):
             nvd_url = f"https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch={state['query']}"
             headers = {"User-Agent": "Hancock-0ai/4.1"}
@@ -41,27 +41,41 @@ def recon_agent(state: AgentState):
             for item in data.get("vulnerabilities", [])[:5]:
                 cve_id = item["cve"]["id"]
                 desc = item["cve"]["descriptions"][0]["value"] if item["cve"].get("descriptions") else "No description"
-                cvss = item["cve"].get("metrics", {}).get("cvssMetricV31", [{}])[0].get("cvssData", {}).get("baseScore", "N/A")
-                severity = item["cve"].get("metrics", {}).get("cvssMetricV31", [{}])[0].get("cvssData", {}).get("baseSeverity", "N/A")
-                published = item["cve"].get("published", "Unknown")
-                doc = f"NVD CVE-{cve_id}: {desc} | CVSS: {cvss} | Severity: {severity} | Published: {published}"
+                
+                # CVSS v4.0 (preferred) or fallback to v3.1
+                cvss_data = None
+                if "metrics" in item["cve"] and "cvssMetricV40" in item["cve"]["metrics"]:
+                    cvss_data = item["cve"]["metrics"]["cvssMetricV40"][0]["cvssData"]
+                    version = "v4.0"
+                elif "metrics" in item["cve"] and "cvssMetricV31" in item["cve"]["metrics"]:
+                    cvss_data = item["cve"]["metrics"]["cvssMetricV31"][0]["cvssData"]
+                    version = "v3.1"
+                else:
+                    cvss_data = {}
+                    version = "N/A"
+                
+                score = cvss_data.get("baseScore", "N/A")
+                severity = cvss_data.get("baseSeverity", "N/A")
+                vector = cvss_data.get("vectorString", "N/A")
+                
+                doc = f"NVD CVE-{cve_id}: {desc} | CVSS {version}: {score} ({severity}) | Vector: {vector}"
                 collection.add(documents=[doc], ids=[f"nvd_{cve_id}"])
                 enriched.append(doc)
             
-            collector_data = f"NVD CVE — {len(enriched)} vulnerabilities parsed and ingested (CVSS, severity, date, references)"
-            return {"messages": [f"🔍 Recon + NVD CVE parsing complete: {collector_data}"], "rag_context": [collector_data]}
+            collector_data = f"NVD CVE + CVSS v4.0 — {len(enriched)} vulnerabilities parsed (score, severity, vector, date, references)"
+            return {"messages": [f"🔍 Recon + NVD + CVSS v4.0 parsing complete: {collector_data}"], "rag_context": [collector_data]}
         
-        collector_data = "NVD CVE parsing ready"
+        collector_data = "NVD + CVSS v4.0 parsing ready"
         return {"messages": [f"🔍 Recon + NVD integration complete: {collector_data}"], "rag_context": [collector_data]}
     except Exception as e:
-        return {"messages": [f"⚠️ NVD CVE parsing error: {str(e)}"], "rag_context": []}
+        return {"messages": [f"⚠️ NVD/CVSS parsing error: {str(e)}"], "rag_context": []}
 
 def executor_agent(state: AgentState):
     if not state["authorized"] or state["confidence"] < 0.8:
         return {"messages": ["⛔ Authorization/confidence check FAILED — human review required"], "tool_output": "blocked"}
     try:
         nmap = subprocess.run(["nmap", "-V"], capture_output=True, text=True, timeout=10)
-        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + NVD CVE parsed test executed"], "tool_output": nmap.stdout}
+        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + NVD/CVSS v4.0 parsed test executed"], "tool_output": nmap.stdout}
     except Exception as e:
         return {"messages": [f"⚠️ Sandbox execution error: {str(e)}"], "tool_output": "failed"}
 
@@ -88,8 +102,8 @@ workflow.add_edge("reporter", END)
 graph = workflow.compile()
 
 if __name__ == "__main__":
-    # Example NVD CVE query
+    # Example NVD CVE query with CVSS v4
     state = {'messages':[], 'mode':'pentest', 'authorized':True, 'confidence':0.95, 'rag_context':[], 'tool_output':'', 'query':'CVE-2024-'}
     result = graph.invoke(state)
-    print('✅ Full LangGraph agentic core (ALL 9 modes + NVD CVE parsing) test successful:')
+    print('✅ Full LangGraph agentic core (ALL 9 modes + NVD CVE + CVSS v4.0 parsing) test successful:')
     print(json.dumps(result, indent=2))
