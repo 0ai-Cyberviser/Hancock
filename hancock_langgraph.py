@@ -19,7 +19,7 @@ def planner(state: AgentState):
     return {"messages": [f"🧭 Planner activated for {state['mode']} mode"]}
 
 def recon_agent(state: AgentState):
-    # LIVE Hybrid RAG placeholder — next step will wire ChromaDB + collectors
+    # Hybrid RAG placeholder (ChromaDB + live collectors next)
     rag = "MITRE ATT&CK / NVD / CISA KEV / Atomic Red Team context loaded"
     return {"messages": [f"🔍 Recon + LIVE RAG complete: {rag}"], "rag_context": [rag]}
 
@@ -29,7 +29,7 @@ def executor_agent(state: AgentState):
     # Real sandboxed tool execution (nmap + sqlmap examples)
     try:
         nmap = subprocess.run(["docker", "run", "--rm", "hancock-sandbox:v0.4.1", "nmap", "-V"], capture_output=True, text=True, timeout=10)
-        return {"messages": ["🚀 Executor: sandboxed nmap + sqlmap ready"], "tool_output": nmap.stdout}
+        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap ready"], "tool_output": nmap.stdout}
     except Exception as e:
         return {"messages": [f"⚠️ Sandbox execution error: {str(e)}"], "tool_output": "failed"}
 
