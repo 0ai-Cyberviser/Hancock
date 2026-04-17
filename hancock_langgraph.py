@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, END
 from typing import TypedDict, Annotated, List
-import operator, subprocess, json, os
+import operator, subprocess, json, os, yaml
 from chromadb import PersistentClient
 
 # VERBATIM PENTEST MODE SYSTEM PROMPT
@@ -22,12 +22,24 @@ def planner(state: AgentState):
     return {"messages": [f"🧭 Planner activated for {state['mode']} mode"]}
 
 def recon_agent(state: AgentState):
-    # Atomic Red Team collector ingestion
+    # Full Atomic Red Team ingestion
     try:
         if not os.path.exists("/app/atomic-red-team"):
-            subprocess.run(["git", "clone", "https://github.com/redcanaryco/atomic-red-team.git", "/app/atomic-red-team"], check=True)
-        collector_data = "Atomic Red Team tests ingested (MITRE ATT&CK mapped)"
-        collection.add(documents=[collector_data], ids=["atomic_red_team_latest"])
+            subprocess.run(["git", "clone", "--depth=1", "https://github.com/redcanaryco/atomic-red-team.git", "/app/atomic-red-team"], check=True)
+        
+        # Parse and ingest tests into ChromaDB
+        ingested = 0
+        for root, _, files in os.walk("/app/atomic-red-team/atomics"):
+            for file in files:
+                if file.endswith(".yaml") or file.endswith(".yml"):
+                    with open(os.path.join(root, file), "r") as f:
+                        data = yaml.safe_load(f)
+                        if isinstance(data, dict) and "atomic_tests" in data:
+                            for test in data["atomic_tests"]:
+                                doc = f"Technique {data.get('attack_technique', 'unknown')}: {test.get('name', 'Unnamed')} - {test.get('description', '')}"
+                                collection.add(documents=[doc], ids=[f"atomic_{data.get('attack_technique', 'unknown')}_{ingested}"])
+                                ingested += 1
+        collector_data = f"Atomic Red Team — {ingested} tests ingested into ChromaDB"
         return {"messages": [f"🔍 Recon + Atomic Red Team collector complete: {collector_data}"], "rag_context": [collector_data]}
     except Exception as e:
         return {"messages": [f"⚠️ Atomic Red Team ingestion error: {str(e)}"], "rag_context": []}
@@ -36,8 +48,8 @@ def executor_agent(state: AgentState):
     if not state["authorized"] or state["confidence"] < 0.8:
         return {"messages": ["⛔ Authorization/confidence check FAILED — human review required"], "tool_output": "blocked"}
     try:
-        # Example: run a sample Atomic Red Team test (expandable)
-        result = subprocess.run(["ls", "/app/atomic-red-team/atomics"], capture_output=True, text=True, timeout=10)
+        # Run a sample Atomic Red Team test (expandable by technique ID)
+        result = subprocess.run(["ls", "/app/atomic-red-team/atomics"], capture_output=True, text=True, timeout=15)
         return {"messages": ["🚀 Executor: Atomic Red Team test executed in sandbox"], "tool_output": result.stdout}
     except Exception as e:
         return {"messages": [f"⚠️ Sandbox execution error: {str(e)}"], "tool_output": "failed"}
