@@ -5,7 +5,7 @@ RUN apt update && apt install -y \
     docker.io python3 python3-pip python3-venv python3-requests
 
 RUN pip install --no-cache-dir --break-system-packages \
-    langgraph langchain langchain-core langchain-community pydantic chromadb
+    langgraph langchain langchain-core langchain-community pydantic chromadb beautifulsoup4
 
 COPY hancock_langgraph.py /app/
 WORKDIR /app

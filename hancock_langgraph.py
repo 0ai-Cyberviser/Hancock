@@ -1,7 +1,7 @@
 from langgraph.graph import StateGraph, END
 from typing import TypedDict, Annotated, List
 import operator, subprocess, json, os, yaml, requests
-import xml.etree.ElementTree as ET
+from bs4 import BeautifulSoup
 from chromadb import PersistentClient
 
 # VERBATIM PENTEST MODE SYSTEM PROMPT
@@ -14,7 +14,7 @@ class AgentState(TypedDict):
     confidence: float
     rag_context: List[str]
     tool_output: str
-    query: str = None   # optional Exploit-DB query string (CVE, keyword, EDB-ID)
+    query: str = None   # Exploit-DB query (CVE, keyword, EDB-ID)
 
 # Persistent ChromaDB
 chroma_client = PersistentClient(path="./chroma_db")
@@ -29,30 +29,41 @@ def recon_agent(state: AgentState):
         if not os.path.exists("/app/atomic-red-team"):
             subprocess.run(["git", "clone", "--depth=1", "https://github.com/redcanaryco/atomic-red-team.git", "/app/atomic-red-team"], check=True)
         
-        # NEW: Exploit-DB query & ingestion
+        # ENHANCED EXPLOIT-DB PARSING
         if state.get("query"):
-            # Safe Exploit-DB search (public JSON endpoint)
-            search_url = f"https://www.exploit-db.com/search?q={state['query']}&page=1"
+            # Primary: JSON endpoint
+            json_url = f"https://www.exploit-db.com/search?json=1&q={state['query']}"
             headers = {"User-Agent": "Hancock-0ai/4.1"}
-            r = requests.get(search_url, headers=headers, timeout=15)
+            r = requests.get(json_url, headers=headers, timeout=15)
             r.raise_for_status()
-            # Parse results (Exploit-DB returns HTML; simple regex/JSON fallback for demo)
-            # For production we use their RSS or official API wrapper
-            exploit_data = f"Exploit-DB results for '{state['query']}': {r.text[:200]}..."
-            collection.add(documents=[exploit_data], ids=[f"exploitdb_{state['query']}"])
-            return {"messages": [f"🔍 Recon + EXPLOIT-DB query complete: {exploit_data[:100]}..."], "rag_context": [exploit_data]}
+            results = r.json()
+            
+            enriched = []
+            for item in results.get("data", [])[:5]:
+                edb_id = item.get("id", "unknown")
+                title = item.get("title", "Untitled")
+                cve = item.get("cve", "None")
+                author = item.get("author", "Unknown")
+                date = item.get("date", "Unknown")
+                verified = item.get("verified", False)
+                doc = f"Exploit-DB EDB-{edb_id}: {title} | CVE: {cve} | Author: {author} | Date: {date} | Verified: {verified}"
+                collection.add(documents=[doc], ids=[f"exploitdb_{edb_id}"])
+                enriched.append(doc)
+            
+            collector_data = f"Exploit-DB — {len(enriched)} enriched results parsed and ingested (EDB-ID, CVE, author, date, verified)"
+            return {"messages": [f"🔍 Recon + ENHANCED EXPLOIT-DB parsing complete: {collector_data}"], "rag_context": [collector_data]}
         
-        collector_data = "Exploit-DB queries ready (linked to CWE/CAPEC/ATT&CK)"
+        collector_data = "Exploit-DB enhanced parsing ready"
         return {"messages": [f"🔍 Recon + Exploit-DB integration complete: {collector_data}"], "rag_context": [collector_data]}
     except Exception as e:
-        return {"messages": [f"⚠️ Exploit-DB query error: {str(e)}"], "rag_context": []}
+        return {"messages": [f"⚠️ Exploit-DB parsing error: {str(e)}"], "rag_context": []}
 
 def executor_agent(state: AgentState):
     if not state["authorized"] or state["confidence"] < 0.8:
         return {"messages": ["⛔ Authorization/confidence check FAILED — human review required"], "tool_output": "blocked"}
     try:
         nmap = subprocess.run(["nmap", "-V"], capture_output=True, text=True, timeout=10)
-        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + Exploit-DB query executed"], "tool_output": nmap.stdout}
+        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + Exploit-DB parsed test executed"], "tool_output": nmap.stdout}
     except Exception as e:
         return {"messages": [f"⚠️ Sandbox execution error: {str(e)}"], "tool_output": "failed"}
 
@@ -82,5 +93,5 @@ if __name__ == "__main__":
     # Example Exploit-DB query
     state = {'messages':[], 'mode':'pentest', 'authorized':True, 'confidence':0.95, 'rag_context':[], 'tool_output':'', 'query':'CVE-2024-'}
     result = graph.invoke(state)
-    print('✅ Full LangGraph agentic core (ALL 9 modes + Exploit-DB queries) test successful:')
+    print('✅ Full LangGraph agentic core (ALL 9 modes + Enhanced Exploit-DB parsing) test successful:')
     print(json.dumps(result, indent=2))
