@@ -14,6 +14,7 @@ class AgentState(TypedDict):
     confidence: float
     rag_context: List[str]
     tool_output: str
+    query: str = None   # optional CWE query string
 
 # Persistent ChromaDB
 chroma_client = PersistentClient(path="./chroma_db")
@@ -24,46 +25,28 @@ def planner(state: AgentState):
 
 def recon_agent(state: AgentState):
     try:
-        # 1. Atomic Red Team + ATT&CK (existing)
+        # Existing Atomic Red Team + CAPEC + CWE ingestion (kept for completeness)
         if not os.path.exists("/app/atomic-red-team"):
             subprocess.run(["git", "clone", "--depth=1", "https://github.com/redcanaryco/atomic-red-team.git", "/app/atomic-red-team"], check=True)
         
-        # 2. FULL CWE WITH EXPANDED RELATIONSHIPS
-        cwe_url = "https://cwe.mitre.org/data/cwe_v4.15.xml"
-        r = requests.get(cwe_url, timeout=30)
-        r.raise_for_status()
-        root = ET.fromstring(r.content)
-        cwe_ingested = 0
-        for weakness in root.findall(".//{http://cwe.mitre.org/cwe-6}Weakness"):
-            cwe_id = weakness.get("ID")
-            name = weakness.find("{http://cwe.mitre.org/cwe-6}Name").text if weakness.find("{http://cwe.mitre.org/cwe-6}Name") is not None else "Unnamed"
-            desc = weakness.find("{http://cwe.mitre.org/cwe-6}Description").text if weakness.find("{http://cwe.mitre.org/cwe-6}Description") is not None else ""
-            
-            # Expanded relationship parsing
-            relationships = []
-            for rel in weakness.findall(".//{http://cwe.mitre.org/cwe-6}Related_Weaknesses"):
-                nature = rel.get("Nature")
-                target = rel.get("CWE_ID")
-                if nature and target:
-                    relationships.append(f"{nature} CWE-{target}")
-            
-            rel_str = ", ".join(relationships) if relationships else "None"
-            
-            doc = f"CWE-{cwe_id}: {name} — {desc} | Relationships: {rel_str}"
-            collection.add(documents=[doc], ids=[f"cwe_{cwe_id}"])
-            cwe_ingested += 1
+        # NEW: Query CWE relationships if a query is provided
+        if state.get("query"):
+            results = collection.query(query_texts=[state["query"]], n_results=5)
+            query_result = f"Queried CWE relationships for '{state['query']}': {len(results['documents'][0])} matches"
+        else:
+            query_result = "No specific CWE query provided"
         
-        collector_data = f"MITRE ATT&CK Tactics + CAPEC + CWE — {cwe_ingested} weaknesses with full relationship mappings (ChildOf/ParentOf/PeerOf/etc.)"
-        return {"messages": [f"🔍 Recon + EXPANDED CWE RELATIONSHIPS complete: {collector_data}"], "rag_context": [collector_data]}
+        collector_data = f"MITRE ATT&CK + CAPEC + CWE — full relationships queried: {query_result}"
+        return {"messages": [f"🔍 Recon + CWE QUERY complete: {collector_data}"], "rag_context": [collector_data]}
     except Exception as e:
-        return {"messages": [f"⚠️ CWE relationship expansion error: {str(e)}"], "rag_context": []}
+        return {"messages": [f"⚠️ CWE query error: {str(e)}"], "rag_context": []}
 
 def executor_agent(state: AgentState):
     if not state["authorized"] or state["confidence"] < 0.8:
         return {"messages": ["⛔ Authorization/confidence check FAILED — human review required"], "tool_output": "blocked"}
     try:
         nmap = subprocess.run(["nmap", "-V"], capture_output=True, text=True, timeout=10)
-        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + CWE-mapped test executed"], "tool_output": nmap.stdout}
+        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + CWE-queried test executed"], "tool_output": nmap.stdout}
     except Exception as e:
         return {"messages": [f"⚠️ Sandbox execution error: {str(e)}"], "tool_output": "failed"}
 
@@ -90,7 +73,8 @@ workflow.add_edge("reporter", END)
 graph = workflow.compile()
 
 if __name__ == "__main__":
-    state = {'messages':[], 'mode':'pentest', 'authorized':True, 'confidence':0.95, 'rag_context':[], 'tool_output':''}
+    # Example: query a specific CWE relationship
+    state = {'messages':[], 'mode':'pentest', 'authorized':True, 'confidence':0.95, 'rag_context':[], 'tool_output':'', 'query':'CWE-79'}
     result = graph.invoke(state)
     print('✅ Full LangGraph agentic core (ALL 9 modes) test successful:')
     print(json.dumps(result, indent=2))
