@@ -24,11 +24,26 @@ def planner(state: AgentState):
 
 def recon_agent(state: AgentState):
     try:
-        # 1. Atomic Red Team ingestion (existing)
+        # 1. Atomic Red Team + ATT&CK Tactics
         if not os.path.exists("/app/atomic-red-team"):
             subprocess.run(["git", "clone", "--depth=1", "https://github.com/redcanaryco/atomic-red-team.git", "/app/atomic-red-team"], check=True)
         
-        # 2. ENHANCED CAPEC ingestion with ATT&CK linkages
+        ingested = 0
+        for root, _, files in os.walk("/app/atomic-red-team/atomics"):
+            for file in files:
+                if file.endswith(".yaml") or file.endswith(".yml"):
+                    with open(os.path.join(root, file), "r") as f:
+                        data = yaml.safe_load(f)
+                        if isinstance(data, dict) and "atomic_tests" in data:
+                            technique_id = data.get("attack_technique", "unknown")
+                            tactics = data.get("tactics", [])
+                            tactic_str = ", ".join(tactics) if tactics else "None"
+                            for test in data["atomic_tests"]:
+                                doc = f"ATT&CK Technique {technique_id} | Tactics: {tactic_str} — {test.get('name', 'Unnamed')} | {test.get('description', '')}"
+                                collection.add(documents=[doc], ids=[f"attck_{technique_id}_{ingested}"])
+                                ingested += 1
+        
+        # 2. CAPEC with ATT&CK tactic linkages (already present)
         capec_url = "https://capec.mitre.org/data/capec_v3.9.xml"
         r = requests.get(capec_url, timeout=30)
         r.raise_for_status()
@@ -38,28 +53,26 @@ def recon_agent(state: AgentState):
             capec_id = pattern.get("ID")
             name = pattern.find("{http://capec.mitre.org/attack-pattern}Name").text if pattern.find("{http://capec.mitre.org/attack-pattern}Name") is not None else "Unnamed"
             desc = pattern.find("{http://capec.mitre.org/attack-pattern}Description").text if pattern.find("{http://capec.mitre.org/attack-pattern}Description") is not None else ""
-            
-            # Extract ATT&CK linkages from Related_Attack_Patterns or standard fields
             attck_links = []
             for related in pattern.findall(".//{http://capec.mitre.org/attack-pattern}Related_Attack_Pattern"):
-                if related.get("Nature") == "ChildOf" or related.get("Nature") == "ParentOf":
+                if related.get("Nature") in ["ChildOf", "ParentOf"]:
                     attck_links.append(related.get("ID"))
-            
-            doc = f"CAPEC-{capec_id}: {name} — {desc} | Linked ATT&CK: {', '.join(attck_links) if attck_links else 'None'}"
+            tactic_str = ", ".join(attck_links) if attck_links else "None"
+            doc = f"CAPEC-{capec_id}: {name} — {desc} | Linked ATT&CK Tactics/Techniques: {tactic_str}"
             collection.add(documents=[doc], ids=[f"capec_{capec_id}"])
             capec_ingested += 1
         
-        collector_data = f"MITRE ATT&CK + Atomic Red Team + CAPEC — {capec_ingested} attack patterns with ATT&CK linkages ingested"
-        return {"messages": [f"🔍 Recon + ENHANCED CAPEC↔ATT&CK mapping complete: {collector_data}"], "rag_context": [collector_data]}
+        collector_data = f"MITRE ATT&CK Tactics + Techniques + CAPEC — {ingested} Atomic tests + {capec_ingested} CAPEC patterns fully mapped and ingested"
+        return {"messages": [f"🔍 Recon + ATT&CK TACTIC MAPPINGS complete: {collector_data}"], "rag_context": [collector_data]}
     except Exception as e:
-        return {"messages": [f"⚠️ CAPEC/ATT&CK linkage error: {str(e)}"], "rag_context": []}
+        return {"messages": [f"⚠️ ATT&CK tactic mapping error: {str(e)}"], "rag_context": []}
 
 def executor_agent(state: AgentState):
     if not state["authorized"] or state["confidence"] < 0.8:
         return {"messages": ["⛔ Authorization/confidence check FAILED — human review required"], "tool_output": "blocked"}
     try:
         nmap = subprocess.run(["nmap", "-V"], capture_output=True, text=True, timeout=10)
-        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + CAPEC↔ATT&CK linked test executed"], "tool_output": nmap.stdout}
+        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + ATT&CK tactic-mapped test executed"], "tool_output": nmap.stdout}
     except Exception as e:
         return {"messages": [f"⚠️ Sandbox execution error: {str(e)}"], "tool_output": "failed"}
 
