@@ -7,6 +7,8 @@ RUN apt update && apt install -y \
 RUN pip install --no-cache-dir --break-system-packages \
     langgraph langchain langchain-core langchain-community pydantic chromadb
 
+# Copy LangGraph core
 COPY hancock_langgraph.py /app/
+
 WORKDIR /app
 CMD ["python3", "hancock_langgraph.py"]
