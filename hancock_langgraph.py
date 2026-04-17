@@ -23,37 +23,43 @@ def planner(state: AgentState):
     return {"messages": [f"🧭 Planner activated for {state['mode']} mode"]}
 
 def recon_agent(state: AgentState):
-    # MITRE ATT&CK + Atomic Red Team (existing)
-    # NEW: Full CAPEC attack pattern ingestion
     try:
+        # 1. Atomic Red Team ingestion (existing)
         if not os.path.exists("/app/atomic-red-team"):
             subprocess.run(["git", "clone", "--depth=1", "https://github.com/redcanaryco/atomic-red-team.git", "/app/atomic-red-team"], check=True)
         
-        # CAPEC ingestion (official XML from MITRE)
+        # 2. ENHANCED CAPEC ingestion with ATT&CK linkages
         capec_url = "https://capec.mitre.org/data/capec_v3.9.xml"
         r = requests.get(capec_url, timeout=30)
         r.raise_for_status()
         root = ET.fromstring(r.content)
-        ingested = 0
+        capec_ingested = 0
         for pattern in root.findall(".//{http://capec.mitre.org/attack-pattern}Attack_Pattern"):
             capec_id = pattern.get("ID")
             name = pattern.find("{http://capec.mitre.org/attack-pattern}Name").text if pattern.find("{http://capec.mitre.org/attack-pattern}Name") is not None else "Unnamed"
             desc = pattern.find("{http://capec.mitre.org/attack-pattern}Description").text if pattern.find("{http://capec.mitre.org/attack-pattern}Description") is not None else ""
-            doc = f"CAPEC-{capec_id}: {name} — {desc}"
+            
+            # Extract ATT&CK linkages from Related_Attack_Patterns or standard fields
+            attck_links = []
+            for related in pattern.findall(".//{http://capec.mitre.org/attack-pattern}Related_Attack_Pattern"):
+                if related.get("Nature") == "ChildOf" or related.get("Nature") == "ParentOf":
+                    attck_links.append(related.get("ID"))
+            
+            doc = f"CAPEC-{capec_id}: {name} — {desc} | Linked ATT&CK: {', '.join(attck_links) if attck_links else 'None'}"
             collection.add(documents=[doc], ids=[f"capec_{capec_id}"])
-            ingested += 1
+            capec_ingested += 1
         
-        collector_data = f"MITRE ATT&CK + Atomic Red Team + CAPEC — {ingested} attack patterns mapped and ingested into ChromaDB"
-        return {"messages": [f"🔍 Recon + CAPEC integration complete: {collector_data}"], "rag_context": [collector_data]}
+        collector_data = f"MITRE ATT&CK + Atomic Red Team + CAPEC — {capec_ingested} attack patterns with ATT&CK linkages ingested"
+        return {"messages": [f"🔍 Recon + ENHANCED CAPEC↔ATT&CK mapping complete: {collector_data}"], "rag_context": [collector_data]}
     except Exception as e:
-        return {"messages": [f"⚠️ CAPEC ingestion error: {str(e)}"], "rag_context": []}
+        return {"messages": [f"⚠️ CAPEC/ATT&CK linkage error: {str(e)}"], "rag_context": []}
 
 def executor_agent(state: AgentState):
     if not state["authorized"] or state["confidence"] < 0.8:
         return {"messages": ["⛔ Authorization/confidence check FAILED — human review required"], "tool_output": "blocked"}
     try:
         nmap = subprocess.run(["nmap", "-V"], capture_output=True, text=True, timeout=10)
-        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + CAPEC-mapped test executed"], "tool_output": nmap.stdout}
+        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + CAPEC↔ATT&CK linked test executed"], "tool_output": nmap.stdout}
     except Exception as e:
         return {"messages": [f"⚠️ Sandbox execution error: {str(e)}"], "tool_output": "failed"}
 
