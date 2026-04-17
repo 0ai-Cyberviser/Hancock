@@ -1,6 +1,7 @@
 from langgraph.graph import StateGraph, END
 from typing import TypedDict, Annotated, List
-import operator, subprocess, json, os, yaml
+import operator, subprocess, json, os, yaml, requests
+import xml.etree.ElementTree as ET
 from chromadb import PersistentClient
 
 # VERBATIM PENTEST MODE SYSTEM PROMPT
@@ -22,34 +23,37 @@ def planner(state: AgentState):
     return {"messages": [f"🧭 Planner activated for {state['mode']} mode"]}
 
 def recon_agent(state: AgentState):
-    # Full Atomic Red Team + MITRE ATT&CK mapping ingestion
+    # MITRE ATT&CK + Atomic Red Team (existing)
+    # NEW: Full CAPEC attack pattern ingestion
     try:
         if not os.path.exists("/app/atomic-red-team"):
             subprocess.run(["git", "clone", "--depth=1", "https://github.com/redcanaryco/atomic-red-team.git", "/app/atomic-red-team"], check=True)
         
+        # CAPEC ingestion (official XML from MITRE)
+        capec_url = "https://capec.mitre.org/data/capec_v3.9.xml"
+        r = requests.get(capec_url, timeout=30)
+        r.raise_for_status()
+        root = ET.fromstring(r.content)
         ingested = 0
-        for root, _, files in os.walk("/app/atomic-red-team/atomics"):
-            for file in files:
-                if file.endswith(".yaml") or file.endswith(".yml"):
-                    with open(os.path.join(root, file), "r") as f:
-                        data = yaml.safe_load(f)
-                        if isinstance(data, dict) and "atomic_tests" in data:
-                            technique_id = data.get("attack_technique", "unknown")
-                            for test in data["atomic_tests"]:
-                                doc = f"MITRE ATT&CK Technique {technique_id}: {test.get('name', 'Unnamed')} — {test.get('description', '')} | Tactics: {data.get('tactics', [])}"
-                                collection.add(documents=[doc], ids=[f"mitre_{technique_id}_{ingested}"])
-                                ingested += 1
-        collector_data = f"MITRE ATT&CK + Atomic Red Team — {ingested} tests mapped and ingested into ChromaDB"
-        return {"messages": [f"🔍 Recon + MITRE ATT&CK mapping complete: {collector_data}"], "rag_context": [collector_data]}
+        for pattern in root.findall(".//{http://capec.mitre.org/attack-pattern}Attack_Pattern"):
+            capec_id = pattern.get("ID")
+            name = pattern.find("{http://capec.mitre.org/attack-pattern}Name").text if pattern.find("{http://capec.mitre.org/attack-pattern}Name") is not None else "Unnamed"
+            desc = pattern.find("{http://capec.mitre.org/attack-pattern}Description").text if pattern.find("{http://capec.mitre.org/attack-pattern}Description") is not None else ""
+            doc = f"CAPEC-{capec_id}: {name} — {desc}"
+            collection.add(documents=[doc], ids=[f"capec_{capec_id}"])
+            ingested += 1
+        
+        collector_data = f"MITRE ATT&CK + Atomic Red Team + CAPEC — {ingested} attack patterns mapped and ingested into ChromaDB"
+        return {"messages": [f"🔍 Recon + CAPEC integration complete: {collector_data}"], "rag_context": [collector_data]}
     except Exception as e:
-        return {"messages": [f"⚠️ MITRE ATT&CK ingestion error: {str(e)}"], "rag_context": []}
+        return {"messages": [f"⚠️ CAPEC ingestion error: {str(e)}"], "rag_context": []}
 
 def executor_agent(state: AgentState):
     if not state["authorized"] or state["confidence"] < 0.8:
         return {"messages": ["⛔ Authorization/confidence check FAILED — human review required"], "tool_output": "blocked"}
     try:
         nmap = subprocess.run(["nmap", "-V"], capture_output=True, text=True, timeout=10)
-        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + MITRE ATT&CK mapped test executed"], "tool_output": nmap.stdout}
+        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + CAPEC-mapped test executed"], "tool_output": nmap.stdout}
     except Exception as e:
         return {"messages": [f"⚠️ Sandbox execution error: {str(e)}"], "tool_output": "failed"}
 
