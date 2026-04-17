@@ -24,11 +24,11 @@ def planner(state: AgentState):
 
 def recon_agent(state: AgentState):
     try:
-        # 1. Atomic Red Team + ATT&CK Tactics (existing)
+        # 1. Atomic Red Team + ATT&CK (existing)
         if not os.path.exists("/app/atomic-red-team"):
             subprocess.run(["git", "clone", "--depth=1", "https://github.com/redcanaryco/atomic-red-team.git", "/app/atomic-red-team"], check=True)
         
-        # 2. CWE Weakness Mappings + CAPEC/ATT&CK linkages
+        # 2. FULL CWE WITH EXPANDED RELATIONSHIPS
         cwe_url = "https://cwe.mitre.org/data/cwe_v4.15.xml"
         r = requests.get(cwe_url, timeout=30)
         r.raise_for_status()
@@ -39,21 +39,24 @@ def recon_agent(state: AgentState):
             name = weakness.find("{http://cwe.mitre.org/cwe-6}Name").text if weakness.find("{http://cwe.mitre.org/cwe-6}Name") is not None else "Unnamed"
             desc = weakness.find("{http://cwe.mitre.org/cwe-6}Description").text if weakness.find("{http://cwe.mitre.org/cwe-6}Description") is not None else ""
             
-            # Extract related CAPEC/ATT&CK where present
-            related = []
+            # Expanded relationship parsing
+            relationships = []
             for rel in weakness.findall(".//{http://cwe.mitre.org/cwe-6}Related_Weaknesses"):
-                if rel.get("Nature") == "ChildOf" or rel.get("Nature") == "ParentOf":
-                    related.append(rel.get("CWE_ID"))
-            related_str = ", ".join(related) if related else "None"
+                nature = rel.get("Nature")
+                target = rel.get("CWE_ID")
+                if nature and target:
+                    relationships.append(f"{nature} CWE-{target}")
             
-            doc = f"CWE-{cwe_id}: {name} — {desc} | Related CAPEC/ATT&CK: {related_str}"
+            rel_str = ", ".join(relationships) if relationships else "None"
+            
+            doc = f"CWE-{cwe_id}: {name} — {desc} | Relationships: {rel_str}"
             collection.add(documents=[doc], ids=[f"cwe_{cwe_id}"])
             cwe_ingested += 1
         
-        collector_data = f"MITRE ATT&CK Tactics + CAPEC + CWE — {cwe_ingested} weaknesses fully mapped and ingested"
-        return {"messages": [f"🔍 Recon + CWE Weakness Mappings complete: {collector_data}"], "rag_context": [collector_data]}
+        collector_data = f"MITRE ATT&CK Tactics + CAPEC + CWE — {cwe_ingested} weaknesses with full relationship mappings (ChildOf/ParentOf/PeerOf/etc.)"
+        return {"messages": [f"🔍 Recon + EXPANDED CWE RELATIONSHIPS complete: {collector_data}"], "rag_context": [collector_data]}
     except Exception as e:
-        return {"messages": [f"⚠️ CWE mapping error: {str(e)}"], "rag_context": []}
+        return {"messages": [f"⚠️ CWE relationship expansion error: {str(e)}"], "rag_context": []}
 
 def executor_agent(state: AgentState):
     if not state["authorized"] or state["confidence"] < 0.8:
