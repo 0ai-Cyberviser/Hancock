@@ -687,3 +687,20 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 <div align="center">
 Maintained by <a href="https://github.com/0ai-Cyberviser">Johnny Watters (0ai-Cyberviser)</a> · Powered by NVIDIA NIM · Mistral 7B · LoRA
 </div>
+
+## Sponsors & Supporters
+
+**Hancock Bronze Supporter** — $5/mo  
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/0aic)
+
+**Scan to join instantly:**
+![Hancock Bronze QR](assets/bmc_qr.png)
+
+**Perks you get:**
+- Early access to new modes & preview builds
+- Exclusive technical deep-dives & roadmap votes
+- Priority support + permanent name in Sponsors section
+- Private Discord “Hancock Bronze” role & members-only channel
+
+Thank you to every Bronze Supporter powering the next evolution of Hancock.
+

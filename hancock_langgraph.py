@@ -102,3 +102,16 @@ if __name__ == "__main__":
     result = graph.invoke(state)
     print('✅ Full LangGraph agentic core (ALL 9 modes + Google Accounts integration) test successful:')
     print(json.dumps(result, indent=2))
+
+def sponsor_mode_agent(state: AgentState):
+    if "bronze" in str(state.get("messages", [])).lower() or state.get("sponsor", False):
+        return {
+            "messages": ["Sponsor Mode activated — priority Hybrid RAG + early-access preview builds"],
+            "rag_context": ["Sponsor-exclusive enrichment: live NVD/MITRE/CISA + private fine-tuned datasets"],
+            "confidence": 0.98
+        }
+    return {"messages": ["Standard mode"], "confidence": state.get("confidence", 0.92)}
+
+workflow.add_node("sponsor", sponsor_mode_agent)
+workflow.add_edge("planner", "sponsor")
+workflow.add_edge("sponsor", "recon")
