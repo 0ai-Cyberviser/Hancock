@@ -350,6 +350,20 @@ class TestRateLimit:
         assert r.status_code == 429
         assert "Rate limit" in r.get_json()["error"]
 
+    def test_stale_rate_limit_buckets_are_evicted(self, tight_app):
+        c = tight_app.test_client()
+        payload = json.dumps({"question": "test"})
+        ct = "application/json"
+
+        from unittest.mock import patch
+
+        with patch("time.time", side_effect=[0, 0, 120, 120]):
+            c.post("/v1/ask", data=payload, content_type=ct)
+            r = c.post("/v1/ask", data=payload, content_type=ct)
+
+        assert r.status_code == 200
+        assert r.headers["X-RateLimit-Remaining"] == "2"
+
 
 # ── Input validation ──────────────────────────────────────────────────────────
 
