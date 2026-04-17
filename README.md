@@ -704,3 +704,16 @@ Maintained by <a href="https://github.com/0ai-Cyberviser">Johnny Watters (0ai-Cy
 
 Thank you to every Bronze Supporter powering the next evolution of Hancock.
 
+
+## Funding & Sponsors
+
+**Support Hancock development**
+
+- **Buy Me a Coffee** (Bronze $5/mo) → [buymeacoffee.com/0aic](https://buymeacoffee.com/0aic)  
+  ![Hancock Bronze QR](assets/bmc_qr.png)
+
+- **Open Collective** → [opencollective.com/hancock](https://opencollective.com/hancock) (coming soon — transparent expense tracking)
+
+- **GitHub Sponsors** → [github.com/sponsors/0ai-Cyberviser](https://github.com/sponsors/0ai-Cyberviser)
+
+Every contribution directly funds Hybrid RAG, secure sandboxes, fine-tuning, and Phase 4 enterprise features. Thank you!
