@@ -1,4 +1,0 @@
-GitHub MCP smoke test
-Created: 2026-04-17T04:12:07Z
-Updated: 2026-04-17T04:12:22Z
-Purpose: validate branch/file/PR connector paths.
