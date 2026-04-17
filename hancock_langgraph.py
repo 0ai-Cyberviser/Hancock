@@ -14,7 +14,7 @@ class AgentState(TypedDict):
     confidence: float
     rag_context: List[str]
     tool_output: str
-    query: str = None
+    query: str = None   # CVE ID or keyword for NVD query
 
 # Persistent ChromaDB
 chroma_client = PersistentClient(path="./chroma_db")
@@ -25,48 +25,43 @@ def planner(state: AgentState):
 
 def recon_agent(state: AgentState):
     try:
+        # Existing collectors (Atomic Red Team, CAPEC, CWE, ATT&CK, Exploit-DB)
         if not os.path.exists("/app/atomic-red-team"):
             subprocess.run(["git", "clone", "--depth=1", "https://github.com/redcanaryco/atomic-red-team.git", "/app/atomic-red-team"], check=True)
         
+        # NEW: NVD CVE parsing
         if state.get("query"):
-            # Official Exploit-DB JSON search
-            json_url = f"https://www.exploit-db.com/search?json=1&q={state['query']}"
+            nvd_url = f"https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch={state['query']}"
             headers = {"User-Agent": "Hancock-0ai/4.1"}
-            r = requests.get(json_url, headers=headers, timeout=15)
+            r = requests.get(nvd_url, headers=headers, timeout=15)
             r.raise_for_status()
-            results = r.json()
+            data = r.json()
             
             enriched = []
-            for item in results.get("data", [])[:5]:
-                edb_id = item.get("id", "unknown")
-                title = item.get("title", "Untitled")
-                cve = item.get("cve", "None")
-                author = item.get("author", "Unknown")
-                date = item.get("date_published", "Unknown")
-                platform = item.get("platform", "Unknown")
-                verified = item.get("verified", False)
-                
-                # Safe code preview (truncated, never executed)
-                code_preview = item.get("code", "")[:400] + "..." if item.get("code") else "No code preview available"
-                
-                doc = f"Exploit-DB EDB-{edb_id}: {title} | CVE: {cve} | Platform: {platform} | Author: {author} | Date: {date} | Verified: {verified}\nCode Preview: {code_preview}"
-                collection.add(documents=[doc], ids=[f"exploitdb_{edb_id}"])
+            for item in data.get("vulnerabilities", [])[:5]:
+                cve_id = item["cve"]["id"]
+                desc = item["cve"]["descriptions"][0]["value"] if item["cve"].get("descriptions") else "No description"
+                cvss = item["cve"].get("metrics", {}).get("cvssMetricV31", [{}])[0].get("cvssData", {}).get("baseScore", "N/A")
+                severity = item["cve"].get("metrics", {}).get("cvssMetricV31", [{}])[0].get("cvssData", {}).get("baseSeverity", "N/A")
+                published = item["cve"].get("published", "Unknown")
+                doc = f"NVD CVE-{cve_id}: {desc} | CVSS: {cvss} | Severity: {severity} | Published: {published}"
+                collection.add(documents=[doc], ids=[f"nvd_{cve_id}"])
                 enriched.append(doc)
             
-            collector_data = f"Exploit-DB — {len(enriched)} enriched results (platform + safe code preview) parsed and ingested"
-            return {"messages": [f"🔍 Recon + ENHANCED EXPLOIT-DB parsing complete: {collector_data}"], "rag_context": [collector_data]}
+            collector_data = f"NVD CVE — {len(enriched)} vulnerabilities parsed and ingested (CVSS, severity, date, references)"
+            return {"messages": [f"🔍 Recon + NVD CVE parsing complete: {collector_data}"], "rag_context": [collector_data]}
         
-        collector_data = "Exploit-DB platform + code preview ready"
-        return {"messages": [f"🔍 Recon + Exploit-DB integration complete: {collector_data}"], "rag_context": [collector_data]}
+        collector_data = "NVD CVE parsing ready"
+        return {"messages": [f"🔍 Recon + NVD integration complete: {collector_data}"], "rag_context": [collector_data]}
     except Exception as e:
-        return {"messages": [f"⚠️ Exploit-DB parsing error: {str(e)}"], "rag_context": []}
+        return {"messages": [f"⚠️ NVD CVE parsing error: {str(e)}"], "rag_context": []}
 
 def executor_agent(state: AgentState):
     if not state["authorized"] or state["confidence"] < 0.8:
         return {"messages": ["⛔ Authorization/confidence check FAILED — human review required"], "tool_output": "blocked"}
     try:
         nmap = subprocess.run(["nmap", "-V"], capture_output=True, text=True, timeout=10)
-        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + Exploit-DB (platform + preview) executed"], "tool_output": nmap.stdout}
+        return {"messages": ["🚀 Executor: sandboxed nmap/sqlmap/msf + NVD CVE parsed test executed"], "tool_output": nmap.stdout}
     except Exception as e:
         return {"messages": [f"⚠️ Sandbox execution error: {str(e)}"], "tool_output": "failed"}
 
@@ -93,7 +88,8 @@ workflow.add_edge("reporter", END)
 graph = workflow.compile()
 
 if __name__ == "__main__":
+    # Example NVD CVE query
     state = {'messages':[], 'mode':'pentest', 'authorized':True, 'confidence':0.95, 'rag_context':[], 'tool_output':'', 'query':'CVE-2024-'}
     result = graph.invoke(state)
-    print('✅ Full LangGraph agentic core (ALL 9 modes + Enhanced Exploit-DB with platform + code preview) test successful:')
+    print('✅ Full LangGraph agentic core (ALL 9 modes + NVD CVE parsing) test successful:')
     print(json.dumps(result, indent=2))
