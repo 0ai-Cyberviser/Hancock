@@ -699,21 +699,21 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
 ## 📄 License
 
-**CyberViser Proprietary License** — see [LICENSE](LICENSE) for full terms.
+**CyberViser / 0ai-Cyberviser Project License** — see [LICENSE](LICENSE) for
+repository terms and [OWNERSHIP.md](OWNERSHIP.md) for the control notice.
 
 - ✅ View and study the code
-- ✅ Run locally for personal/research use
-- ✅ Submit contributions (assigned to CyberViser)
-- ❌ Commercial use without a written license agreement
-- ❌ Redistribution or reselling
-- ❌ Building competing products or services
-- ❌ Training AI/ML models on the code or datasets
-- ❌ White-labeling or removing CyberViser branding
+- ✅ Run locally for personal or internal non-commercial evaluation
+- ✅ Submit contributions for maintainer review
+- ❗ Commercial or production use requires a separate written agreement
+- ❗ Branding, repository administration, and merge approval remain controlled by Johnny Watters / `0ai-Cyberviser`
+- ❗ Third-party materials and non-assigned contributions remain governed by their own terms
+- ❗ Maintainers may require additional written rights confirmation before merging a contribution
 
-**For commercial licensing:** contact@cyberviser.ai
+**Project contacts:** `0ai@cyberviserai.com` · `cyberviser@proton.me`
 
 ---
 
 <div align="center">
-Built by <a href="https://github.com/cyberviser">CyberViser</a> · Powered by NVIDIA NIM · Mistral 7B · LoRA
+Maintained by <a href="https://github.com/0ai-Cyberviser">Johnny Watters (0ai-Cyberviser)</a> · Powered by NVIDIA NIM · Mistral 7B · LoRA
 </div>

@@ -1,6 +1,7 @@
 # Contributing to Hancock
 
-Thank you for your interest in contributing to **Hancock** by CyberViser! 🛡️
+Thank you for your interest in contributing to **Hancock** by Johnny Watters
+(`0ai-Cyberviser`)! 🛡️
 
 ## Code of Conduct
 
@@ -37,6 +38,24 @@ Open an issue using the [Feature Request template](.github/ISSUE_TEMPLATE/featur
    ```
 8. **Push** and open a Pull Request
 
+## Ownership and Contribution Terms
+
+This repository is maintained by Johnny Watters (`0ai-Cyberviser`) under the
+project license in [LICENSE](LICENSE). Repository administration, release
+decisions, and branding control remain with the maintainer.
+
+By submitting a pull request, patch, dataset, prompt, documentation update, or
+other contribution for review, you confirm that:
+
+1. you have the legal right to submit the contribution;
+2. the contribution does not knowingly infringe third-party rights; and
+3. if the maintainer requests a separate written assignment, trademark
+   acknowledgment, or relicensing confirmation before merge, you will either
+   provide it or withdraw the contribution.
+
+Maintainers may decline or close contributions that do not come with whatever
+rights confirmation is needed for the project.
+
 ## Areas Where Help is Needed
 
 | Area | Description |
@@ -56,4 +75,5 @@ Open an issue using the [Feature Request template](.github/ISSUE_TEMPLATE/featur
 
 ## Questions?
 
-Open an issue or reach out at [github.com/cyberviser](https://github.com/cyberviser).
+Open an issue or reach out at
+[github.com/0ai-Cyberviser](https://github.com/0ai-Cyberviser).

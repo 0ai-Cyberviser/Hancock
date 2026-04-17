@@ -9,7 +9,8 @@ description = "Hancock AI Cybersecurity Agent — Python SDK (NVIDIA NIM backend
 readme = "clients/python/README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
-authors = [{ name = "CyberViser", email = "cyberviser@proton.me" }]
+authors = [{ name = "Johnny Watters", email = "0ai@cyberviserai.com" }]
+maintainers = [{ name = "0ai-Cyberviser", email = "cyberviser@proton.me" }]
 keywords = ["cybersecurity", "ai", "pentest", "soc", "llm", "nvidia", "security"]
 classifiers = [
   "Development Status :: 4 - Beta",

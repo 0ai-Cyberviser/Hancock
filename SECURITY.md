@@ -1,54 +1,19 @@
 # Security Policy
 
-## Reporting a Vulnerability
+This repository is operated by Johnny Watters (`0ai-Cyberviser`) as part of the `0AI` company portfolio.
 
-**CyberViser takes security seriously.** If you discover a vulnerability in Hancock, please do NOT open a public GitHub issue.
+If you discover a security vulnerability or a safety issue, do not open a public issue first.
 
-### How to Report
+Report privately to:
 
-Email: **security@cyberviser.ai**
+- 0ai@cyberviserai.com
+- cyberviser@proton.me
 
 Please include:
-- A description of the vulnerability
-- Steps to reproduce
-- Potential impact assessment
-- Any suggested remediation (optional)
 
-We will acknowledge receipt within **48 hours** and aim to resolve critical issues within **7 days**.
+- affected repository
+- impact summary
+- reproduction details
+- any suggested remediation
 
-### Scope
-
-This policy applies to the **Hancock** codebase:
-
-| Component | In Scope |
-|-----------|----------|
-| `hancock_agent.py` REST API | ✅ Yes |
-| Fine-tuning pipeline | ✅ Yes |
-| Data collectors | ✅ Yes |
-| GitHub Actions workflows | ✅ Yes |
-| Training data / JSONL files | ✅ Yes |
-| Fuzz targets (`fuzz/`) | ✅ Yes |
-| Third-party dependencies | ⚠️ Report upstream |
-
-### Out of Scope
-
-- Social engineering attacks
-- Physical attacks
-- Issues requiring physical access to a device
-- Issues in dependencies — please report those to the upstream project
-
-### Safe Harbor
-
-We will not take legal action against researchers who:
-- Report vulnerabilities in good faith
-- Do not access, modify, or delete data beyond what's necessary to demonstrate the issue
-- Do not disrupt service availability
-- Give us reasonable time to remediate before public disclosure
-
-### Responsible AI Use
-
-Hancock is designed **strictly for authorized security work**. If you discover the model can be prompted to assist with unauthorized attacks, please report this as a safety issue using the process above.
-
----
-
-*Thank you for helping keep CyberViser and the security community safe.*
+If the issue belongs to upstream code in a forked repository, report upstream as well when appropriate.
