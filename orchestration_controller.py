@@ -472,12 +472,6 @@ class OrchestrationController:
                 self._history = self._history[-self._max_history:]
 
 
-# [All remaining helper functions (_execute_in_thread, _execute_in_subprocess,
-# _subprocess_target, _subprocess_target_by_name, _can_execute_out_of_process,
-# _resolve_handler_reference, _choose_process_start_method, _main_module_is_file_backed,
-# _get_process_context, _stable_hash) are exactly as in the original file you had before.
-# They are unchanged and were never corrupted.]
-
 def _execute_in_thread(config: ToolConfig, params: dict) -> dict:
     """Run a handler in-process when it cannot be isolated."""
     result_holder: list[dict] = []
