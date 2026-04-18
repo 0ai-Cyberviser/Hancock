@@ -13,7 +13,7 @@
 
 **Automate cybersecurity through specialized LLMs — from pentesting to SOC analysis.**
 
-[🌐 Website](https://cyberviser.netlify.app) · [📖 API Docs](https://cyberviser.netlify.app/api) · [📋 Business Proposal](BUSINESS_PROPOSAL.md) · [🐛 Report Bug](https://github.com/0ai-Cyberviser/Hancock/issues) · [✨ Request Feature](https://github.com/cyberviser/Hancock/issues)
+[🌐 Website](https://cyberviser.netlify.app) · [📖 API Docs](https://cyberviser.netlify.app/api) · [📋 Business Proposal](BUSINESS_PROPOSAL.md) · [🐛 Report Bug](https://github.com/0ai-Cyberviser/Hancock/issues) · [✨ Request Feature](https://github.com/0ai-Cyberviser/Hancock/issues)
 
 </div>
 

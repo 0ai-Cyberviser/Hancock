@@ -1,12 +1,11 @@
 FROM kalilinux/kali-rolling
 
 RUN apt update && apt install -y \
-    nmap sqlmap metasploit-framework git python3-yaml \
-    docker.io python3 python3-pip python3-venv python3-requests
+    nmap sqlmap metasploit-framework python3 python3-pip python3-venv
 
 RUN pip install --no-cache-dir --break-system-packages \
-    langgraph langchain langchain-core langchain-community pydantic chromadb beautifulsoup4 \
-    google-auth google-auth-oauthlib google-api-python-client google-cloud-resource-manager
+    langgraph langchain langchain-core langchain-community pydantic \
+    faiss-cpu huggingface-hub
 
 COPY hancock_langgraph.py /app/
 WORKDIR /app
