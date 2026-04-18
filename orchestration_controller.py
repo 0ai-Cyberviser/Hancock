@@ -664,3 +664,38 @@ if __name__ == "__main__":
     # View history
     history = controller.get_history()
     print(f"History ({len(history)} records): {history}")
+
+# ── GitHub MCP Tool (secure wrapper) ────────────────────────────────────────
+def _github_mcp_handler(params: dict[str, Any]) -> dict[str, Any]:
+    """Secure wrapper for GitHub MCP Server via gh CLI (MCP protocol)."""
+    from subprocess import run, CalledProcessError
+    import os
+    token = os.getenv("GITHUB_TOKEN")
+    if not token:
+        return {"status": "error", "error": "GITHUB_TOKEN not set in environment"}
+    cmd = ["gh", params.get("command", "api"), *params.get("args", [])]
+    env = os.environ.copy()
+    env["GITHUB_TOKEN"] = token
+    try:
+        result = run(cmd, env=env, capture_output=True, text=True, check=True, timeout=30)
+        return {"status": "success", "output": result.stdout.strip(), "stderr": result.stderr.strip()}
+    except CalledProcessError as e:
+        return {"status": "error", "error": e.stderr.strip(), "exit_code": e.returncode}
+# ── Final clean registration (safe for import + direct run) ─────────────────
+def register_default_tools(controller: OrchestrationController):
+    """Register all built-in tools including GitHub MCP."""
+    controller.register_tool(ToolConfig(
+        name="github_mcp",
+        handler=_github_mcp_handler,
+        description="GitHub Model Context Protocol server — natural language repo, PR, issue, code ops",
+        category=ToolCategory.UTILITY,
+        timeout=60,
+        max_retries=1,
+        cache_ttl=300,
+    ))
+    print("✅ github_mcp tool registered successfully")
+
+# Auto-register only when file is run directly (safe for import)
+if __name__ == "__main__":
+    controller = OrchestrationController(allowlist=["github_mcp"])
+    register_default_tools(controller)

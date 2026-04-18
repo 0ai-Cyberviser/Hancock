@@ -18,3 +18,9 @@ RUN pip install --no-cache-dir --break-system-packages \
 COPY hancock_langgraph.py hancock_zeroday_finder.py hancock_zeroday_guard.py \
      orchestration_controller.py input_validator.py hancock_rag.py hancock_router.py /app/
 WORKDIR /app
+# GitHub CLI for MCP integration (official repo for Kali/Debian)
+RUN apt-get update && apt-get install -y --no-install-recommends curl gnupg ca-certificates && \
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
+    chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
+    apt-get update && apt-get install -y --no-install-recommends gh && rm -rf /var/lib/apt/lists/*
