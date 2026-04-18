@@ -25,6 +25,36 @@ class AgentState(TypedDict):
 
 controller = OrchestrationController(allowlist=["nmap", "sqlmap", "google_readonly"])
 
+def _nmap_tool(params: dict):
+    target = params.get("target", "")
+    return {
+        "tool": "nmap",
+        "target": target,
+        "status": "sandboxed",
+        "result": f"Simulated nmap scan scheduled for {target}"
+    }
+
+def _sqlmap_tool(params: dict):
+    target = params.get("target", "")
+    return {
+        "tool": "sqlmap",
+        "target": target,
+        "status": "sandboxed",
+        "result": f"Simulated sqlmap execution scheduled for {target}"
+    }
+
+def _google_readonly_tool(params: dict):
+    scopes = params.get("scopes", [])
+    return {
+        "tool": "google_readonly",
+        "scopes": scopes,
+        "status": "read-only",
+        "result": "Simulated Google read-only enumeration"
+    }
+
+controller.register_tool("nmap", _nmap_tool)
+controller.register_tool("sqlmap", _sqlmap_tool)
+controller.register_tool("google_readonly", _google_readonly_tool)
 def zero_day_check(state: AgentState) -> AgentState:
     last_msg = state["messages"][-1] if state["messages"] else ""
     if guard.is_malicious(last_msg):
