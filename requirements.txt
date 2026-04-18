@@ -10,5 +10,4 @@ pytest
 maxminddb
 python-nmap
 atheris
-azure-ai-inference>=1.0.0
 azure-ai-inference==1.0.0b9
