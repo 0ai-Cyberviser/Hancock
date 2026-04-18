@@ -4,11 +4,8 @@ PYTHON        := .venv/bin/python
 PIP           := .venv/bin/pip
 OSINT_REPORT_INPUT ?= docs/examples/osint_report.sample.json
 
-<<<<<<< HEAD
 .PHONY: help setup install dev-install finetune-install run run-0ai run-0ai-verify osint-report osint-report-json server pipeline pipeline-v3 finetune lint test test-cov fuzz fuzz-target clean docker docker-up fly-deploy client-python client-node
-=======
 .PHONY: help setup install dev-install finetune-install run server pipeline pipeline-v3 finetune run-0ai run-0ai-verify run-0ai-logs run-0ai-debug lint test test-cov fuzz fuzz-target clean docker docker-up fly-deploy client-python client-node
->>>>>>> 67b2a2f85225a4610b2ed4affb5b23596733c8e7
 
 help:
 	@echo ""
