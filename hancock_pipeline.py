@@ -52,6 +52,8 @@ def run_ghsa(data_dir: Path = DATA_DIR) -> None:
 
 
 def run_formatter_v3()
+generate_sbom()
+run_trivy_scan()
 generate_manifest() -> None:
     """Format all v3 data sources into hancock_v3.jsonl."""
     run_collector("formatter-v3")

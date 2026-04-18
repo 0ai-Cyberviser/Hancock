@@ -202,6 +202,11 @@ class OrchestrationController:
 
     def execute(self, tool_name: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
 
+        # LLM03: Supply chain verification before any execution
+        if \"model\" in params:
+            verify_hf_model(params[\"model\"])
+
+
         # LLM04: Verify dataset integrity before any RAG or fine-tune load
         if \"dataset\" in params:
             verify_dataset(params[\"dataset\"])
