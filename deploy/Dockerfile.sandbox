@@ -1,15 +1,23 @@
-FROM kalilinux/kali-rolling:latest
+FROM kalilinux/kali-rolling
 
 RUN apt update && apt install -y \
     nmap sqlmap metasploit-framework git python3-yaml docker.io \
-    python3 python3-pip python3-venv python3-requests \
-    && ln -s /usr/bin/python3 /usr/bin/python \
-    && apt clean && rm -rf /var/lib/apt/lists/*
+    python3 python3-pip python3-venv python3-requests
 
-# Pre-install LangGraph + deps
 RUN pip install --no-cache-dir --break-system-packages \
-    langgraph langchain langchain-core langchain-community \
-    pydantic chromadb beautifulsoup4 google-auth google-auth-oauthlib google-api-python-client
+    langgraph langchain langchain-core langchain-community pydantic \
+    chromadb beautifulsoup4 google-auth google-auth-oauthlib \
+    google-api-python-client scikit-learn numpy matplotlib
 
-COPY hancock_langgraph.py hancock_zeroday_finder.py hancock_zeroday_guard.py orchestration_controller.py input_validator.py /app/
+COPY hancock_langgraph.py /app/
+COPY zero_day_guard.py /app/
+COPY orchestration_controller.py /app/
+COPY input_validator.py /app/
+COPY zero_day_guard_eval.py /app/
+
 WORKDIR /app
+
+# Generate config during build
+RUN python3 zero_day_guard_eval.py
+
+CMD ["python3", "hancock_langgraph.py"]
