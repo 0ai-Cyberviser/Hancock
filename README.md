@@ -4,7 +4,7 @@
 
 ![Hancock Banner](https://img.shields.io/badge/CyberViser-Hancock-00ff88?style=for-the-badge&logo=hackthebox&logoColor=black)
 
-[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
+[![License: Apache%202.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
 [![Model](https://img.shields.io/badge/Model-Mistral%207B-orange?logo=huggingface)](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3)
 [![NVIDIA NIM](https://img.shields.io/badge/NVIDIA-NIM-76b900?logo=nvidia)](https://build.nvidia.com)
@@ -13,7 +13,7 @@
 
 **Automate cybersecurity through specialized LLMs — from pentesting to SOC analysis.**
 
-[🌐 Website](https://cyberviser.netlify.app) · [📖 API Docs](https://cyberviser.netlify.app/api) · [📋 Business Proposal](BUSINESS_PROPOSAL.md) · [🐛 Report Bug](https://github.com/cyberviser/Hancock/issues) · [✨ Request Feature](https://github.com/cyberviser/Hancock/issues)
+[🌐 Website](https://cyberviser.netlify.app) · [📖 API Docs](https://cyberviser.netlify.app/api) · [📋 Business Proposal](BUSINESS_PROPOSAL.md) · [🐛 Report Bug](https://github.com/0ai-Cyberviser/Hancock/issues) · [✨ Request Feature](https://github.com/0ai-Cyberviser/Hancock/issues)
 
 </div>
 
@@ -87,7 +87,7 @@ It operates in nine specialist modes and exposes a clean REST API.
 ### 1. Install dependencies
 
 ```bash
-git clone https://github.com/cyberviser/Hancock.git
+git clone https://github.com/0ai-Cyberviser/Hancock.git
 cd Hancock
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
@@ -717,3 +717,37 @@ repository terms and [OWNERSHIP.md](OWNERSHIP.md) for the control notice.
 <div align="center">
 Maintained by <a href="https://github.com/0ai-Cyberviser">Johnny Watters (0ai-Cyberviser)</a> · Powered by NVIDIA NIM · Mistral 7B · LoRA
 </div>
+
+## Sponsors & Supporters
+
+**Hancock Bronze Supporter** — $5/mo  
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/0aic)
+
+**Scan to join instantly:**
+![Hancock Bronze QR](assets/bmc_qr.png)
+
+**Perks you get:**
+- Early access to new modes & preview builds
+- Exclusive technical deep-dives & roadmap votes
+- Priority support + permanent name in Sponsors section
+- Private Discord “Hancock Bronze” role & members-only channel
+
+Thank you to every Bronze Supporter powering the next evolution of Hancock.
+
+
+## Funding & Sponsors
+
+**Support Hancock development**
+
+- **Buy Me a Coffee** (Bronze $5/mo) → [buymeacoffee.com/0aic](https://buymeacoffee.com/0aic)  
+  ![Hancock Bronze QR](assets/bmc_qr.png)
+
+- **Open Collective** → [opencollective.com/hancock](https://opencollective.com/hancock) (coming soon — transparent expense tracking)
+
+- **GitHub Sponsors** → [github.com/sponsors/0ai-Cyberviser](https://github.com/sponsors/0ai-Cyberviser)
+
+Every contribution directly funds Hybrid RAG, secure sandboxes, fine-tuning, and Phase 4 enterprise features. Thank you!
+
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-%23EA4AAA?style=for-the-badge&logo=GitHub-Sponsors&logoColor=white)](https://github.com/sponsors/0ai-Cyberviser)
+
+[![Open Collective](https://img.shields.io/badge/Open%20Collective-7F00FF?style=for-the-badge&logo=opencollective&logoColor=white)](https://opencollective.com/oai-cyberviserai)

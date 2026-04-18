@@ -20,7 +20,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
-  "License :: Other/Proprietary License",
+  "License :: OSI Approved :: Apache Software License",
 ]
 dependencies = [
   "openai>=1.0.0",
@@ -29,7 +29,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://cyberviser.netlify.app"
-Repository = "https://github.com/cyberviser/Hancock"
+Repository = "https://github.com/0ai-Cyberviser/Hancock"
 Documentation = "https://cyberviser.netlify.app/api"
 
 [project.scripts]
