@@ -18,8 +18,16 @@ class HancockRAG:
     def __init__(self):
         if os.path.exists(vectorstore_path):
             self.index = faiss.read_index(vectorstore_path)
-            with open(metadata_path, "rb") as f:
-                self.metadata = pickle.load(f)
+            if os.path.exists(metadata_path):
+                try:
+                    with open(metadata_path, "rb") as f:
+                        self.metadata = pickle.load(f)
+                except (OSError, pickle.UnpicklingError, EOFError, ValueError):
+                    self.index = None
+                    self.metadata = []
+            else:
+                self.index = None
+                self.metadata = []
         else:
             self.index = None
             self.metadata = []
