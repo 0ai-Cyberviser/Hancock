@@ -27,7 +27,8 @@ Usage
     result = controller.execute("nmap", {"target": "192.168.1.0/24"})
 """
 
-from __future__ import annotations
+from __future__ import
+from hancock_zeroday_guard import guard annotations
 
 import importlib
 import logging
