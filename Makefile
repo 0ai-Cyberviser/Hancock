@@ -2,8 +2,9 @@
 .DEFAULT_GOAL := help
 PYTHON        := .venv/bin/python
 PIP           := .venv/bin/pip
+OSINT_REPORT_INPUT ?= docs/examples/osint_report.sample.json
 
-.PHONY: help setup install dev-install finetune-install run server pipeline pipeline-v3 finetune lint test test-cov fuzz fuzz-target clean docker docker-up fly-deploy client-python client-node
+.PHONY: help setup install dev-install finetune-install run run-0ai run-0ai-verify osint-report osint-report-json server pipeline pipeline-v3 finetune lint test test-cov fuzz fuzz-target clean docker docker-up fly-deploy client-python client-node
 
 help:
 	@echo ""
@@ -25,6 +26,10 @@ help:
 	@echo ""
 	@echo "  Run:"
 	@echo "    run            Start Hancock CLI (interactive)"
+	@echo "    run-0ai        Start the local 0AI defensive CLI (Ollama-backed)"
+	@echo "    run-0ai-verify Validate the local 0AI scaffold and probe Ollama when available"
+	@echo "    osint-report   Validate/render an OSINT report payload (INPUT defaults to sample)"
+	@echo "    osint-report-json Validate an OSINT report payload and emit normalized JSON"
 	@echo "    server         Start Hancock REST API server (port 5000)"
 	@echo "    pipeline       Run data collection pipeline (all phases)"
 	@echo "    pipeline-v3    Run v3 data collection only (KEV + Atomic + GHSA)"
@@ -71,6 +76,18 @@ finetune-install:
 # ─── Run ─────────────────────────────────────────────────────
 run:
 	$(PYTHON) hancock_agent.py
+
+run-0ai:
+	$(PYTHON) 0ai_agent.py
+
+run-0ai-verify:
+	$(PYTHON) 0ai_agent.py --verify
+
+osint-report:
+	$(PYTHON) osint_report_cli.py $(OSINT_REPORT_INPUT) $(if $(OUTPUT),--output $(OUTPUT),)
+
+osint-report-json:
+	$(PYTHON) osint_report_cli.py $(OSINT_REPORT_INPUT) --json $(if $(OUTPUT),--output $(OUTPUT),)
 
 server:
 	$(PYTHON) hancock_agent.py --server --port 5000

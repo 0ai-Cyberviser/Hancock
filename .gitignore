@@ -43,3 +43,4 @@ Thumbs.db
 
 # Benchmark results (generated, not tracked)
 benchmarks/results/
+hancock-cpu-adapter/checkpoint-*/
