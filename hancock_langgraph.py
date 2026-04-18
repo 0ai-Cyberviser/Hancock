@@ -60,6 +60,10 @@ def executor_agent(state: AgentState) -> dict:
 def critic_agent(state: AgentState) -> dict:
     return {"messages": ["✅ Critic: Review passed — authorized scope + responsible disclosure enforced"], "confidence": 0.95}
 
+def zero_day_finder_agent(state: AgentState) -> dict:
+    from hancock_zeroday_finder import zero_day_finder_agent
+    return zero_day_finder_agent(state)
+
 def reporter_agent(state: AgentState) -> dict:
     return {"messages": ["📄 PTES-compliant Markdown report generated — ready for responsible disclosure"]}
 
@@ -77,6 +81,7 @@ workflow.add_node("sponsor", sponsor_mode_agent)
 workflow.add_node("recon", recon_agent)
 workflow.add_node("executor", executor_agent)
 workflow.add_node("critic", critic_agent)
+workflow.add_node("zeroday", zero_day_finder_agent)
 workflow.add_node("reporter", reporter_agent)
 
 workflow.set_entry_point("zero_day")
@@ -86,6 +91,7 @@ workflow.add_edge("sponsor", "recon")
 workflow.add_edge("recon", "executor")
 workflow.add_edge("executor", "critic")
 workflow.add_edge("critic", "reporter")
+workflow.add_edge("planner", "zeroday") if "zeroday" in state.get("mode") else None
 workflow.add_edge("reporter", END)
 
 graph = workflow.compile()
