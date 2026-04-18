@@ -231,6 +231,13 @@ class OrchestrationController:
         params = params or {}
         execution_id = str(uuid.uuid4())
         started_at = time.monotonic()
+    # OWASP LLM01 + LLM06 + Zero-Day Guard
+    if "prompt" in params or "question" in params:
+        key = "prompt" if "prompt" in params else "question"
+        params[key] = sanitize_prompt(params[key], tool_name)
+    check_authorization({"mode": tool_name, "confidence": 0.95, "authorized": True})
+    if guard.is_malicious(params.get("prompt", params.get("question", ""))):
+        raise PermissionError("0ai Zero-Day Guard: LLM01 prompt injection detected")
 
         # OWASP LLM01 Prompt Injection + LLM02 Sensitive Info Guard
         if \"prompt\" in params or \"question\" in params:
@@ -302,6 +309,8 @@ class OrchestrationController:
         for attempt in range(1 + config.max_retries):
             try:
                 result = self._execute_with_timeout(config, params)
+    # OWASP LLM05: Output sandbox
+    result = validate_output(result)
             # OWASP LLM05: Output sandbox + PII redaction
             result = validate_output(result)
                 duration_ms = (time.monotonic() - started_at) * 1000
