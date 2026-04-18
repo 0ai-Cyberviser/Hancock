@@ -4,7 +4,7 @@ from azure.ai.inference.models import SystemMessage, UserMessage
 from azure.core.credentials import AzureKeyCredential
 
 def github_models_chat(prompt: str, model: str = "gpt-4o-mini", max_tokens: int = 2000) -> str:
-    """GitHub Models backend (free tier + paid fallback)"""
+    """GitHub Models backend (free tier gpt-4o-mini)"""
     token = os.getenv("GITHUB_TOKEN")
     if not token:
         raise ValueError("Set GITHUB_TOKEN env var")
