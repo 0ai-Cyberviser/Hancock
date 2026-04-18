@@ -1,5 +1,5 @@
 from __future__ import annotations
-import shlex
+from hancock_zeroday_guard import guardimport shlex
 import subprocess
 
 class OrchestrationController:

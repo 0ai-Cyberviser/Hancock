@@ -49,3 +49,11 @@ projects/
 __pycache__/
 *.pyc
 hancock_cuda_utils.py  # temp during dev
+deploy/Dockerfile.sandbox.bak
+hancock_cuda_utils.py
+chroma_db/
+clients/nodejs/node_modules/
+projects/
+__pycache__/
+*.pyc
+*.bak
