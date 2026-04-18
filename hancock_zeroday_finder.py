@@ -65,3 +65,13 @@ def zero_day_finder_agent(state: Dict) -> Dict:
             f["poc"] = generate_sandboxed_poc(f)
             f["mediation"] = mediate_finding(f)
     return {"messages": [f"✅ Zero-Day Finder complete — {len(scan['findings'])} findings"], "zeroday_results": scan}
+
+if __name__ == "__main__":
+    import argparse, sys
+    parser = argparse.ArgumentParser(description="Hancock Zero-Day Finder")
+    parser.add_argument("--target", required=True, help="Path to scan")
+    parser.add_argument("--mode", choices=["wordpress", "vscode", "generic"], default="generic")
+    args = parser.parse_args()
+    results = scan_source_code(args.target, args.mode)
+    print(json.dumps(results, indent=2))
+    sys.exit(0)
