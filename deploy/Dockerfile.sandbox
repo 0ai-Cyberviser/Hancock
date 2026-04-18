@@ -6,11 +6,12 @@ RUN apt update && apt install -y \
     && ln -s /usr/bin/python3 /usr/bin/python \
     && apt clean && rm -rf /var/lib/apt/lists/*
 
-# LangGraph + Zero-Day ML + Semgrep
+# LangGraph + Zero-Day ML + Semgrep + RAG + Router deps
 RUN pip install --no-cache-dir --break-system-packages \
     langgraph langchain langchain-core langchain-community \
     pydantic chromadb beautifulsoup4 google-auth google-auth-oauthlib google-api-python-client \
-    scikit-learn numpy semgrep
+    scikit-learn numpy semgrep sentence-transformers faiss-cpu
 
-COPY hancock_langgraph.py hancock_zeroday_finder.py hancock_zeroday_guard.py orchestration_controller.py input_validator.py /app/
+COPY hancock_langgraph.py hancock_zeroday_finder.py hancock_zeroday_guard.py \
+     orchestration_controller.py input_validator.py hancock_rag.py hancock_router.py /app/
 WORKDIR /app
