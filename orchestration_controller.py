@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Orchestration Controller for Hancock — Tool Integration & Execution Engine.
 
@@ -26,8 +28,6 @@ Usage
     ))
     result = controller.execute("nmap", {"target": "192.168.1.0/24"})
 """
-
-from __future__ import annotations
 
 import importlib
 import logging
@@ -600,10 +600,6 @@ def _choose_process_start_method() -> str:
     """Prefer non-fork start methods when the current process can be re-imported."""
     available = multiprocessing.get_all_start_methods()
     if _main_module_is_file_backed():
-        # ``forkserver`` is attractive in theory, but some restricted runtimes
-        # block the listener socket it needs to bootstrap child processes.
-        # ``spawn`` keeps the same isolation guarantees while working reliably
-        # in CI and sandboxed environments.
         for method in ("spawn", "forkserver", "fork"):
             if method in available:
                 return method

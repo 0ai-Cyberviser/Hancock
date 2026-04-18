@@ -1,6 +1,9 @@
-# Hancock .gitignore - keep repo lean
+# Hancock .gitignore - keep repo lean and GitHub-clean
 hancock-cpu-adapter/checkpoint-*/
-clients/nodejs/node_modules/
+hancock-cpu-adapter/*.safetensors
+hancock-cpu-adapter/adapter_model.safetensors
+.venv/
+.env
 __pycache__/
 *.pyc
 *.pyo
@@ -9,3 +12,7 @@ __pycache__/
 .dockerignore
 projects/
 tests/__pycache__/
+data/
+dist/
+clients/nodejs/node_modules/
+clients/python/hancock_client.egg-info/

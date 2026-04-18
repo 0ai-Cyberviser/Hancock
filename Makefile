@@ -4,7 +4,11 @@ PYTHON        := .venv/bin/python
 PIP           := .venv/bin/pip
 OSINT_REPORT_INPUT ?= docs/examples/osint_report.sample.json
 
+<<<<<<< HEAD
 .PHONY: help setup install dev-install finetune-install run run-0ai run-0ai-verify osint-report osint-report-json server pipeline pipeline-v3 finetune lint test test-cov fuzz fuzz-target clean docker docker-up fly-deploy client-python client-node
+=======
+.PHONY: help setup install dev-install finetune-install run server pipeline pipeline-v3 finetune run-0ai run-0ai-verify run-0ai-logs run-0ai-debug lint test test-cov fuzz fuzz-target clean docker docker-up fly-deploy client-python client-node
+>>>>>>> 67b2a2f85225a4610b2ed4affb5b23596733c8e7
 
 help:
 	@echo ""
@@ -34,6 +38,10 @@ help:
 	@echo "    pipeline       Run data collection pipeline (all phases)"
 	@echo "    pipeline-v3    Run v3 data collection only (KEV + Atomic + GHSA)"
 	@echo "    finetune       Run LoRA fine-tuning on Mistral 7B"
+	@echo "    run-0ai        Start the local 0AI CLI via script/build_and_run.sh"
+	@echo "    run-0ai-verify Verify Python, Ollama, and model preflight for 0AI"
+	@echo "    run-0ai-logs   Start 0AI with tee'd log capture"
+	@echo "    run-0ai-debug  Start 0AI under pdb"
 	@echo ""
 	@echo "  Clients:"
 	@echo "    client-python  Run Python SDK CLI (interactive)"
@@ -100,6 +108,18 @@ pipeline-v3:
 
 finetune:
 	$(PYTHON) hancock_finetune.py
+
+run-0ai:
+	./script/build_and_run.sh
+
+run-0ai-verify:
+	./script/build_and_run.sh --verify
+
+run-0ai-logs:
+	./script/build_and_run.sh --logs
+
+run-0ai-debug:
+	./script/build_and_run.sh --debug
 
 # ─── Dev ─────────────────────────────────────────────────────
 lint:
