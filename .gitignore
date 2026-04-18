@@ -41,5 +41,9 @@ data/*.json
 .DS_Store
 Thumbs.db
 
+# Node.js
+clients/nodejs/node_modules/
+npm-debug.log*
+
 # Benchmark results (generated, not tracked)
 benchmarks/results/
