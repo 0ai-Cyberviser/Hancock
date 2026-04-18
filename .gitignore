@@ -57,3 +57,5 @@ projects/
 __pycache__/
 *.pyc
 *.bak
+deploy/Dockerfile.sandbox.bak
+*.bak
