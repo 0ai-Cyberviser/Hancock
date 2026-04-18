@@ -1,17 +1,20 @@
 FROM kalilinux/kali-rolling:latest
 
-RUN apt update && apt install -y \
+# === OPTIMIZED SINGLE-LAYER INSTALL ===
+RUN apt-get update && apt-get install -y --no-install-recommends \
     nmap sqlmap metasploit-framework git python3-yaml docker.io \
     python3 python3-pip python3-venv python3-requests \
     && ln -s /usr/bin/python3 /usr/bin/python \
-    && apt clean && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* /tmp/* /var/tmp/* \
+    && echo "✅ Kali packages installed with --no-install-recommends"
 
-# LangGraph + Zero-Day ML + Semgrep + RAG + Router deps
+# === PIP LAYER (cached when requirements unchanged) ===
 RUN pip install --no-cache-dir --break-system-packages \
     langgraph langchain langchain-core langchain-community \
     pydantic chromadb beautifulsoup4 google-auth google-auth-oauthlib google-api-python-client \
     scikit-learn numpy semgrep sentence-transformers faiss-cpu
 
+# === COPY (only after heavy layers) ===
 COPY hancock_langgraph.py hancock_zeroday_finder.py hancock_zeroday_guard.py \
      orchestration_controller.py input_validator.py hancock_rag.py hancock_router.py /app/
 WORKDIR /app
