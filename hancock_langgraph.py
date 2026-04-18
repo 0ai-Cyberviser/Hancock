@@ -8,7 +8,7 @@ import json
 from typing import TypedDict, Annotated, List
 import operator
 from langgraph.graph import StateGraph, END
-from zero_day_guard import guard
+from hancock_zeroday_guard import guard
 from orchestration_controller import OrchestrationController
 
 # VERBATIM PENTEST MODE SYSTEM PROMPT (NEVER CHANGE)
