@@ -1,49 +1,43 @@
 """
-Hancock Advanced OWASP LLM01 Prompt Injection Guard (2026 edition)
-Blocks multi-layer encoding, role-play hijacks, delimiter attacks, token smuggling, and multi-turn poisoning.
+Hancock OWASP LLM01 Role-Play Bypass Guard (stateful persona hijacking protection)
 """
 import re
-import json
+from collections import deque
 from typing import Dict, Any
 
-# Advanced pattern database (high-confidence only — no false positives on legitimate pentest commands)
-ADVANCED_INJECTION_PATTERNS = [
-    r"(?i)(developer mode|jailbreak|ignore all rules|override system|new instructions|act as)",
-    r"(?i)(base64|rot13|hex|unicode|utf-?7|html entity).*?prompt|system|instruction",
-    r"(?i)(\{\{|\}\}|\[\[|\]\]|<system>|<\/system>|<prompt>|<\/prompt>)",
-    r"(?i)(zero-width|homoglyph|invisible|control character|U\+200B|U\+FEFF)",
-    r"(?i)(you are now|pretend you are|roleplay as).*?(developer|unrestricted|root)",
+# Conversation history (last 10 turns)
+CONV_HISTORY: deque = deque(maxlen=10)
+
+# Role-play specific patterns (high-precision, low false-positive)
+ROLE_PLAY_PATTERNS = [
+    r"(?i)(you are now|role-play as|pretend you are|act as|become|switch to).*?(unrestricted|developer mode|jailbreak|root|admin|no rules|ignore safety)",
+    r"(?i)(ignore all previous|forget your instructions|new persona)",
+    r"(?i)(helpful assistant with no restrictions|DAN|do anything now)",
 ]
 
-def detect_encoding_layer(prompt: str) -> bool:
-    """Detect nested encoding attempts."""
-    encodings = ["base64", "rot13", "hex", "unicode"]
-    lower = prompt.lower()
-    return any(enc in lower and any(other in lower for other in encodings if other != enc) for enc in encodings)
-
 def sanitize_prompt(prompt: str, mode: str = "auto") -> str:
-    """Advanced LLM01 sanitization — layered, fail-closed."""
+    """LLM01 Role-Play + Multi-Turn + Encoding sanitization."""
+    global CONV_HISTORY
     original = prompt
     max_len = 4000 if mode in {"pentest", "exploit"} else 2000
     if len(prompt) > max_len:
         prompt = prompt[:max_len] + " [TRUNCATED — LLM01]"
 
-    # 1. Block advanced patterns
-    for pattern in ADVANCED_INJECTION_PATTERNS:
-        prompt = re.sub(pattern, "[LLM01_BLOCKED]", prompt, flags=re.IGNORECASE)
+    CONV_HISTORY.append(prompt.lower())
 
-    # 2. Encoding detection
-    if detect_encoding_layer(prompt):
-        prompt = "[LLM01_ENCODING_DETECTED]"
+    # 1. Role-play detection (cross-turn)
+    history_text = " ".join(CONV_HISTORY)
+    for pattern in ROLE_PLAY_PATTERNS:
+        if re.search(pattern, history_text):
+            prompt = "[LLM01_ROLE_PLAY_BYPASS_DETECTED]"
 
-    # 3. Delimiter / hierarchy escaping
+    # 2. Existing advanced patterns + encoding + delimiters
+    prompt = re.sub(r"(?i)(developer mode|jailbreak|ignore all rules|override system)", "[LLM01_BLOCKED]", prompt)
     prompt = re.sub(r"(\{\{|\}\}|\[\[|\]\]|<|>|&lt;|&gt;)", r"\\\1", prompt)
-
-    # 4. Token smuggling / invisible chars
     prompt = re.sub(r"[\u200B-\u200F\uFEFF]", "[INVISIBLE_BLOCKED]", prompt)
 
     if prompt != original:
-        print(f"🛡️ Advanced LLM01 injection sanitized: {len(original)} → {len(prompt)} chars")
+        print(f"🛡️ LLM01 Role-Play Bypass sanitized: {len(original)} → {len(prompt)} chars")
     return prompt.strip()
 
 def validate_output(output: Dict[str, Any]) -> Dict[str, Any]:
