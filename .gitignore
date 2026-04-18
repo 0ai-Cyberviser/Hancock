@@ -1,46 +1,11 @@
-# Secrets
-.env
-
-# Virtual environments
-.venv/
-venv/
-env/
-
-# Python
+# Hancock .gitignore - keep repo lean
+hancock-cpu-adapter/checkpoint-*/
+clients/nodejs/node_modules/
 __pycache__/
 *.pyc
 *.pyo
-*.pyd
-*.egg-info/
-dist/
-build/
-
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb_checkpoints
-
-# Model artifacts
-hancock-cpu-adapter/checkpoint-*/
-*.bin
-*.safetensors
-
-# Local agent metadata
-.codex
-
-# Crash artifacts
-crash-*
-
-# Raw data (fetched at runtime)
-data/raw_*.json
-
-# Large training datasets
-data/*.jsonl
-data/*.json
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Benchmark results (generated, not tracked)
-benchmarks/results/
-hancock-cpu-adapter/checkpoint-*/
+*.log
+.bandit
+.dockerignore
+projects/
+tests/__pycache__/
