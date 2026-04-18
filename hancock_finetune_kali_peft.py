@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Hancock Fine-Tune — Kali GPU (PEFT + FlashAttention-2) — No Unsloth
-CyberViser | Pure CUDA acceleration stack
+Hancock Fine-Tune — Kali GPU (PEFT + FlashAttention-2) — Unsloth-free
+CyberViser | Pure stable CUDA acceleration
 """
 import os, json, torch
 from pathlib import Path
@@ -24,7 +24,7 @@ if not dataset_path.exists():
 data = [json.loads(l) for l in dataset_path.read_text().strip().splitlines()]
 print(f"✅ Loaded {len(data):,} samples")
 
-# 4-bit quantization + FlashAttention-2
+# 4-bit + FlashAttention-2
 quant_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_quant_type="nf4",
@@ -37,7 +37,7 @@ model = AutoModelForCausalLM.from_pretrained(
     quantization_config=quant_config,
     device_map="auto",
     torch_dtype=torch.bfloat16,
-    attn_implementation="flash_attention_2",   # ← CUDA acceleration
+    attn_implementation="flash_attention_2",
 )
 
 tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.3")
@@ -54,11 +54,10 @@ peft_config = LoraConfig(
 )
 model = get_peft_model(model, peft_config)
 
-# Format dataset
+# Format + train
 texts = [tokenizer.apply_chat_template(s["messages"], tokenize=False, add_generation_prompt=False) for s in data]
 ds = Dataset.from_dict({"text": texts}).train_test_split(test_size=0.05, seed=42)
 
-# Train
 trainer = SFTTrainer(
     model=model,
     tokenizer=tokenizer,
@@ -95,4 +94,4 @@ print(f"✅ Training complete — final loss: {result.training_loss:.4f}")
 
 model.save_pretrained("hancock_lora")
 tokenizer.save_pretrained("hancock_lora")
-print("✅ LoRA adapters saved — ready for Ollama / inference")
+print("✅ LoRA saved — ready for Ollama")
