@@ -133,7 +133,7 @@ workflow.add_edge("executor", "critic")
 workflow.add_edge("critic", "reporter")
 workflow.add_edge("planner", "router")
 workflow.add_edge("router", "rag")
-workflow.add_edge("rag", "zeroday") if "zeroday" in state.get("mode") else None
+workflow.add_edge("rag", "zeroday")  # conditional routing handled at runtime
 workflow.add_edge("reporter", END)
 
 graph = workflow.compile()

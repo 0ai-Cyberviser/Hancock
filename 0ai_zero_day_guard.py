@@ -57,7 +57,6 @@ def learn_zero_day(prompt: str, reason: str = "auto-detected") -> None:
 
 def detect_zero_day(prompt: str, mode: str = "auto") -> str:
     """Main 0ai Zero-Day Guard entry point."""
-    global CONV_HISTORY
     CONV_HISTORY.append(prompt.lower())
     result = zero_day_score(prompt)
     
