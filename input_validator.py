@@ -1,7 +1,6 @@
 import re
 import ipaddress
 from typing import Dict, Any, List, Optional
-from hancock_zeroday_guard import guard
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -158,6 +157,7 @@ def sanitize_string(value: str, max_length: int = 10_000) -> str:
 # ── Prompt sanitization (existing) ────────────────────────────────────────────
 
 def sanitize_prompt(prompt: str, mode: str = "auto") -> str:
+    from hancock_zeroday_guard import guard  # lazy import to avoid numpy in fuzz builds
     original = prompt
     if guard.is_malicious(prompt):
         return "[0AI_ZERO_DAY_BYPASS_DETECTED]"
