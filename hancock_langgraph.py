@@ -3,23 +3,47 @@ from langchain_core.messages import HumanMessage
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 import json
+from pathlib import Path
 
-# Hybrid RAG setup (live threat intel)
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-vectorstore = FAISS.from_texts([
-    "MITRE ATT&CK T1190: Exploit Public-Facing Application",
-    "NVD CVE-2025-1234: SQLi in login endpoint CVSS 9.8",
-    "CISA KEV: Log4Shell remediation required"
-], embeddings)
+# Hybrid RAG setup (live threat intel from collectors)
+EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+INDEX_PATH = Path(__file__).parent / "chroma_db" / "hancock_rag"
+
+embeddings = HuggingFaceEmbeddings(
+    model_name=EMBEDDING_MODEL,
+    model_kwargs={"device": "cpu"},
+    encode_kwargs={"normalize_embeddings": True}
+)
+
+# Load persisted FAISS index (built by collectors/rag_builder.py)
+if INDEX_PATH.exists():
+    print("[langgraph] ✅ Loading Hybrid RAG index from disk...")
+    vectorstore = FAISS.load_local(
+        str(INDEX_PATH),
+        embeddings,
+        allow_dangerous_deserialization=True
+    )
+    print("[langgraph] ✅ Hybrid RAG index loaded")
+else:
+    print("[langgraph] ⚠️  No RAG index found — using fallback static data")
+    print("[langgraph]    Build index with: python collectors/rag_builder.py")
+    vectorstore = FAISS.from_texts([
+        "MITRE ATT&CK T1190: Exploit Public-Facing Application",
+        "NVD CVE-2025-1234: SQLi in login endpoint CVSS 9.8",
+        "CISA KEV: Log4Shell remediation required"
+    ], embeddings)
 
 def planner_node(state):
     # verbatim Pentest Mode prompt enforced
     return {"messages": state["messages"] + ["Planner for pentest mode activated — authorized scope confirmed"]}
 
 def rag_node(state):
+    """RAG node with live threat intel retrieval + provenance tracking."""
     query = state["messages"][-1] if state["messages"] else "threat intel"
-    docs = vectorstore.similarity_search(query, k=3)
+    docs = vectorstore.similarity_search(query, k=5)  # Top 5 most relevant
     state["rag_context"] = [doc.page_content for doc in docs]
+    state["rag_sources"] = [doc.metadata.get("source", "unknown") for doc in docs]
+    state["rag_ids"] = [doc.metadata.get("id", "") for doc in docs]
     return state
 
 def recon_node(state):
@@ -54,11 +78,13 @@ graph = workflow.compile()
 
 if __name__ == "__main__":
     state = {
-        'messages': [],
+        'messages': ["T1003 credential dumping techniques"],
         'mode': 'pentest',
         'authorized': True,
         'confidence': 0.95,
         'rag_context': [],
+        'rag_sources': [],
+        'rag_ids': [],
         'tool_output': ''
     }
     result = graph.invoke(state)

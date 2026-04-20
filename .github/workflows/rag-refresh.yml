@@ -1,0 +1,86 @@
+name: Refresh RAG Index
+
+on:
+  schedule:
+    # Run daily at 02:00 UTC (fresh threat intel from MITRE/NVD/CISA)
+    - cron: '0 2 * * *'
+  workflow_dispatch:  # Allow manual trigger
+  push:
+    paths:
+      - 'collectors/**'
+      - 'collectors/rag_builder.py'
+
+jobs:
+  refresh-rag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install tqdm stix2 taxii2-client  # Collector deps
+
+      - name: Run RAG builder (fetch latest threat intel + embed)
+        run: |
+          python collectors/rag_builder.py
+        env:
+          PYTHONUNBUFFERED: 1
+
+      - name: Verify index was created
+        run: |
+          if [ ! -d "chroma_db/hancock_rag" ]; then
+            echo "❌ RAG index not found at chroma_db/hancock_rag"
+            exit 1
+          fi
+          echo "✅ RAG index verified"
+          du -sh chroma_db/hancock_rag
+
+      - name: Test index with sample queries
+        run: |
+          python collectors/rag_builder.py --test
+
+      - name: Create artifact archive
+        run: |
+          tar -czf hancock-rag-index.tar.gz chroma_db/hancock_rag/
+          echo "📦 Archive size: $(du -sh hancock-rag-index.tar.gz | cut -f1)"
+
+      - name: Upload RAG index artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hancock-rag-index-${{ github.run_number }}
+          path: hancock-rag-index.tar.gz
+          retention-days: 7
+          compression-level: 0  # Already compressed
+
+      - name: Upload index to release (if tagged)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: hancock-rag-index.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit updated data files (optional — keep history of raw collector outputs)
+        if: github.event_name == 'schedule'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add data/raw_*.json || true
+          if git diff --staged --quiet; then
+            echo "No new data changes to commit"
+          else
+            git commit -m "chore: automated RAG data refresh $(date -u +%Y-%m-%d)"
+            # Uncomment to auto-push (requires write permissions):
+            # git push origin main
+          fi
