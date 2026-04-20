@@ -83,10 +83,10 @@ run:
 	$(PYTHON) hancock_agent.py
 
 run-0ai:
-	$(PYTHON) 0ai_agent.py
+	$(PYTHON) ai_agent.py
 
 run-0ai-verify:
-	$(PYTHON) 0ai_agent.py --verify
+	$(PYTHON) ai_agent.py --verify
 
 osint-report:
 	$(PYTHON) osint_report_cli.py $(OSINT_REPORT_INPUT) $(if $(OUTPUT),--output $(OUTPUT),)

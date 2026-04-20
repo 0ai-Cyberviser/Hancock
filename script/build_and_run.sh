@@ -3,11 +3,11 @@ set -euo pipefail
 
 MODE="${1:-run}"
 APP_NAME="0ai"
-PROC_PATTERN="0ai_agent.py"
+PROC_PATTERN="ai_agent.py"
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LOG_DIR="$ROOT_DIR/logs"
-LOG_FILE="$LOG_DIR/0ai_agent.log"
+LOG_FILE="$LOG_DIR/ai_agent.log"
 PYTHON_BIN="$ROOT_DIR/.venv/bin/python"
 
 if [[ ! -x "$PYTHON_BIN" ]]; then
@@ -16,7 +16,7 @@ fi
 
 build() {
   mkdir -p "$LOG_DIR"
-  "$PYTHON_BIN" -m py_compile "$ROOT_DIR/0ai_agent.py"
+  "$PYTHON_BIN" -m py_compile "$ROOT_DIR/ai_agent.py"
   "$PYTHON_BIN" -c "import openai" >/dev/null
   curl -sf "http://localhost:11434/api/tags" >/dev/null
   "$PYTHON_BIN" - <<'PY'
@@ -39,7 +39,7 @@ stop_existing() {
 
 run_app() {
   cd "$ROOT_DIR"
-  exec -a "$APP_NAME" "$PYTHON_BIN" "$ROOT_DIR/0ai_agent.py"
+  exec -a "$APP_NAME" "$PYTHON_BIN" "$ROOT_DIR/ai_agent.py"
 }
 
 case "$MODE" in
@@ -52,13 +52,13 @@ case "$MODE" in
     stop_existing
     build
     cd "$ROOT_DIR"
-    exec -a "$APP_NAME" "$PYTHON_BIN" -m pdb "$ROOT_DIR/0ai_agent.py"
+    exec -a "$APP_NAME" "$PYTHON_BIN" -m pdb "$ROOT_DIR/ai_agent.py"
     ;;
   --logs|logs)
     stop_existing
     build
     cd "$ROOT_DIR"
-    exec -a "$APP_NAME" "$PYTHON_BIN" "$ROOT_DIR/0ai_agent.py" 2>&1 | tee "$LOG_FILE"
+    exec -a "$APP_NAME" "$PYTHON_BIN" "$ROOT_DIR/ai_agent.py" 2>&1 | tee "$LOG_FILE"
     ;;
   --telemetry|telemetry)
     stop_existing
@@ -66,7 +66,7 @@ case "$MODE" in
     cd "$ROOT_DIR"
     {
       echo "[telemetry] $(date -u +"%Y-%m-%dT%H:%M:%SZ") starting $APP_NAME"
-      exec -a "$APP_NAME" "$PYTHON_BIN" "$ROOT_DIR/0ai_agent.py"
+      exec -a "$APP_NAME" "$PYTHON_BIN" "$ROOT_DIR/ai_agent.py"
     } 2>&1 | tee "$LOG_FILE"
     ;;
   --verify|verify)

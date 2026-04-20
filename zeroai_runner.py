@@ -267,7 +267,7 @@ def _interactive_loop(*, base_url: str, model: str, mode: str) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        prog="0ai_agent.py",
+        prog="ai_agent.py",
         description="Run the local 0AI defensive CLI against Ollama.",
     )
     parser.add_argument("--task", help="Run a single prompt and print the response.")
