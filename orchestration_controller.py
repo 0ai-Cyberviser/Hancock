@@ -240,7 +240,12 @@ class OrchestrationController:
 
         # OWASP LLM06: Authorization check
         from input_validator import check_authorization
-        check_authorization({"mode": tool_name, "confidence": 0.95, "authorized": True})
+        authorization = params.get("authorization") if isinstance(params.get("authorization"), dict) else {}
+        check_authorization({
+            "mode": tool_name,
+            "authorized": authorization.get("authorized", params.get("authorized", False)),
+            "confidence": authorization.get("confidence", params.get("confidence", 0.0)),
+        })
 
 
         # Access control
