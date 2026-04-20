@@ -29,6 +29,4 @@ jobs:
             Bash(flake8 --count --select=E9,F63,F7,F82 --show-source --statistics .),
             Bash(pytest tests/ -q --tb=short),
             Bash(pytest tests/ -v --tb=short),
-            Bash(python qa/docs_lint.py),
-            Bash(make lint),
-            Bash(make test)
+            Bash(python qa/docs_lint.py)
