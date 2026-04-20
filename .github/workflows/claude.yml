@@ -26,7 +26,4 @@ jobs:
           allowed_tools: >-
             Bash(pip install -r requirements.txt),
             Bash(pip install -r requirements-dev.txt),
-            Bash(flake8 --count --select=E9,F63,F7,F82 --show-source --statistics .),
-            Bash(pytest tests/ -q --tb=short),
-            Bash(pytest tests/ -v --tb=short),
             Bash(python qa/docs_lint.py)
