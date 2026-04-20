@@ -10,6 +10,9 @@ jobs:
   claude:
     # Only run when @claude is mentioned
     if: contains(github.event.comment.body, '@claude')
+    concurrency:
+      group: claude-${{ github.workflow }}-${{ github.event.issue.number || github.event.pull_request.number }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     permissions:
       contents: write
