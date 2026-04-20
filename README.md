@@ -132,7 +132,7 @@ python hancock_finetune.py
 
 ### 7. Run the local `0AI` CLI
 
-`0ai_agent.py` is a separate local Ollama-backed CLI. It now has a stable run loop through [`script/build_and_run.sh`](script/build_and_run.sh).
+`ai_agent.py` is a separate local Ollama-backed CLI. It now has a stable run loop through [`script/build_and_run.sh`](script/build_and_run.sh).
 
 ```bash
 # preflight only: Python + openai + Ollama endpoint + required 0ai model
@@ -307,7 +307,7 @@ make run-0ai
 
 Notes:
 - `make run-0ai-verify` validates the local scaffold and attempts a live Ollama probe when available.
-- `make run-0ai` launches [`0ai_agent.py`](0ai_agent.py) against `OLLAMA_BASE_URL`.
+- `make run-0ai` launches [`ai_agent.py`](ai_agent.py) against `OLLAMA_BASE_URL`.
 - Override the model with `ZEROAI_MODEL=0ai make run-0ai` or any other local Ollama tag.
 
 ---
