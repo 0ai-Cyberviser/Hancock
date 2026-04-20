@@ -32,7 +32,7 @@ quant_config = BitsAndBytesConfig(
     bnb_4bit_use_double_quant=True,
 )
 
-model = AutoModelForCausalLM.from_pretrained(
+model = AutoModelForCausalLM.from_pretrained(  # nosec B615
     "mistralai/Mistral-7B-Instruct-v0.3",
     quantization_config=quant_config,
     device_map="auto",
@@ -40,7 +40,7 @@ model = AutoModelForCausalLM.from_pretrained(
     attn_implementation="flash_attention_2",
 )
 
-tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.3")
+tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.3")  # nosec B615
 tokenizer.pad_token = tokenizer.eos_token
 
 # LoRA

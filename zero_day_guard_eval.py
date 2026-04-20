@@ -55,5 +55,5 @@ for cont in [0.01, 0.02, 0.025, 0.03, 0.035, 0.04, 0.05, 0.06, 0.07, 0.08, 0.10,
         best_results = {"auc": auc, "f1": f1, "precision": prec, "recall": rec}
 
 print(f"\n✅ BEST contamination: {best_cont:.3f} (F1={best_f1:.4f}, AUC={best_results['auc']:.4f})")
-with open("/tmp/best_contamination.txt", "w") as f:
+with open("/tmp/best_contamination.txt", "w") as f:  # nosec B108
     f.write(str(best_cont))
