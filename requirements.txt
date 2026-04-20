@@ -11,3 +11,5 @@ maxminddb
 python-nmap
 atheris
 azure-ai-inference==1.0.0b9
+numpy
+scikit-learn
