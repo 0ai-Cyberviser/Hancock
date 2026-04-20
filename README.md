@@ -255,7 +255,7 @@ curl -X POST http://localhost:5000/v1/map-infrastructure \
 # LangGraph workflow with security controls
 curl -X POST http://localhost:5000/v1/agentic/run \
   -H "Content-Type: application/json" \
-  -H "X-API-Key: $HANCOCK_API_KEY" \
+  -H "Authorization: Bearer $HANCOCK_API_KEY" \
   -d '{
     "user_id": "ops123",
     "scopes": ["authorized"],
