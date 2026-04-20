@@ -47,10 +47,21 @@ class HancockRouter:
 
         # Local Ollama/NIM call (safe)
         try:
-            result = subprocess.run(["ollama", "run", model, query], capture_output=True, text=True, timeout=60)
-            return f"LOCAL: {model} — {result.stdout[:200]}..."
-        except Exception:
-            return f"LOCAL fallback to {model} failed — using cached response"
+            result = subprocess.run(
+                ["ollama", "run", model, query],
+                capture_output=True,
+                text=True,
+                timeout=60,
+                check=False
+            )
+            if result.returncode == 0:
+                return f"LOCAL: {model} — {result.stdout[:200]}..."
+            else:
+                return f"LOCAL: {model} unavailable (ollama not installed or model not found) — using fallback response"
+        except FileNotFoundError:
+            return f"LOCAL: {model} unavailable (ollama not installed) — using fallback response"
+        except Exception as e:
+            return f"LOCAL fallback to {model} failed ({str(e)}) — using cached response"
 
 # LangGraph node
 def multi_model_router_agent(state: Dict) -> Dict:
