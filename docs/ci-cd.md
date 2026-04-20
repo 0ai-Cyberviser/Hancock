@@ -24,6 +24,7 @@ Hancock uses GitHub Actions for continuous integration, security scanning, bench
 | `test.yml` | Push to `main`/`master`, PRs | Lint + unit tests on Python 3.10–3.12 |
 | `benchmark.yml` | PRs to `main`/`master` | Latency benchmark, posts p99 table to PR |
 | `security.yml` | Push, PR, weekly (Monday) | Bandit SAST, pip-audit, Trivy container scan |
+| `claude-code.yml` | Push, PR, manual | AI-powered code analysis with Claude Code |
 | `release.yml` | Tagged push (`v*.*.*`) | Build/push Docker image, create GitHub Release |
 | `deploy.yml` | Push to `main` (docs/**) | Deploy `docs/` to Netlify |
 | `python-package.yml` | All pushes | Secondary lint + pytest run |
@@ -194,6 +195,31 @@ Manual workflow for fine-tuning Hancock on Modal GPUs (T4, A10G, A100). Dispatch
 
 GitHub's CodeQL engine performs deep static analysis on pushes, PRs, and a schedule. Results appear in the **Security → Code scanning** tab. High and critical alerts should be resolved before merge.
 
+### Claude Code (`claude-code.yml`)
+
+AI-powered code analysis and quality checks using Claude Code. Automatically runs on pushes, pull requests, and can be manually triggered.
+
+**Features:**
+- Automated code quality analysis with flake8 critical checks
+- Security audit checks via `qa/security_audit.py`
+- Documentation consistency validation via `qa/docs_lint.py`
+- PR comments with analysis summary and quick stats
+- Uploads analysis artifacts for detailed review
+
+**Local equivalent:**
+```bash
+# Run flake8 critical checks
+flake8 --count --select=E9,F63,F7,F82 --show-source --statistics .
+
+# Run security audit
+python qa/security_audit.py
+
+# Run docs lint
+python qa/docs_lint.py
+```
+
+**Note:** Full Claude Code CLI integration requires the `ANTHROPIC_API_KEY` secret to be configured. The workflow will run basic analysis without it.
+
 ---
 
 ## Required Secrets
@@ -202,6 +228,7 @@ Configure these in **Settings → Secrets and variables → Actions**:
 
 | Secret | Required by | Purpose |
 |---|---|---|
+| `ANTHROPIC_API_KEY` | `claude-code.yml` | Claude Code AI analysis (optional) |
 | `NETLIFY_AUTH_TOKEN` | `deploy.yml` | Netlify deployment |
 | `NETLIFY_SITE_ID` | `deploy.yml` | Target Netlify site |
 | `MODAL_TOKEN_ID` | `finetune.yml` | Modal GPU compute |
