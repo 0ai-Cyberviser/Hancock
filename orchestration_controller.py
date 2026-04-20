@@ -222,30 +222,50 @@ class OrchestrationController:
         execution_id = str(uuid.uuid4())
         started_at = time.monotonic()
 
-        # LLM03: Supply chain verification before any execution
-        if "model" in params:
-            from supply_chain_guard import verify_hf_model
-            verify_hf_model(params["model"])
+        # OWASP LLM01-06: Preflight security checks.  Any violation is caught
+        # and returned as a structured BLOCKED record so callers always receive
+        # a consistent result dict and failures are recorded in the audit trail.
+        try:
+            # LLM03: Supply chain verification before any execution
+            if "model" in params:
+                from supply_chain_guard import verify_hf_model
+                verify_hf_model(params["model"])
 
-        # LLM04: Verify dataset integrity before any RAG or fine-tune load
-        if "dataset" in params:
-            from data_integrity import verify_dataset
-            verify_dataset(params["dataset"])
+            # LLM04: Verify dataset integrity before any RAG or fine-tune load
+            if "dataset" in params:
+                from data_integrity import verify_dataset
+                verify_dataset(params["dataset"])
 
-        # OWASP LLM01 Prompt Injection + LLM02 Sensitive Info Guard
-        if "prompt" in params or "question" in params:
-            from input_validator import sanitize_prompt
-            key = "prompt" if "prompt" in params else "question"
-            params[key] = sanitize_prompt(params[key], tool_name)
+            # OWASP LLM01 Prompt Injection + LLM02 Sensitive Info Guard
+            if "prompt" in params or "question" in params:
+                from input_validator import sanitize_prompt
+                key = "prompt" if "prompt" in params else "question"
+                params[key] = sanitize_prompt(params[key], tool_name)
 
-        # OWASP LLM06: Authorization check
-        from input_validator import check_authorization
-        authorization = params.get("authorization") if isinstance(params.get("authorization"), dict) else {}
-        check_authorization({
-            "mode": tool_name,
-            "authorized": authorization.get("authorized", params.get("authorized", False)),
-            "confidence": authorization.get("confidence", params.get("confidence", 0.0)),
-        })
+            # OWASP LLM06: Authorization check — use caller-supplied state so
+            # high-risk modes are not silently permitted by a hardcoded default.
+            from input_validator import check_authorization
+            authorization = params.get("authorization") if isinstance(params.get("authorization"), dict) else {}
+            check_authorization({
+                "mode": tool_name,
+                "authorized": authorization.get("authorized", params.get("authorized", False)),
+                "confidence": authorization.get("confidence", params.get("confidence", 0.0)),
+            })
+        except Exception as exc:
+            duration_ms = (time.monotonic() - started_at) * 1000
+            error_msg = f"Security preflight blocked '{tool_name}': {exc}"
+            record = self._make_record(
+                execution_id, tool_name, params, ExecutionStatus.BLOCKED,
+                None, error_msg, started_at, 0,
+            )
+            self._append_history(record)
+            logger.warning(error_msg)
+            return {
+                "status": ExecutionStatus.BLOCKED,
+                "error": error_msg,
+                "execution_id": execution_id,
+                "duration_ms": duration_ms,
+            }
 
 
         # Access control
