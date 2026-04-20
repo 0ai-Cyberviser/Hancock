@@ -8,8 +8,6 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from input_validator import sanitize_prompt, check_authorization, validate_output
-from supply_chain_guard import verify_hf_model
-from data_integrity import verify_dataset
 
 # VERBATIM PENTEST MODE SYSTEM PROMPT (unchanged)
 PENTEST_SYSTEM_PROMPT = """You are Hancock, an elite penetration tester... [your full prompt]"""
