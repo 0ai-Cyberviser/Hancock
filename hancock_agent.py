@@ -543,7 +543,8 @@ def build_app(client, model: str):
                           "/v1/hunt", "/v1/respond", "/v1/code",
                           "/v1/ciso", "/v1/sigma", "/v1/yara", "/v1/ioc",
                           "/v1/geolocate", "/v1/predict-locations", "/v1/map-infrastructure",
-                          "/v1/agents", "/v1/webhook", "/metrics", "/internal/diagnostics"],
+                          "/v1/agents", "/v1/webhook", "/v1/agentic/run",
+                          "/metrics", "/internal/diagnostics"],
         })
 
     @app.route("/metrics", methods=["GET"])
@@ -1228,6 +1229,109 @@ def build_app(client, model: str):
             )
             _inc("errors_total")
             return _error_response("Internal server error", 500, mode="osint")
+
+    @app.route("/v1/agentic/run", methods=["POST"])
+    def agentic_run_endpoint():
+        """Agentic orchestration — LangGraph workflow with security controls (v0.3.1)."""
+        ok, err, remaining = _check_auth_and_rate()
+        if not ok:
+            _inc("errors_total")
+            return _error_response(err, 401 if "Unauthorized" in err else 429, mode="agentic")
+
+        _inc("requests_total")
+        _inc("requests_by_endpoint", "/v1/agentic/run")
+        _inc("requests_by_mode", "agentic")
+
+        data = request.get_json(force=True, silent=True)
+        if not isinstance(data, dict):
+            _inc("errors_total")
+            return _error_response("JSON object body required", 400, mode="agentic")
+
+        # Extract and validate parameters
+        user_id = data.get("user_id", "anonymous")
+        goal = data.get("goal", "")
+        mode = data.get("mode", "pentest")
+        history = data.get("history", [])
+        scope_names = data.get("scopes", ["authorized"])
+
+        if not goal:
+            _inc("errors_total")
+            return _error_response("goal required", 400, mode="agentic")
+
+        try:
+            # Import agentic modules
+            from langgraph.hancock_graph import run_hancock_loop, HancockState
+            from security.authz import Scope
+
+            # Build state
+            scopes = [Scope(name=s) if isinstance(s, str) else Scope(**s) for s in scope_names]
+            state = HancockState(
+                user_id=user_id,
+                scopes=scopes,
+                mode=mode,
+                goal=goal,
+                history=history,
+            )
+
+            # Run agentic loop with security checks
+            result = run_hancock_loop(state)
+
+            return jsonify({
+                "report": result.report,
+                "risk": result.risk,
+                "plan": result.plan,
+                "findings_count": len(result.findings),
+                "mode": mode,
+                "user_id": user_id,
+            })
+
+        except PermissionError as exc:
+            logger.warning(
+                "agentic_permission_denied",
+                extra={
+                    "event": "agentic_permission_denied",
+                    "endpoint": request.path,
+                    "mode": mode,
+                    "request_id": get_request_id(),
+                    "error": str(exc),
+                    "user_id": user_id,
+                },
+            )
+            _inc("errors_total")
+            return _error_response(f"Permission denied: {str(exc)}", 403, mode="agentic")
+
+        except ImportError as exc:
+            logger.error(
+                "agentic_dependency_error",
+                extra={
+                    "event": "agentic_dependency_error",
+                    "endpoint": request.path,
+                    "mode": mode,
+                    "request_id": get_request_id(),
+                    "error": str(exc),
+                },
+            )
+            _inc("errors_total")
+            return _error_response(
+                "Agentic feature requires langgraph. Install with: pip install langgraph",
+                503,
+                mode="agentic"
+            )
+
+        except Exception as exc:
+            logger.exception(
+                "agentic_execution_error",
+                extra={
+                    "event": "agentic_execution_error",
+                    "endpoint": request.path,
+                    "mode": mode,
+                    "request_id": get_request_id(),
+                    "error": str(exc),
+                    "user_id": user_id,
+                },
+            )
+            _inc("errors_total")
+            return _error_response(f"Internal server error: {str(exc)}", 500, mode="agentic")
 
     return app  # ← returned for testing
 

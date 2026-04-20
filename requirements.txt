@@ -11,3 +11,5 @@ maxminddb
 python-nmap
 atheris
 azure-ai-inference==1.0.0b9
+langgraph>=0.2.0
+pydantic>=2.0.0
