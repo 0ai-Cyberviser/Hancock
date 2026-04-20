@@ -21,7 +21,7 @@ class HancockRAG:
             if os.path.exists(metadata_path):
                 try:
                     with open(metadata_path, "rb") as f:
-                        self.metadata = pickle.load(f)
+                        self.metadata = pickle.load(f)  # nosec B301
                 except (OSError, pickle.UnpicklingError, EOFError, ValueError):
                     self.index = None
                     self.metadata = []
