@@ -9,7 +9,7 @@ from typing import TypedDict, Annotated, List
 import operator
 from langgraph.graph import StateGraph, END
 from hancock_zeroday_guard import guard
-from orchestration_controller import OrchestrationController
+from orchestration_controller import OrchestrationController, ToolConfig
 
 # VERBATIM PENTEST MODE SYSTEM PROMPT (NEVER CHANGE)
 PENTEST_SYSTEM_PROMPT = """You are Hancock, an elite penetration tester and offensive security specialist built by CyberViser. [...]"""  # keep your full prompt here
@@ -52,9 +52,9 @@ def _google_readonly_tool(params: dict):
         "result": "Simulated Google read-only enumeration"
     }
 
-controller.register_tool("nmap", _nmap_tool)
-controller.register_tool("sqlmap", _sqlmap_tool)
-controller.register_tool("google_readonly", _google_readonly_tool)
+controller.register_tool(ToolConfig(name="nmap", handler=_nmap_tool))
+controller.register_tool(ToolConfig(name="sqlmap", handler=_sqlmap_tool))
+controller.register_tool(ToolConfig(name="google_readonly", handler=_google_readonly_tool))
 def zero_day_check(state: AgentState) -> AgentState:
     last_msg = state["messages"][-1] if state["messages"] else ""
     if guard.is_malicious(last_msg):
