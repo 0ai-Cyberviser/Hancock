@@ -16,16 +16,22 @@ metadata_path = "chroma_db/hancock_metadata.pkl"
 
 class HancockRAG:
     def __init__(self):
-        if os.path.exists(vectorstore_path):
-            self.index = faiss.read_index(vectorstore_path)
-            if os.path.exists(metadata_path):
-                try:
-                    with open(metadata_path, "rb") as f:
-                        self.metadata = pickle.load(f)
-                except (OSError, pickle.UnpicklingError, EOFError, ValueError):
-                    self.index = None
+        # Ensure directory exists
+        os.makedirs(os.path.dirname(vectorstore_path) if os.path.dirname(vectorstore_path) else ".", exist_ok=True)
+
+        if os.path.exists(vectorstore_path) and os.path.getsize(vectorstore_path) > 0:
+            try:
+                self.index = faiss.read_index(vectorstore_path)
+                if os.path.exists(metadata_path) and os.path.getsize(metadata_path) > 0:
+                    try:
+                        with open(metadata_path, "rb") as f:
+                            self.metadata = pickle.load(f)
+                    except (OSError, pickle.UnpicklingError, EOFError, ValueError):
+                        self.index = None
+                        self.metadata = []
+                else:
                     self.metadata = []
-            else:
+            except Exception:
                 self.index = None
                 self.metadata = []
         else:
@@ -34,6 +40,8 @@ class HancockRAG:
 
     def ingest(self, texts: List[str], metadata: List[Dict]):
         """Add docs from collectors (MITRE, NVD, etc.)"""
+        if not texts:
+            return
         embeddings = embedding_model.encode(texts, normalize_embeddings=True)
         if self.index is None:
             self.index = faiss.IndexFlatIP(embeddings.shape[1])
