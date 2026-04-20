@@ -7,6 +7,40 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [0.3.1] — LangGraph Agentic Orchestration with Security Controls
+
+### Added
+- **LangGraph agentic orchestration** — Multi-agent workflow with planner, security validator, sponsor mode, recon, executor, critic, and reporter nodes
+- **Security validator node** — Pre-execution authorization check with confidence threshold (LLM06)
+- **OWASP LLM Top 10 security controls** integrated into orchestration layer:
+  - LLM01: Prompt injection protection with sanitization and anomaly detection
+  - LLM02: Sensitive information redaction in outputs
+  - LLM03: Supply chain verification for HuggingFace models with GPG signing
+  - LLM04: Dataset integrity verification with SHA256 manifests
+  - LLM05: Output validation and PII redaction
+  - LLM06: Authorization checks for high-risk operations
+- **Security guard modules**: `input_validator.py`, `supply_chain_guard.py`, `data_integrity.py`
+- **Enhanced orchestration controller** with integrated security checks in `execute()` method
+- **LangGraph dependencies** added to requirements.txt: `langgraph>=0.2.0`, `langchain-core>=0.3.0`
+
+### Fixed
+- Syntax errors in `orchestration_controller.py` (escaped quotes, misplaced code blocks)
+- Missing `compute_sha256` import in `supply_chain_guard.py`
+- Docker volume mount syntax in Trivy scan command
+
+### Changed
+- VERSION bumped to `0.3.1` in `hancock_constants.py`
+- LangGraph workflow now includes security validator between planner and sponsor mode
+- Sponsor mode integrated into main workflow graph before compilation
+
+### Security
+- All tool executions now validate prompts, datasets, and models before execution
+- Output validation prevents sensitive data leakage
+- Authorization enforced for high-risk modes (pentest, exploit, google)
+- Zero-day anomaly detection for unknown prompt injection bypasses
+
+---
+
 ## [0.5.0] — Ollama Primary Backend
 
 ### Changed

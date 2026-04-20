@@ -10,3 +10,5 @@ pytest
 maxminddb
 python-nmap
 atheris
+langgraph>=0.2.0
+langchain-core>=0.3.0

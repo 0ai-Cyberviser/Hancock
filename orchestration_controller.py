@@ -201,16 +201,6 @@ class OrchestrationController:
     # ── Execution ─────────────────────────────────────────────────────────────
 
     def execute(self, tool_name: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
-
-        # LLM03: Supply chain verification before any execution
-        if \"model\" in params:
-            verify_hf_model(params[\"model\"])
-
-
-        # LLM04: Verify dataset integrity before any RAG or fine-tune load
-        if \"dataset\" in params:
-            verify_dataset(params[\"dataset\"])
-
         """Execute a registered tool with retry, caching, and audit logging.
 
         Parameters
@@ -232,17 +222,25 @@ class OrchestrationController:
         execution_id = str(uuid.uuid4())
         started_at = time.monotonic()
 
+        # LLM03: Supply chain verification before any execution
+        if "model" in params:
+            from supply_chain_guard import verify_hf_model
+            verify_hf_model(params["model"])
+
+        # LLM04: Verify dataset integrity before any RAG or fine-tune load
+        if "dataset" in params:
+            from data_integrity import verify_dataset
+            verify_dataset(params["dataset"])
+
         # OWASP LLM01 Prompt Injection + LLM02 Sensitive Info Guard
-        if \"prompt\" in params or \"question\" in params:
-            key = \"prompt\" if \"prompt\" in params else \"question\"
+        if "prompt" in params or "question" in params:
+            from input_validator import sanitize_prompt
+            key = "prompt" if "prompt" in params else "question"
             params[key] = sanitize_prompt(params[key], tool_name)
-        check_authorization({\"mode\": tool_name, \"confidence\": 0.95, \"authorized\": True})
 
-
-        # OWASP LLM01 + LLM06: Sanitize prompt & enforce authorization
-        if \"prompt\" in params:
-            params[\"prompt\"] = sanitize_prompt(params[\"prompt\"])
-        check_authorization({\"mode\": tool_name, \"confidence\": 0.95, \"authorized\": True})
+        # OWASP LLM06: Authorization check
+        from input_validator import check_authorization
+        check_authorization({"mode": tool_name, "confidence": 0.95, "authorized": True})
 
 
         # Access control
@@ -302,8 +300,9 @@ class OrchestrationController:
         for attempt in range(1 + config.max_retries):
             try:
                 result = self._execute_with_timeout(config, params)
-            # OWASP LLM05: Output sandbox + PII redaction
-            result = validate_output(result)
+                # OWASP LLM05: Output sandbox + PII redaction
+                from input_validator import validate_output
+                result = validate_output(result)
                 duration_ms = (time.monotonic() - started_at) * 1000
 
                 # Cache the successful result
