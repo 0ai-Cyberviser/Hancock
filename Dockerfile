@@ -17,6 +17,9 @@ COPY orchestration_controller.py .
 COPY collectors/ collectors/
 COPY formatter/ formatter/
 COPY monitoring/ monitoring/
+COPY langgraph/ langgraph/
+COPY security/ security/
+COPY sandbox/ sandbox/
 
 # Expose API port
 EXPOSE 5000

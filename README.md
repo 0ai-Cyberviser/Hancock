@@ -79,6 +79,7 @@ It operates in nine specialist modes and exposes a clean REST API.
 | 🔎 **IOC** | Threat intelligence enrichment for IOCs | ✅ Live |
 | 🌍 **OSINT** | IP/domain geolocation, infrastructure mapping, predictive analytics | ✅ Live |
 | 🔐 **GraphQL Security** | GraphQL auth/authz testing, IDOR detection, JWT security | ✅ Live |
+| 🤖 **Agentic (v0.3.1+)** | LangGraph workflow: Planner → Recon → Executor → Critic → Reporter | ✅ Live |
 
 ---
 
@@ -247,6 +248,24 @@ curl -X POST http://localhost:5000/v1/predict-locations \
 curl -X POST http://localhost:5000/v1/map-infrastructure \
   -H "Content-Type: application/json" \
   -d '{"indicators": ["185.220.101.35", "45.33.32.156", "93.184.216.34"]}'
+```
+
+**Agentic Orchestration (v0.3.1+):**
+```bash
+# LangGraph workflow with security controls
+curl -X POST http://localhost:5000/v1/agentic/run \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: $HANCOCK_API_KEY" \
+  -d '{
+    "user_id": "ops123",
+    "scopes": ["authorized"],
+    "mode": "pentest",
+    "goal": "Enumerate public subdomains for example.com and propose safe reconnaissance steps",
+    "history": []
+  }'
+
+# Response includes: report, risk assessment, plan, findings_count
+# Features: Intent verification, scope enforcement, sandboxed execution
 ```
 
 **GraphQL Security Testing:**

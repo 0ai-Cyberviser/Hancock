@@ -28,6 +28,8 @@ services:
       - OLLAMA_BASE_URL=http://ollama:11434
       - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.1:8b}
       - OLLAMA_CODER_MODEL=${OLLAMA_CODER_MODEL:-qwen2.5-coder:7b}
+      - HANCOCK_API_KEYS=${HANCOCK_API_KEYS:-}
+      - HANCOCK_RATE_LIMIT=${HANCOCK_RATE_LIMIT:-60}
     env_file:
       - .env
     depends_on:
@@ -38,9 +40,14 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: false
     labels:
       - "com.cyberviser.project=hancock"
-      - "com.cyberviser.version=0.6.0"
+      - "com.cyberviser.version=0.3.1"
 
 volumes:
   ollama_models:
