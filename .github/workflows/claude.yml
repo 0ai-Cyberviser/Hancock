@@ -8,14 +8,14 @@ on:
 
 jobs:
   claude:
-    # Only run when @claude is mentioned
-    if: contains(github.event.comment.body, '@claude')
+    # Only run when @claude is mentioned by a trusted repository actor
+    if: contains(github.event.comment.body, '@claude') && contains(fromJson('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
     concurrency:
       group: claude-${{ github.workflow }}-${{ github.event.issue.number || github.event.pull_request.number }}
       cancel-in-progress: false
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       pull-requests: write
       issues: write
 
