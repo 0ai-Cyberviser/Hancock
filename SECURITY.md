@@ -28,9 +28,9 @@ If the issue belongs to upstream code in a forked repository, report upstream as
 - **Mode Validation**: Only valid modes (pentest, soc, sigma, yara, ioc, osint, graphql, code, ciso, auto) are permitted
 
 ### API Security
-- **API Key Authentication**: Required for agentic endpoints via `X-API-Key` header (configured via `HANCOCK_API_KEYS`)
-- **Rate Limiting**: In-memory rate limiter (default 30 req/min for agentic endpoint, 60 req/min global)
-- **Bearer Token Auth**: Existing endpoints support `Authorization: Bearer <HANCOCK_API_KEY>`
+- **Bearer Token Authentication**: Required for all API endpoints via `Authorization: Bearer <HANCOCK_API_KEY>` header
+- **Rate Limiting**: In-memory rate limiter (default 60 req/min global)
+- **Agentic Endpoints**: Use same Bearer token auth as other endpoints
 
 ### Sandboxed Tool Execution
 - **Least Privilege**: `sandbox/runner.py` uses Docker with:
@@ -52,7 +52,7 @@ If the issue belongs to upstream code in a forked repository, report upstream as
 ## Best Practices
 
 1. **Never commit secrets**: Use `.env` files (excluded from Git)
-2. **Configure API keys**: Set `HANCOCK_API_KEYS` for production deployments
+2. **Configure API keys**: Set `HANCOCK_API_KEY` for production deployments
 3. **Enable diagnostics auth**: Set `HANCOCK_ENABLE_INTERNAL_DIAGNOSTICS=true` and configure `HANCOCK_API_KEY`
 4. **Use Docker security options**: Deploy with `security_opt: no-new-privileges`, `cap_drop: ALL`
 5. **Network segmentation**: Use `--network none` for sandboxed tools unless network access is required

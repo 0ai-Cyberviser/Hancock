@@ -1252,19 +1252,59 @@ def build_app(client, model: str):
         goal = data.get("goal", "")
         mode = data.get("mode", "pentest")
         history = data.get("history", [])
-        scope_names = data.get("scopes", ["authorized"])
 
         if not goal:
             _inc("errors_total")
             return _error_response("goal required", 400, mode="agentic")
 
+        # Server-side scope determination (do NOT trust client-provided scopes)
+        # In a production deployment, derive scopes from authenticated principal
+        # (e.g., JWT claims, API key mapping, or centralized authz service)
+        # For now, warn if client attempts to provide scopes
+        if "scopes" in data:
+            logger.warning(
+                "agentic_client_scopes_ignored",
+                extra={
+                    "event": "agentic_client_scopes_ignored",
+                    "endpoint": request.path,
+                    "mode": mode,
+                    "request_id": get_request_id(),
+                    "user_id": user_id,
+                },
+            )
+
+        # TODO: Replace with actual server-side scope derivation based on authentication
+        # For now, default to empty scopes (no 'authorized' by default for security)
+        scope_names = []
+
         try:
             # Import agentic modules
-            from langgraph.hancock_graph import run_hancock_loop, HancockState
+            from agentic_graph.hancock_graph import run_hancock_loop, HancockState
             from security.authz import Scope
 
+            # Build scopes with type validation
+            scopes = []
+            for scope_item in scope_names:
+                if isinstance(scope_item, str):
+                    scopes.append(Scope(name=scope_item))
+                elif isinstance(scope_item, dict):
+                    if "name" not in scope_item or not isinstance(scope_item.get("name"), str):
+                        _inc("errors_total")
+                        return _error_response(
+                            "each scope dict must contain a string 'name' field",
+                            400,
+                            mode="agentic",
+                        )
+                    scopes.append(Scope(**scope_item))
+                else:
+                    _inc("errors_total")
+                    return _error_response(
+                        "each scope must be a string or an object with a string 'name' field",
+                        400,
+                        mode="agentic",
+                    )
+
             # Build state
-            scopes = [Scope(name=s) if isinstance(s, str) else Scope(**s) for s in scope_names]
             state = HancockState(
                 user_id=user_id,
                 scopes=scopes,

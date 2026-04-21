@@ -10,7 +10,7 @@ from typing import Dict, List, Any
 # Tool security profiles with Docker isolation settings
 TOOL_PROFILES: Dict[str, Dict[str, Any]] = {
     "nmap": {
-        "image": "ghcr.io/cyberviser/hancock-nmap:latest",
+        "image": "ghcr.io/cyberviser/hancock-nmap:7.94",
         "entrypoint": "nmap",
         "network": "none",  # Default no outbound, require explicit override via scope
         "cpus": "1",
@@ -19,7 +19,7 @@ TOOL_PROFILES: Dict[str, Dict[str, Any]] = {
         "volumes": [],
     },
     "sqlmap": {
-        "image": "ghcr.io/cyberviser/hancock-sqlmap:latest",
+        "image": "ghcr.io/cyberviser/hancock-sqlmap:1.8",
         "entrypoint": "sqlmap",
         "network": "none",
         "cpus": "1",

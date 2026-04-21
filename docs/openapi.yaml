@@ -89,6 +89,73 @@ paths:
                   model:
                     type: string
 
+  /v1/agentic/run:
+    post:
+      summary: Agentic orchestration (LangGraph workflow)
+      description: |
+        Executes a stateful LangGraph workflow (Planner → Recon → Executor → Critic → Reporter)
+        with multi-layer security controls: intent verification, scope-based authorization,
+        and recommendation-only mode by default. Requires Bearer token authentication.
+      tags: [Agentic]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  example: ops123
+                  description: User identifier for audit logging
+                goal:
+                  type: string
+                  example: Enumerate public subdomains for example.com and propose safe reconnaissance steps
+                  description: Natural language goal or task description
+                mode:
+                  type: string
+                  example: pentest
+                  default: pentest
+                  description: Operation mode (pentest, soc, sigma, yara, ioc, osint, graphql, code, ciso, auto)
+                history:
+                  type: array
+                  items:
+                    type: object
+                  default: []
+                  description: Conversation history for context continuity
+              required: [goal]
+      responses:
+        "200":
+          description: Agentic workflow completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  report:
+                    type: string
+                    description: Final report from the agentic workflow
+                  risk:
+                    type: string
+                    description: Risk assessment
+                  plan:
+                    type: array
+                    items:
+                      type: string
+                    description: Execution plan steps
+                  findings_count:
+                    type: integer
+                    description: Number of findings generated
+                  mode:
+                    type: string
+                  user_id:
+                    type: string
+        "400": { description: Bad request (invalid parameters) }
+        "401": { description: Unauthorized (missing or invalid Bearer token) }
+        "403": { description: Forbidden (intent verification failed or insufficient scopes) }
+        "429": { description: Rate limit exceeded }
+        "500": { description: Internal server error }
+
   /metrics:
     get:
       summary: Prometheus-compatible metrics

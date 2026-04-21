@@ -40,11 +40,12 @@ def run_tool_safely(tool: str, args: List[str], kwargs: Dict[str, Any]) -> Dict[
 
     Returns:
         Dict with keys:
-        - status: "ok", "blocked", or "error"
-        - stdout: Tool output (last 20KB)
-        - stderr: Error output (last 8KB)
-        - rc: Return code (if status="ok")
-        - reason: Error reason (if status="blocked" or "error")
+        - status: "ok" (rc=0), "error" (rc!=0 or exception), or "blocked" (not whitelisted)
+        - stdout: Tool output (last 20KB) if status is "ok" or "error"
+        - stderr: Error output (last 8KB) if status is "ok" or "error"
+        - rc: Return code if status is "ok" or "error"
+        - error: Error message if status is "error"
+        - reason: Block reason if status is "blocked"
     """
     # Check if tool is whitelisted
     prof = TOOL_PROFILES.get(tool)
@@ -92,6 +93,16 @@ def run_tool_safely(tool: str, args: List[str], kwargs: Dict[str, Any]) -> Dict[
             text=True,
             timeout=timeout,
         )
+
+        # Return error status for non-zero exit codes
+        if result.returncode != 0:
+            return {
+                "status": "error",
+                "stdout": result.stdout[-20000:],  # Last 20KB
+                "stderr": result.stderr[-8000:],   # Last 8KB
+                "rc": result.returncode,
+                "error": f"Tool exited with non-zero status {result.returncode}",
+            }
 
         return {
             "status": "ok",

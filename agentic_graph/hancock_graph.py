@@ -48,7 +48,7 @@ def build_graph():
     if StateGraph is None:
         raise ImportError("langgraph not installed. Install with: pip install langgraph")
 
-    from langgraph.nodes import planner, recon, executor, critic, reporter
+    from .nodes import planner, recon, executor, critic, reporter
 
     g = StateGraph(HancockState)
 
@@ -88,7 +88,7 @@ def run_hancock_loop(state: HancockState) -> HancockState:
 
     # Build and execute graph
     graph = build_graph()
-    result = graph.invoke(state.dict())
+    result = graph.invoke(state.model_dump())
 
     # Return updated state
     return HancockState(**result)

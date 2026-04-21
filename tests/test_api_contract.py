@@ -27,6 +27,7 @@ EXPECTED_ENDPOINTS = {
     "/v1/predict-locations",
     "/v1/map-infrastructure",
     "/v1/webhook",
+    "/v1/agentic/run",
 }
 
 POST_INVALID_PAYLOADS = {

@@ -3,10 +3,19 @@
 """Atheris fuzz harness for sandbox.runner module."""
 import sys
 import json
+import os
 import atheris
+from pathlib import Path
+from unittest.mock import Mock, patch
+
+# Add repo root to sys.path
+repo_root = Path(__file__).resolve().parent.parent
+if str(repo_root) not in sys.path:
+    sys.path.insert(0, str(repo_root))
 
 with atheris.instrument_imports():
     from sandbox.runner import run_tool_safely
+    from sandbox.profiles import TOOL_PROFILES
 
 
 def TestOneInput(data):
@@ -31,9 +40,16 @@ def TestOneInput(data):
     if not isinstance(kwargs, dict):
         kwargs = {}
 
+    # Mock subprocess.run to avoid Docker dependency during fuzzing
+    mock_result = Mock()
+    mock_result.returncode = 0
+    mock_result.stdout = "mocked output"
+    mock_result.stderr = ""
+
     try:
-        # Run with fuzzer input
-        result = run_tool_safely(tool, args, kwargs)
+        # Run with fuzzer input (mocked subprocess to avoid Docker calls)
+        with patch("subprocess.run", return_value=mock_result):
+            result = run_tool_safely(tool, args, kwargs)
         # Verify result structure
         assert "status" in result
         assert result["status"] in ["ok", "blocked", "error"]
