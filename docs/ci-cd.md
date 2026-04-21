@@ -218,7 +218,7 @@ python qa/security_audit.py
 python qa/docs_lint.py
 ```
 
-**Note:** Full Claude Code CLI integration requires the `ANTHROPIC_API_KEY` secret to be configured. The workflow will run basic analysis without it.
+**Note:** Full Claude Code CLI integration requires both the Claude CLI to be installed and available in the workflow environment and the `ANTHROPIC_API_KEY` secret to be configured. If either requirement is missing, `claude analyze` will be skipped and the workflow will run basic analysis only.
 
 ---
 
