@@ -430,7 +430,7 @@ make osint-report-json
 Run the focused scaffold tests with:
 
 ```bash
-pytest -q tests/test_osint_report_builder.py tests/test_zeroai_runner.py tests/test_osint_report_cli.py
+pytest -q tests/test_osint_report_builder.py tests/test_osint_report_cli.py
 ```
 
 ---
