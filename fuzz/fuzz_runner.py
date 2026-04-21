@@ -10,9 +10,13 @@ from unittest.mock import Mock, patch
 
 # Add repo root to sys.path
 repo_root = Path(__file__).resolve().parent.parent
-if str(repo_root) not in sys.path:
-    sys.path.insert(0, str(repo_root))
+import json
+import os
+import atheris
 
+repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if repo_root not in sys.path:
+    sys.path.insert(0, repo_root)
 with atheris.instrument_imports():
     from sandbox.runner import run_tool_safely
     from sandbox.profiles import TOOL_PROFILES
