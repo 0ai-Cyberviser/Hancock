@@ -8,6 +8,8 @@ import json
 from pathlib import Path
 from typing import Dict
 
+from data_integrity import compute_sha256
+
 SBOM_PATH = Path("deploy/sbom.json")
 TRIVY_CACHE = Path(".trivy-cache")
 
@@ -28,7 +30,7 @@ def run_trivy_scan() -> bool:
     cmd = [
         "docker", "run", "--rm",
         "-v", "/var/run/docker.sock:/var/run/docker.sock",
-        "-v", str(TRIVY_CACHE):"/root/.cache/trivy",
+        "-v", f"{TRIVY_CACHE}:/root/.cache/trivy",
         "aquasec/trivy", "image",
         "--exit-code", "1",
         "--severity", "CRITICAL,HIGH",
