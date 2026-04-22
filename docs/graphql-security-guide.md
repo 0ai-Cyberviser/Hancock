@@ -693,5 +693,5 @@ fields @timestamp, user_id, target_user_id
 
 ---
 
-**Security Contact:** security@cyberviser.ai
+**Security Contact:** 0ai@cyberviserai.com
 **Last Updated:** 2026-03-01

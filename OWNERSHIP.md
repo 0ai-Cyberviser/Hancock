@@ -13,6 +13,10 @@ administrator, and release authority for this repository.
 Repository settings, release decisions, branding direction, and merge approval
 policy are controlled by Johnny Watters (`0ai-Cyberviser`).
 
+Canonical public company routing lives at:
+
+- https://0ai-cyberviser.github.io/0ai/
+
 ## Copyright and licensing
 
 This repository is distributed under the project license in [LICENSE](LICENSE).
@@ -35,3 +39,5 @@ Watters (`0ai-Cyberviser`) except where a separate notice states otherwise.
 New contributions are reviewed solely at maintainer discretion. Maintainers may
 require a separate written assignment, trademark acknowledgment, or other
 rights confirmation before merging a contribution.
+
+See [PUBLIC_SURFACE.md](PUBLIC_SURFACE.md) for repo-facing routing guidance.

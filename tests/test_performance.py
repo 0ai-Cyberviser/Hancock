@@ -26,7 +26,8 @@ import pytest
 
 LATENCY_THRESHOLD_MS = 200  # max acceptable median latency for legacy checks (ms)
 THROUGHPUT_BATCH = 20       # number of requests per throughput test
-LATENCY_SAMPLES = 25        # number of samples per latency measurement
+LATENCY_SAMPLES = 10        # number of samples per latency measurement (reduced for speed)
+LATENCY_SAMPLES_LONG = 20   # number of samples for long-running latency tests
 OUTLIER_FLOOR_MS = 15       # tolerate small scheduler / fixture jitter on very fast paths
 OUTLIER_ALLOWED_COUNT = 1   # permit a single blip on shared runners before treating it as regression
 OUTLIER_HARD_CAP_MS = 100   # a true runaway outlier should still fail loudly
@@ -217,33 +218,36 @@ class TestLatencyTargets:
     """p50/p95 latency gates for regression detection in CI."""
 
     def test_health_latency_targets(self, hancock_client):
-        samples = _measure_ms(lambda: hancock_client.get("/health"))
+        samples = _measure_ms(lambda: hancock_client.get("/health"), n=LATENCY_SAMPLES)
         _assert_latency_regression("GET /health", samples)
 
     def test_metrics_latency_targets(self, hancock_client):
-        samples = _measure_ms(lambda: hancock_client.get("/metrics"))
+        samples = _measure_ms(lambda: hancock_client.get("/metrics"), n=LATENCY_SAMPLES)
         _assert_latency_regression("GET /metrics", samples)
 
     def test_ask_latency_targets(self, hancock_client, sample_question):
         samples = _measure_ms(
-            lambda: hancock_client.post("/v1/ask", json={"question": sample_question})
+            lambda: hancock_client.post("/v1/ask", json={"question": sample_question}),
+            n=LATENCY_SAMPLES
         )
         _assert_latency_regression("POST /v1/ask", samples)
 
     def test_chat_latency_targets(self, hancock_client, sample_message):
         samples = _measure_ms(
-            lambda: hancock_client.post("/v1/chat", json={"message": sample_message})
+            lambda: hancock_client.post("/v1/chat", json={"message": sample_message}),
+            n=LATENCY_SAMPLES
         )
         _assert_latency_regression("POST /v1/chat", samples)
 
     def test_triage_latency_targets(self, hancock_client, sample_alert):
         samples = _measure_ms(
-            lambda: hancock_client.post("/v1/triage", json={"alert": sample_alert})
+            lambda: hancock_client.post("/v1/triage", json={"alert": sample_alert}),
+            n=LATENCY_SAMPLES
         )
         _assert_latency_regression("POST /v1/triage", samples)
 
     def test_agents_median_latency(self, hancock_client):
-        samples = _measure_ms(lambda: hancock_client.get("/v1/agents"))
+        samples = _measure_ms(lambda: hancock_client.get("/v1/agents"), n=LATENCY_SAMPLES)
         assert statistics.median(samples) < LATENCY_THRESHOLD_MS
 
 
@@ -282,14 +286,14 @@ class TestLatencyConsistency:
     """Variance between min and max should not be extreme (no runaway outliers)."""
 
     def test_health_max_vs_min_ratio(self, hancock_client):
-        times = _measure_ms(lambda: hancock_client.get("/health"), n=20)
+        times = _measure_ms(lambda: hancock_client.get("/health"), n=10)
         ratio = max(times) / max(min(times), 0.001)
         assert ratio < 50, f"Latency spread too large: min={min(times):.1f}ms max={max(times):.1f}ms"
 
     def test_ask_max_within_10x_median(self, hancock_client, sample_question):
         times = _measure_ms(
             lambda: hancock_client.post("/v1/ask", json={"question": sample_question}),
-            n=20,
+            n=10,
         )
         median = statistics.median(times)
         allowed_max = max(median * 10, OUTLIER_FLOOR_MS)

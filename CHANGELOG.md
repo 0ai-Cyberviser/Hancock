@@ -323,7 +323,7 @@ Versioning: [Semantic Versioning](https://semver.org/)
 ### Added
 - **API authentication** — Bearer token auth on all `/v1/*` endpoints via `HANCOCK_API_KEY` env var
 - **Rate limiting** — configurable per-IP request throttle (`HANCOCK_RATE_LIMIT`, default 60 req/min)
-- **Netlify auto-deploy workflow** (`.github/workflows/deploy.yml`) — pushes to `docs/` auto-deploy to `cyberviser.netlify.app`
+- **Netlify auto-deploy workflow** (`.github/workflows/deploy.yml`) — pushes to `docs/` for static site deployment
 - **Pricing page** (`docs/pricing.html`) — 4-tier plan: Community / Pro $299/mo / Enterprise / API $0.008/req
 - **Contact/lead form** (`docs/contact.html`) — lead capture form via Formspree → cyberviser@proton.me
 - **Fine-tuning v2** (`hancock_finetune_v2.py`) — dedup, LoRA r=32, resume from checkpoint, HuggingFace Hub push

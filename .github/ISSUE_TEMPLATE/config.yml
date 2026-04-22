@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
   - name: 0AI Support
-    url: https://github.com/cyberviser/Hancock/blob/main/SUPPORT.md
-    about: Portfolio support and owner contact for this repository.
+    url: https://0ai-cyberviser.github.io/0ai/
+    about: Portfolio support, owner contact, and public routing hub.
   - name: Private Security Reporting
-    url: https://github.com/cyberviser/Hancock/blob/main/SECURITY.md
-    about: Report vulnerabilities and safety issues privately.
+    url: https://github.com/cyberviser/Hancock/security/policy
+    about: Report vulnerabilities and safety issues privately through the canonical policy.

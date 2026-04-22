@@ -23,7 +23,7 @@ It runs on your infra or ours. No data leaves your environment.
 
 I'd love to set you up with a free trial. No pitch, no sales call required — just hit the API and see if it saves your analysts time.
 
-→ https://cyberviser.netlify.app
+→ https://0ai-cyberviser.github.io/0ai/
 
 Worth 5 minutes?
 
@@ -40,7 +40,7 @@ I've been building Hancock, an AI agent fine-tuned specifically for pentest and 
 
 Just shipped v0.4.0. Would love to get your honest feedback — free access, no strings.
 
-→ https://cyberviser.netlify.app
+→ https://0ai-cyberviser.github.io/0ai/
 
 ---
 
@@ -58,7 +58,7 @@ It's not ChatGPT with a security prompt. It's fine-tuned on real pentest data, d
 
 Free trial available. Takes 5 minutes to set up.
 
-→ https://cyberviser.netlify.app/api
+→ https://github.com/cyberviser/Hancock/tree/main/docs
 
 — CyberViser | cyberviser@proton.me
 
@@ -97,7 +97,7 @@ Hancock — AI pentest assistant, fine-tuned on MITRE ATT&CK and CVE data.
 Ask it about recon, exploitation paths, CVEs, or have it write a Splunk hunt query.
 
 Open source core: https://github.com/cyberviser/Hancock
-Live demo: https://cyberviser.netlify.app
+Portfolio hub: https://0ai-cyberviser.github.io/0ai/
 
 Star it if it's useful. PRs welcome.
 

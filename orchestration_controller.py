@@ -385,10 +385,14 @@ class OrchestrationController:
         with self._lock:
             records = list(self._history)
 
-        if tool_name:
-            records = [r for r in records if r.tool_name == tool_name]
-        if status:
-            records = [r for r in records if r.status == status]
+        # Single-pass filter instead of multiple iterations
+        # Optimization: combines tool_name and status filtering in one comprehension
+        if tool_name or status:
+            records = [
+                r for r in records
+                if (tool_name is None or r.tool_name == tool_name) and
+                   (status is None or r.status == status)
+            ]
 
         records = records[-limit:]
         records.reverse()

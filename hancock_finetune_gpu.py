@@ -12,7 +12,7 @@ Required env (optional):
     HF_TOKEN=hf_xxx        → push model to HuggingFace Hub after training
     HANCOCK_MODEL_ID=...   → override base model (default: Mistral-7B-Instruct-v0.3)
 """
-import os, sys, json, argparse
+import os, sys, json, argparse, subprocess
 from pathlib import Path
 
 BASE_MODEL   = os.getenv("HANCOCK_MODEL_ID", "mistralai/Mistral-7B-Instruct-v0.3")
@@ -45,7 +45,7 @@ def load_dataset():
     path = DATASET_PATH if DATASET_PATH.exists() else DATASET_PATH_FALLBACK
     if not path.exists():
         print(f"  Dataset not found — building v3 dataset...")
-        os.system("python hancock_pipeline.py --phase 3")
+        subprocess.run([sys.executable, "hancock_pipeline.py", "--phase", "3"], check=True)
         path = DATASET_PATH if DATASET_PATH.exists() else DATASET_PATH_FALLBACK
     if not path.exists():
         sys.exit(f"❌  Dataset missing: {DATASET_PATH}")

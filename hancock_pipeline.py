@@ -51,12 +51,7 @@ def run_ghsa(data_dir: Path = DATA_DIR) -> None:
     run_collector("ghsa", data_dir)
 
 
-def run_formatter_v3()
-generate_sbom()
-run_trivy_scan()
-generate_manifest()
-    sign_model(\"hancock-cpu-adapter/\")
-    sign_model(\"data/\") -> None:
+def run_formatter_v3() -> None:
     """Format all v3 data sources into hancock_v3.jsonl."""
     run_collector("formatter-v3")
 
@@ -125,30 +120,42 @@ def run_osint_geolocation(target: str) -> dict:
 
 def run_full_assessment(target: str) -> None:
     """Orchestrate a full security assessment pipeline for a given target."""
+    # Optimization: Replace if/elif chain with dictionary dispatch
+    # Reduces O(n) conditional checks to O(1) lookup + function calls
+
+    def _run_nmap():
+        try:
+            from collectors.nmap_recon import run_nmap
+            run_nmap(target)
+        except Exception as exc:
+            print(f"[pipeline] nmap step skipped: {exc}")
+
+    def _run_sqlmap():
+        try:
+            from collectors.sqlmap_exploit import SQLMapAPI
+            print(f"[pipeline] sqlmap step ready for {target}")
+        except Exception as exc:
+            print(f"[pipeline] sqlmap step skipped: {exc}")
+
+    def _run_burp():
+        try:
+            from collectors.burp_post_exploit import BurpAPI
+            print(f"[pipeline] burp step ready for {target}")
+        except Exception as exc:
+            print(f"[pipeline] burp step skipped: {exc}")
+
+    # Dictionary dispatch: O(1) tool lookup instead of O(n) if/elif chain
+    tool_runners = {
+        "nmap": _run_nmap,
+        "sqlmap": _run_sqlmap,
+        "burp": _run_burp,
+    }
+
     allowlist = ["nmap", "sqlmap", "burp"]
-
     for tool in allowlist:
-        if tool == "nmap":
-            try:
-                from collectors.nmap_recon import run_nmap
-
-                run_nmap(target)
-            except Exception as exc:
-                print(f"[pipeline] nmap step skipped: {exc}")
-        elif tool == "sqlmap":
-            try:
-                from collectors.sqlmap_exploit import SQLMapAPI
-
-                print(f"[pipeline] sqlmap step ready for {target}")
-            except Exception as exc:
-                print(f"[pipeline] sqlmap step skipped: {exc}")
-        elif tool == "burp":
-            try:
-                from collectors.burp_post_exploit import BurpAPI
-
-                print(f"[pipeline] burp step ready for {target}")
-            except Exception as exc:
-                print(f"[pipeline] burp step skipped: {exc}")
+        runner = tool_runners.get(tool)
+        if runner:
+            runner()
 
     try:
         osint_result = run_osint_geolocation(target)
@@ -197,9 +204,5 @@ def main() -> None:
         run_collector(collector_id, data_dir)
 
     print("[pipeline] Done.")
-
-
-from data_integrity import generate_manifest
-
 if __name__ == "__main__":
     sys.exit(main())

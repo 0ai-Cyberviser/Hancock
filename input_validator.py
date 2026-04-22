@@ -11,7 +11,7 @@ from __future__ import annotations
 import ipaddress
 import math
 import re
-from collections import deque
+from collections import deque, Counter
 from typing import Any
 
 
@@ -26,6 +26,10 @@ _DOMAIN_RE = re.compile(
 )
 _URL_RE = re.compile(r"^https?://", re.IGNORECASE)
 _CVE_RE = re.compile(r"^CVE-\d{4}-\d{4,}$", re.IGNORECASE)
+
+# Pre-compile secret marker patterns for efficient reuse across multiple passes
+_SECRET_KEYS_RE = re.compile(r"(password|token|secret|api_key|credentials)")
+_SECRET_VALUES_RE = re.compile(r"(password=|token=|secret=|api_key=|credentials=)")
 
 VALID_IOC_TYPES = frozenset(
     {
@@ -88,13 +92,12 @@ def shannon_entropy(text: str) -> float:
     if not text:
         return 0.0
 
-    freq: dict[str, int] = {}
-    for char in text:
-        freq[char] = freq.get(char, 0) + 1
-
+    # Use Counter for O(1) frequency tracking instead of manual dict.get() calls
+    freq = Counter(text)
+    text_len = len(text)
     entropy = 0.0
     for count in freq.values():
-        probability = count / len(text)
+        probability = count / text_len
         entropy -= probability * math.log2(probability)
     return entropy
 
@@ -219,7 +222,8 @@ def validate_output(output: dict[str, Any] | Any) -> dict[str, Any]:
 
     def _redact(key_name: str, value: Any) -> Any:
         lower_key = key_name.lower()
-        if any(secret in lower_key for secret in ("password", "token", "secret", "api_key", "credentials")):
+        # Use pre-compiled regex for efficient pattern matching (compiled once at module level)
+        if _SECRET_KEYS_RE.search(lower_key):
             return "[REDACTED_SENSITIVE]"
 
         if isinstance(value, dict):
@@ -230,10 +234,8 @@ def validate_output(output: dict[str, Any] | Any) -> dict[str, Any]:
 
         if isinstance(value, str):
             lower_value = value.lower()
-            if any(
-                marker in lower_value
-                for marker in ("password=", "token=", "secret=", "api_key=", "credentials=")
-            ):
+            # Use pre-compiled regex for efficient pattern matching (compiled once at module level)
+            if _SECRET_VALUES_RE.search(lower_value):
                 return "[REDACTED_SENSITIVE]"
         return value
 
