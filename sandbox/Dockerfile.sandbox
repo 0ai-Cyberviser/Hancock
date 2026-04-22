@@ -1,0 +1,63 @@
+# Hancock Sandbox — Isolated Security Tools Environment
+# Base: Kali Linux rolling (includes most tools pre-installed)
+# Runtime: gVisor-compatible (runsc)
+# Resource limits enforced by executor.py
+
+FROM kalilinux/kali-rolling:latest
+
+LABEL maintainer="Johnny Watters <0ai@cyberviserai.com>"
+LABEL description="Hancock isolated sandbox for offensive security tools"
+LABEL version="0.5.0"
+
+# Prevent interactive prompts during apt install
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
+
+# Update + install essential security tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # Network scanners
+    nmap \
+    masscan \
+    # Web scanners
+    nikto \
+    dirb \
+    gobuster \
+    # Enumeration
+    enum4linux \
+    smbclient \
+    dnsutils \
+    whois \
+    # Exploitation (CAREFUL — high-risk tools)
+    sqlmap \
+    # Utilities
+    curl \
+    wget \
+    netcat-openbsd \
+    jq \
+    python3 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python tools (use --break-system-packages for Kali/Debian PEP 668)
+RUN pip3 install --no-cache-dir --break-system-packages \
+    requests \
+    beautifulsoup4 \
+    || true  # Ignore errors if packages already available via apt
+
+# Create non-root user for tool execution (security best practice)
+RUN useradd -m -s /bin/bash hancock && \
+    mkdir -p /workspace && \
+    chown hancock:hancock /workspace
+
+# Set working directory
+WORKDIR /workspace
+
+# Switch to non-root user
+USER hancock
+
+# Default command (can be overridden by executor.py or test harness)
+CMD ["/bin/bash", "-c", "echo 'Hancock sandbox ready'"]
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD nmap --version || exit 1

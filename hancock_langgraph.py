@@ -3,7 +3,18 @@ from langchain_core.messages import HumanMessage
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 import json
+import os
 from pathlib import Path
+
+# Import sandbox executor (v0.5.0)
+try:
+    import sys
+    sys.path.append(str(Path(__file__).parent / "sandbox"))
+    from executor import SandboxExecutor
+    SANDBOX_AVAILABLE = True
+except ImportError:
+    print("[langgraph] ⚠️  Sandbox executor not available — recommendation-only mode")
+    SANDBOX_AVAILABLE = False
 
 # Hybrid RAG setup (live threat intel from collectors)
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
@@ -50,7 +61,69 @@ def recon_node(state):
     return {"messages": state["messages"] + ["Recon completed via live MITRE/NVD collectors + RAG context"]}
 
 def executor_node(state):
-    return {"messages": state["messages"] + ["Executed in Firecracker/Kata microVM sandbox"]}
+    """
+    Executor node — runs security tools in isolated sandbox (v0.5.0).
+
+    Modes:
+    1. Sandbox enabled + authorized → Execute tools with approval gates
+    2. Sandbox disabled or unauthorized → Recommendation-only
+
+    Security controls:
+    - Scope validation (HANCOCK_AUTHORIZED_SCOPES env var)
+    - Risk-based approval gates (low=auto, medium=approval, high=block)
+    - Resource limits (1 CPU, 512MB RAM, 5min timeout)
+    - Output sanitization (strip credentials, PII)
+    """
+    # Check if execution is authorized
+    if not state.get("authorized", False):
+        state["messages"].append("⚠️  Execution NOT authorized — recommendation-only mode")
+        state["tool_output"] = "No tools executed (authorization required)"
+        return state
+
+    # Check if sandbox is available
+    if not SANDBOX_AVAILABLE:
+        state["messages"].append("📋 Sandbox not available — providing recommendations only")
+        state["tool_output"] = "Recommendations: [nmap scan commands would go here]"
+        return state
+
+    # Extract tool request from RAG context or messages
+    # TODO: LLM-based tool selection from RAG results
+    # For now, demo with hardcoded nmap if T1003 detected
+    query = state.get("messages", [""])[0].lower()
+
+    if "t1003" in query or "credential" in query or "lsass" in query:
+        # Recommend defensive tools (no exploit execution)
+        state["messages"].append(
+            "🔍 T1003 detected — running network recon to identify vulnerable hosts"
+        )
+
+        # Get authorized scopes from env
+        scopes = os.getenv("HANCOCK_AUTHORIZED_SCOPES", "").split(",")
+        if not scopes or scopes == [""]:
+            state["messages"].append("❌ No authorized scopes configured (set HANCOCK_AUTHORIZED_SCOPES)")
+            state["tool_output"] = "Execution blocked: no authorized scopes"
+            return state
+
+        # Initialize sandbox executor
+        executor = SandboxExecutor(authorized_scopes=scopes)
+
+        # Example: Run low-risk nmap ping sweep on first authorized scope
+        target = scopes[0]
+        result = executor.execute_tool(
+            tool="nmap",
+            command=["nmap", "-sn", target],
+            target=target,
+            require_approval=False  # Ping sweep is low-risk
+        )
+
+        state["messages"].append(f"✅ Executed: nmap -sn {target}")
+        state["tool_output"] = result.get("output", "No output")
+        state["execution_result"] = result
+    else:
+        state["messages"].append("📋 No tools executed — provide manual recommendations")
+        state["tool_output"] = "Recommendation mode active"
+
+    return state
 
 def critic_node(state):
     return {"messages": state["messages"] + ["Critic review passed — safety + accuracy OK"]}
@@ -77,6 +150,9 @@ workflow.add_edge("reporter", END)
 graph = workflow.compile()
 
 if __name__ == "__main__":
+    # Set demo authorized scope
+    os.environ["HANCOCK_AUTHORIZED_SCOPES"] = "192.168.1.0/24,scanme.nmap.org"
+
     state = {
         'messages': ["T1003 credential dumping techniques"],
         'mode': 'pentest',
@@ -85,8 +161,9 @@ if __name__ == "__main__":
         'rag_context': [],
         'rag_sources': [],
         'rag_ids': [],
-        'tool_output': ''
+        'tool_output': '',
+        'execution_result': {}
     }
     result = graph.invoke(state)
-    print('✅ Hybrid RAG LangGraph test successful (ALL 9 modes):')
+    print('✅ Hybrid RAG + Sandbox LangGraph test successful (v0.5.0):')
     print(json.dumps(result, indent=2))

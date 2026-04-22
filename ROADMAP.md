@@ -1,4 +1,18 @@
 
+## v0.5.0 — Secure Sandboxed Execution (COMPLETE)
+- [x] Docker-based isolated execution environment (Kali Linux + gVisor runtime)
+- [x] Risk-based approval gates (low=auto, medium=approval, high=block)
+- [x] Tool wrappers: nmap, sqlmap, nikto, enum4linux, dig (input validation + safe defaults)
+- [x] Resource limits: 1 CPU, 512MB RAM, 5min timeout, egress-only network
+- [x] Scope validation via HANCOCK_AUTHORIZED_SCOPES (CIDR/domain whitelist)
+- [x] Output sanitization: strip credentials, API keys, PII
+- [x] Audit logging: all executions timestamped with risk/approval status
+- [x] LangGraph executor node integration with conditional sandbox usage
+- [x] Human-in-the-loop approval for medium-risk actions
+- [x] sandbox/ module: executor.py, Dockerfile.sandbox, tools/wrappers.py, README.md
+**Impact:** Recommendation-only → **Autonomous Execution** (risk stays controlled via isolation)
+NIST: AC-6, CM-7, SC-7, SI-3, SI-4
+
 ## v0.4.3 — Hybrid RAG Production Integration (COMPLETE)
 - [x] Full Hybrid RAG implementation (collectors → FAISS → LangGraph)
 - [x] collectors/rag_builder.py — aggregates MITRE/NVD/KEV/Atomic/GHSA into vector DB

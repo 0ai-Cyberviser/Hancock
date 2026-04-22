@@ -45,6 +45,78 @@ Versioning: [Semantic Versioning](https://semver.org/)
   - Production-ready remediation templates with phased rollout strategy
 - **README updates** — added GraphQL Security mode to feature table and usage examples
 
+## [0.5.0] — 2026-04-20 — Secure Sandboxed Execution
+
+### Added
+- **Autonomous tool execution** — Hancock can now run offensive security tools in isolated Docker sandboxes
+  - **`sandbox/executor.py`**: Core execution engine with multi-layer safety controls
+    - Risk scoring algorithm (1-10): calculates risk based on tool + flags + exploit keywords
+    - Scope validation: enforces HANCOCK_AUTHORIZED_SCOPES env var (CIDR/domain whitelist)
+    - Approval gates: low-risk (1-3) auto-executes, medium (4-6) requires human approval, high (7-10) blocked
+    - Resource limits via Docker: 1 CPU core, 512MB RAM, 5min timeout, egress-only network
+    - Output sanitization: strips `password|token|key` → `[REDACTED]`, emails → `[EMAIL]`, API keys
+    - Audit logging: timestamped execution records with risk scores, approval status, exit codes
+  - **`sandbox/Dockerfile.sandbox`**: Kali Linux rolling base with curated security tools
+    - Pre-installed: nmap, masscan, nikto, dirb, gobuster, enum4linux, sqlmap, dig, whois
+    - Non-root `hancock` user for tool execution (least-privilege principle)
+    - Health check: verifies nmap availability on container startup
+    - gVisor-compatible for enhanced kernel syscall filtering (optional `--runtime=runsc`)
+  - **`sandbox/tools/wrappers.py`**: Type-safe, validated tool wrappers
+    - `NmapWrapper`: ping_sweep, port_scan, service_version, full_scan
+    - `SqlmapWrapper`: test_url (blocks risk>2 or level>3 in auto mode)
+    - `NiktoWrapper`: scan_web (HTTP/HTTPS)
+    - `Enum4LinuxWrapper`: enumerate_smb (IP validation required)
+    - `DigWrapper`: DNS lookups (A/AAAA/MX/TXT/NS/CNAME/SOA/PTR)
+    - Input validation: IP regex, domain regex, CIDR notation checks
+    - Safety defaults: low-risk flags only, no exploit mode auto-execution
+  - **`sandbox/README.md`**: Complete security documentation (architecture, safety controls, examples)
+- **LangGraph executor node integration** (`hancock_langgraph.py`):
+  - Conditionally imports `SandboxExecutor` (graceful degradation if sandbox unavailable)
+  - Checks `state['authorized']` flag before execution (CRITICAL: never bypass)
+  - Demo logic: detects T1003/credential/lsass queries → runs nmap ping sweep on authorized scope
+  - Returns `execution_result` dict in state with tool output, risk score, approval status
+  - Falls back to recommendation-only mode if sandbox disabled or scopes not configured
+- **Environment variable**: `HANCOCK_AUTHORIZED_SCOPES`
+  - Format: comma-separated IPs, CIDRs, domains (e.g., `"192.168.1.0/24,scanme.nmap.org"`)
+  - **CRITICAL**: Only add targets with explicit written authorization to test
+  - Enforced on every `execute_tool()` call via `validate_scope()`
+
+### Changed
+- **Capability paradigm shift**: Hancock evolved from **passive recommendation** → **active autonomous execution**
+- **Risk profile**: Stays controlled (4-6/10) via multi-layer isolation:
+  1. Docker container isolation (dedicated namespace)
+  2. Resource limits (CPU/RAM/network/time capped)
+  3. Non-root execution (UID != 0 inside container)
+  4. Approval gates (human confirms medium-risk actions)
+  5. Scope validation (whitelisted targets only)
+  6. Output sanitization (credentials stripped before return)
+  7. Audit trail (all commands logged with timestamps)
+
+### Improved
+- **Pentest workflow automation**: Can now execute recon → scan → enumerate chains end-to-end
+- **Safety guarantees**: Even with autonomous execution, cannot:
+  - Scan unauthorized targets (scope validation)
+  - Run high-risk exploits without approval (risk gates)
+  - Exhaust host resources (Docker limits)
+  - Leak credentials in logs (output sanitization)
+  - Bypass safety controls (approval required for executor.__init__ overrides)
+- **Auditability**: Full execution trace in `executor.get_audit_log()` for incident response / compliance
+
+### Security Notes
+- **DO NOT** add `0.0.0.0/0` or wildcard `*` to AUTHORIZED_SCOPES
+- **DO NOT** run sandbox containers with `--privileged` flag
+- **DO NOT** bypass approval gates in production environments
+- **DO** review audit logs regularly (look for denied/blocked executions)
+- **DO** keep sandbox image updated (`docker pull kalilinux/kali-rolling:latest`)
+- **DO** follow responsible disclosure for any findings from tool executions
+
+### NIST Compliance
+- **AC-6**: Least Privilege (non-root user, minimal Docker caps)
+- **CM-7**: Least Functionality (only required tools installed, no GUI)
+- **SC-7**: Boundary Protection (egress-only network, isolated container)
+- **SI-3**: Malicious Code Protection (no arbitrary code exec, validated wrappers only)
+- **SI-4**: System Monitoring (audit logs, execution timestamps)
+
 ## [0.4.3] — 2026-04-20 — Hybrid RAG Production Integration
 
 ### Added
