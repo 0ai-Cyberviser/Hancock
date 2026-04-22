@@ -35,6 +35,15 @@ Versioning: [Semantic Versioning](https://semver.org/)
 ## [Unreleased] — v0.6.0
 
 ### Added
+- **Multi-Tool Orchestrator** — intelligent chaining of security tools for autonomous workflows:
+  - `sandbox/orchestrator.py`: WorkflowOrchestrator class with state machine, dependency management, and rollback capabilities
+  - Predefined workflow templates: web-assessment (nmap → nikto → sqlmap), smb-enum (nmap → enum4linux), network-discovery (nmap → masscan)
+  - Cross-tool data passing (nmap results feed into nikto targets, nikto findings trigger sqlmap)
+  - Risk-aware execution with configurable thresholds (halt workflow if step exceeds max risk)
+  - Checkpoint/resume functionality for long-running workflows
+  - Workflow state persistence to JSON for audit trails
+  - Integration with LangGraph orchestrator_node for intelligent workflow selection based on RAG context
+  - Comprehensive workflow summary reporting (completed/failed/skipped steps, total time, individual step results)
 - **GraphQL Security Module** — comprehensive authentication/authorization testing framework:
   - `collectors/graphql_security_kb.py`: Knowledge base with 9 detailed Q&A pairs covering IDOR/BOLA, JWT security, field-level authorization, mutation testing, rate limiting, and remediation strategies
   - `collectors/graphql_security_tester.py`: Automated security testing tool for GraphQL endpoints with IDOR detection, JWT algorithm confusion testing, mutation authorization checks, and field-level authorization validation

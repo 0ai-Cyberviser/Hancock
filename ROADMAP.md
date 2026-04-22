@@ -1,4 +1,18 @@
 
+## v0.6.0 — Multi-Tool Orchestration (IN PROGRESS)
+- [x] WorkflowOrchestrator class with state machine and dependency management
+- [x] Predefined workflow templates (web-assessment, smb-enum, network-discovery)
+- [x] Cross-tool data passing (nmap → nikto, nikto → sqlmap)
+- [x] Risk-aware execution with configurable thresholds
+- [x] Checkpoint/resume for long-running workflows
+- [x] LangGraph orchestrator node integration
+- [ ] Advanced result parsing (nmap XML → structured data)
+- [ ] Custom workflow builder (YAML/JSON workflow definitions)
+- [ ] Parallel step execution (run independent tools simultaneously)
+- [ ] Professional pentest report generation from workflow results
+**Impact:** Single-tool → **Multi-tool Attack Chains** (autonomous pentest workflows)
+NIST: AC-6, AU-6, SI-4
+
 ## v0.5.0 — Secure Sandboxed Execution (COMPLETE)
 - [x] Docker-based isolated execution environment (Kali Linux + gVisor runtime)
 - [x] Risk-based approval gates (low=auto, medium=approval, high=block)

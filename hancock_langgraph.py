@@ -6,15 +6,19 @@ import json
 import os
 from pathlib import Path
 
-# Import sandbox executor (v0.5.0)
+# Import sandbox executor (v0.5.0) + orchestrator (v0.6.0)
 try:
     import sys
     sys.path.append(str(Path(__file__).parent / "sandbox"))
     from executor import SandboxExecutor
+    from orchestrator import WorkflowOrchestrator
     SANDBOX_AVAILABLE = True
-except ImportError:
-    print("[langgraph] ⚠️  Sandbox executor not available — recommendation-only mode")
+    ORCHESTRATOR_AVAILABLE = True
+except ImportError as e:
+    print(f"[langgraph] ⚠️  Sandbox/orchestrator not available: {e}")
+    print("[langgraph]    Running in recommendation-only mode")
     SANDBOX_AVAILABLE = False
+    ORCHESTRATOR_AVAILABLE = False
 
 # Hybrid RAG setup (live threat intel from collectors)
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
@@ -128,6 +132,60 @@ def executor_node(state):
 def critic_node(state):
     return {"messages": state["messages"] + ["Critic review passed — safety + accuracy OK"]}
 
+def orchestrator_node(state):
+    """
+    Multi-tool orchestration node — chains tools intelligently (v0.6.0).
+
+    Workflows:
+    - web-assessment: nmap → nikto → sqlmap
+    - smb-enum: nmap → enum4linux
+    - network-discovery: nmap → nmap (service scan)
+
+    Only runs if authorized and orchestrator available.
+    """
+    if not state.get("authorized", False):
+        state["messages"].append("⚠️  Orchestration NOT authorized")
+        return state
+
+    if not ORCHESTRATOR_AVAILABLE:
+        state["messages"].append("📋 Orchestrator not available — single-tool mode only")
+        return state
+
+    # Initialize orchestrator
+    scopes = os.getenv("HANCOCK_AUTHORIZED_SCOPES", "").split(",")
+    if not scopes or scopes == [""]:
+        state["messages"].append("❌ No authorized scopes configured")
+        return state
+
+    executor = SandboxExecutor(authorized_scopes=scopes) if SANDBOX_AVAILABLE else None
+    orchestrator = WorkflowOrchestrator(executor=executor)
+
+    # Detect workflow type from RAG context
+    query = state.get("messages", [""])[0].lower()
+
+    if "web" in query or "http" in query or "nikto" in query:
+        workflow_type = "web-assessment"
+    elif "smb" in query or "enum4linux" in query:
+        workflow_type = "smb-enum"
+    else:
+        workflow_type = "network-discovery"
+
+    target = scopes[0]  # Use first authorized scope
+
+    state["messages"].append(f"🔗 Starting {workflow_type} workflow on {target}")
+
+    # Create and execute workflow
+    workflow_id = orchestrator.create_workflow(workflow_type, target)
+    summary = orchestrator.execute_workflow(workflow_id, auto_approve=True)
+
+    state["messages"].append(
+        f"✅ Workflow completed: {summary['completed']}/{summary['total_steps']} steps"
+    )
+    state["workflow_summary"] = summary
+    state["workflow_id"] = workflow_id
+
+    return state
+
 def reporter_node(state):
     return {"messages": state["messages"] + ["Professional PTES Markdown/PDF report generated"]}
 
@@ -136,6 +194,7 @@ workflow.add_node("planner", planner_node)
 workflow.add_node("rag", rag_node)
 workflow.add_node("recon", recon_node)
 workflow.add_node("executor", executor_node)
+workflow.add_node("orchestrator", orchestrator_node)  # v0.6.0: Multi-tool workflows
 workflow.add_node("critic", critic_node)
 workflow.add_node("reporter", reporter_node)
 
@@ -143,7 +202,8 @@ workflow.set_entry_point("planner")
 workflow.add_edge("planner", "rag")
 workflow.add_edge("rag", "recon")
 workflow.add_edge("recon", "executor")
-workflow.add_edge("executor", "critic")
+workflow.add_edge("executor", "orchestrator")  # Orchestrator runs after single-tool execution
+workflow.add_edge("orchestrator", "critic")
 workflow.add_edge("critic", "reporter")
 workflow.add_edge("reporter", END)
 
