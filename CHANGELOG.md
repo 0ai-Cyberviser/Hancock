@@ -32,6 +32,39 @@ Versioning: [Semantic Versioning](https://semver.org/)
 - **Oracle Cloud setup script** installs Ollama + pulls `llama3.1:8b`; no NVIDIA key required
 - **Updated banner** — reflects Ollama + Llama 3.1 instead of NIM + Mistral
 
+## [Unreleased] — v0.8.0
+
+### Added
+- **REST API with FastAPI** — programmatic access to Hancock's autonomous pentesting capabilities:
+  - `hancock_api.py`: FastAPI server with async workflow execution
+  - OpenAPI/Swagger documentation at `/docs`
+  - API key authentication via X-API-Key header
+  - Rate limiting and request validation
+  - CORS support for web dashboards
+  - Background task execution with job queuing
+  - Webhook notifications for workflow events (started, completed, failed)
+  - Multi-format report downloads (Markdown, JSON, HTML, PDF)
+  - Job status tracking with progress percentage
+  - Health check endpoint for monitoring
+- **API Endpoints**:
+  - `POST /v1/workflows` - Create and execute workflow
+  - `GET /v1/workflows/{id}` - Check workflow status with progress
+  - `GET /v1/workflows` - List all workflows with filtering
+  - `GET /v1/reports/{id}/{format}` - Download report in specified format
+  - `POST /v1/webhooks/test` - Test webhook connectivity
+  - `GET /health` - Service health check (no auth required)
+- **Python API Client** (`examples/api_client_example.py`):
+  - HancockAPIClient class for programmatic access
+  - Async workflow creation and status polling
+  - Automatic report downloads
+  - Webhook registration
+- **Integration capabilities**:
+  - CI/CD security gates (scan on deployment)
+  - SIEM integration (automated threat response)
+  - Scheduled assessments (cron-triggered scans)
+  - Multi-tenant SaaS deployment
+- **Dependencies**: FastAPI, Uvicorn, HTTPx, Pydantic
+
 ## [Unreleased] — v0.7.0
 
 ### Added

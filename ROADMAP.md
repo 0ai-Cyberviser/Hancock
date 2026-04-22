@@ -1,4 +1,18 @@
 
+## v0.8.0 — REST API & Webhook Integration (COMPLETE)
+- [x] FastAPI REST API server with async execution
+- [x] API key authentication
+- [x] Background workflow execution with job queuing
+- [x] Webhook notifications (started, completed, failed)
+- [x] Multi-format report downloads via API
+- [x] Job status tracking with progress percentage
+- [x] OpenAPI/Swagger documentation
+- [x] Python API client example
+- [x] CORS support for web dashboards
+- [x] Health check endpoint for monitoring
+**Impact:** Standalone tool → **Platform with API** (CI/CD, SIEM, automation integrations)
+NIST: AC-6, AU-6, SI-4
+
 ## v0.7.0 — Professional Pentest Reporting (COMPLETE)
 - [x] ReportGenerator class with PTES framework compliance
 - [x] Multi-format output (Markdown, JSON, HTML, PDF)
