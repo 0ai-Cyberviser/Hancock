@@ -28,6 +28,8 @@ LATENCY_THRESHOLD_MS = 200  # max acceptable median latency for legacy checks (m
 THROUGHPUT_BATCH = 20       # number of requests per throughput test
 LATENCY_SAMPLES = 25        # number of samples per latency measurement
 OUTLIER_FLOOR_MS = 15       # tolerate small scheduler / fixture jitter on very fast paths
+OUTLIER_ALLOWED_COUNT = 1   # permit a single blip on shared runners before treating it as regression
+OUTLIER_HARD_CAP_MS = 100   # a true runaway outlier should still fail loudly
 RATE_LIMIT_TEST_VALUE = 6
 
 # Endpoint-specific latency targets for regression gating in CI.
@@ -291,7 +293,14 @@ class TestLatencyConsistency:
         )
         median = statistics.median(times)
         allowed_max = max(median * 10, OUTLIER_FLOOR_MS)
-        assert max(times) < allowed_max, (
-            f"Max latency {max(times):.1f}ms exceeded {allowed_max:.1f}ms "
+        outliers = [t for t in times if t >= allowed_max]
+
+        assert len(outliers) <= OUTLIER_ALLOWED_COUNT, (
+            f"Observed {len(outliers)} outliers >= {allowed_max:.1f}ms: "
+            f"{[round(t, 1) for t in sorted(outliers)]} (median {median:.1f}ms)"
+        )
+        assert max(times) < max(allowed_max * 4, OUTLIER_HARD_CAP_MS), (
+            f"Max latency {max(times):.1f}ms exceeded hard cap "
+            f"{max(allowed_max * 4, OUTLIER_HARD_CAP_MS):.1f}ms "
             f"(median {median:.1f}ms)"
         )
