@@ -32,6 +32,23 @@ Versioning: [Semantic Versioning](https://semver.org/)
 - **Oracle Cloud setup script** installs Ollama + pulls `llama3.1:8b`; no NVIDIA key required
 - **Updated banner** — reflects Ollama + Llama 3.1 instead of NIM + Mistral
 
+## [Unreleased] — v0.7.0
+
+### Added
+- **Professional Pentest Report Generator** — PTES-compliant reporting with multiple output formats:
+  - `sandbox/report_generator.py`: ReportGenerator class with automated finding extraction and severity classification
+  - Multi-format output: Markdown (.md), JSON (.json), HTML (.html), PDF (.pdf via wkhtmltopdf)
+  - PTES framework compliance: Executive Summary, Methodology, Findings, Technical Details, Remediation Roadmap, Appendix
+  - Automated finding extraction from tool outputs (nmap, nikto, sqlmap, enum4linux)
+  - CVSS scoring and severity classification (Critical/High/Medium/Low/Info)
+  - Finding categorization aligned with OWASP Top 10 and SANS Top 25
+  - Executive summary with overall risk rating and severity breakdown
+  - Detailed reproduction steps and remediation guidance for each finding
+  - CWE/OWASP/NIST references for compliance mapping
+  - Professional HTML styling for web-viewable reports
+  - Integration with LangGraph reporter_node for end-to-end automation
+- **Enhanced LangGraph Integration** — reporter_node now generates real reports from workflow results
+
 ## [Unreleased] — v0.6.0
 
 ### Added

@@ -6,19 +6,22 @@ import json
 import os
 from pathlib import Path
 
-# Import sandbox executor (v0.5.0) + orchestrator (v0.6.0)
+# Import sandbox executor (v0.5.0) + orchestrator (v0.6.0) + report generator (v0.7.0)
 try:
     import sys
     sys.path.append(str(Path(__file__).parent / "sandbox"))
     from executor import SandboxExecutor
     from orchestrator import WorkflowOrchestrator
+    from report_generator import ReportGenerator, ReportMetadata
     SANDBOX_AVAILABLE = True
     ORCHESTRATOR_AVAILABLE = True
+    REPORT_GENERATOR_AVAILABLE = True
 except ImportError as e:
-    print(f"[langgraph] ⚠️  Sandbox/orchestrator not available: {e}")
+    print(f"[langgraph] ⚠️  Sandbox/orchestrator/report_generator not available: {e}")
     print("[langgraph]    Running in recommendation-only mode")
     SANDBOX_AVAILABLE = False
     ORCHESTRATOR_AVAILABLE = False
+    REPORT_GENERATOR_AVAILABLE = False
 
 # Hybrid RAG setup (live threat intel from collectors)
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
@@ -187,7 +190,66 @@ def orchestrator_node(state):
     return state
 
 def reporter_node(state):
-    return {"messages": state["messages"] + ["Professional PTES Markdown/PDF report generated"]}
+    """
+    Professional pentest report generation node (v0.7.0).
+
+    Generates PTES-compliant reports in multiple formats:
+    - Markdown (.md) - Version-controllable, human-readable
+    - JSON (.json) - Machine-readable, API-friendly
+    - HTML (.html) - Web-viewable with styling
+    - PDF (.pdf) - Professional deliverable (requires wkhtmltopdf)
+
+    Only runs if workflow was executed and results are available.
+    """
+    if not REPORT_GENERATOR_AVAILABLE:
+        state["messages"].append("📋 Report generator not available — no report generated")
+        return state
+
+    # Check if we have workflow results to report on
+    workflow_summary = state.get("workflow_summary")
+    if not workflow_summary:
+        state["messages"].append("📋 No workflow results to report on")
+        return state
+
+    # Build report metadata
+    from datetime import datetime
+    report_id = f"HANCOCK-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+
+    scopes = os.getenv("HANCOCK_AUTHORIZED_SCOPES", "").split(",")
+    scope_list = [s.strip() for s in scopes if s.strip()]
+
+    metadata = ReportMetadata(
+        report_id=report_id,
+        title=f"Hancock Autonomous Pentest Report - {workflow_summary.get('workflow_id', 'Unknown')}",
+        client_name=os.getenv("HANCOCK_CLIENT_NAME", "Internal Assessment"),
+        test_date=datetime.now().strftime("%Y-%m-%d"),
+        tester_name="Hancock AI Agent (0ai-Cyberviser)",
+        scope=scope_list or [workflow_summary.get("target", "Unknown")],
+        tools_used=[
+            step["tool"] for step in workflow_summary.get("steps", [])
+        ],
+        limitations=[
+            "Automated assessment - manual validation recommended",
+            "Network-based testing only (no application-layer authentication)",
+            "Limited to tools available in sandbox environment"
+        ]
+    )
+
+    # Generate report
+    generator = ReportGenerator()
+    output_files = generator.generate_from_workflow(
+        workflow_summary=workflow_summary,
+        metadata=metadata,
+        output_formats=["markdown", "json", "html"]  # PDF requires wkhtmltopdf
+    )
+
+    state["messages"].append(
+        f"📄 Professional report generated: {report_id}"
+    )
+    state["report_files"] = {k: str(v) for k, v in output_files.items()}
+    state["report_id"] = report_id
+
+    return state
 
 workflow = StateGraph(dict)
 workflow.add_node("planner", planner_node)

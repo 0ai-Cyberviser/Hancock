@@ -1,5 +1,18 @@
 
-## v0.6.0 — Multi-Tool Orchestration (IN PROGRESS)
+## v0.7.0 — Professional Pentest Reporting (COMPLETE)
+- [x] ReportGenerator class with PTES framework compliance
+- [x] Multi-format output (Markdown, JSON, HTML, PDF)
+- [x] Automated finding extraction from tool outputs
+- [x] CVSS scoring and severity classification
+- [x] OWASP Top 10 / SANS Top 25 categorization
+- [x] Executive summary with risk ratings
+- [x] Detailed remediation guidance
+- [x] CWE/OWASP/NIST compliance references
+- [x] LangGraph reporter_node integration
+**Impact:** Raw tool outputs → **Professional deliverable reports** (client-ready documentation)
+NIST: AU-6, IR-4, SI-4
+
+## v0.6.0 — Multi-Tool Orchestration (COMPLETE)
 - [x] WorkflowOrchestrator class with state machine and dependency management
 - [x] Predefined workflow templates (web-assessment, smb-enum, network-discovery)
 - [x] Cross-tool data passing (nmap → nikto, nikto → sqlmap)
