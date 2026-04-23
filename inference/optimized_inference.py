@@ -117,3 +117,4 @@ if __name__ == "__main__":
         print(asyncio.run(self_improve_hancock(1)))
     else:
         print("Hancock Inference Engine v0.5.1 — import successful")
+# v0.5.1 High-Context Update - Verified locally
