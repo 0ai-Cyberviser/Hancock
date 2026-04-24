@@ -18,3 +18,5 @@ RUN pip install --no-cache-dir --break-system-packages \
 COPY hancock_langgraph.py hancock_zeroday_finder.py hancock_zeroday_guard.py \
      orchestration_controller.py input_validator.py hancock_rag.py hancock_router.py /app/
 WORKDIR /app
+
+CMD ["python3", "hancock_langgraph.py"]
