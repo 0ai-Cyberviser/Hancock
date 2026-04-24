@@ -2,10 +2,48 @@
 Hancock OWASP LLM01 Zero-Day Prompt Injection Guard
 Recursive encoding + role-play + multi-turn + ANOMALY DETECTION for unknown bypasses
 """
+import ipaddress
 import re
 import math
 from collections import deque
-from typing import Dict, Any
+from typing import Any, Dict, FrozenSet, List, Optional
+
+# ── Validation constants ──────────────────────────────────────────────────────
+
+#: Modes accepted by the API and CLI.
+VALID_MODES: FrozenSet[str] = frozenset(
+    {"pentest", "soc", "auto", "code", "ciso", "sigma", "yara", "ioc", "osint"}
+)
+
+#: SIEM platforms supported by the threat-hunting endpoint.
+VALID_SIEMS: FrozenSet[str] = frozenset(
+    {"splunk", "elastic", "chronicle", "qradar", "sentinel", "arcsight", "sumo_logic"}
+)
+
+#: IOC types understood by the enrichment endpoint.
+VALID_IOC_TYPES: FrozenSet[str] = frozenset(
+    {"ipv4", "ipv6", "url", "domain", "hash", "email", "cve", "md5", "sha1", "sha256"}
+)
+
+#: CISO output formats accepted by /v1/ciso.
+VALID_CISO_OUTPUTS: FrozenSet[str] = frozenset(
+    {"advice", "report", "gap-analysis", "board-summary"}
+)
+
+# Default per-field maximum lengths used by validate_payload.
+_DEFAULT_MAX_LENGTHS: Dict[str, int] = {
+    "mode": 20,
+    "siem": 20,
+    "type": 20,
+    "output": 20,
+    "question": 10_000,
+    "query": 10_000,
+    "prompt": 10_000,
+    "message": 10_000,
+    "alert": 10_000,
+    "description": 10_000,
+    "context": 20_000,
+}
 
 CONV_HISTORY: deque = deque(maxlen=10)
 
@@ -70,3 +108,141 @@ def check_authorization(state: Dict) -> bool:
     if state.get("mode") in high_risk and (state.get("confidence", 0) < 0.9 or not state.get("authorized")):
         raise PermissionError("High-risk action requires explicit authorization (confidence < 0.9)")
     return True
+
+
+# ── IOC auto-detection ────────────────────────────────────────────────────────
+
+_RE_MD5 = re.compile(r"^[0-9a-fA-F]{32}$")
+_RE_SHA1 = re.compile(r"^[0-9a-fA-F]{40}$")
+_RE_SHA256 = re.compile(r"^[0-9a-fA-F]{64}$")
+_RE_CVE = re.compile(r"^cve-\d{4}-\d{4,}$", re.IGNORECASE)
+_RE_EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+_RE_DOMAIN = re.compile(r"^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$")
+
+
+def detect_ioc_type(ioc: str) -> str:
+    """Auto-detect the type of an Indicator of Compromise.
+
+    Returns one of: ``"ipv4"``, ``"ipv6"``, ``"md5"``, ``"sha1"``,
+    ``"sha256"``, ``"url"``, ``"cve"``, ``"email"``, ``"domain"``,
+    or ``"unknown"``.
+    """
+    value = ioc.strip()
+    if not value:
+        return "unknown"
+
+    # IPv4
+    try:
+        addr = ipaddress.ip_address(value)
+        return "ipv6" if isinstance(addr, ipaddress.IPv6Address) else "ipv4"
+    except ValueError:
+        pass
+
+    # IPv6 with zone ID (e.g. fe80::1%eth0) — ipaddress rejects zone IDs
+    if "%" in value:
+        try:
+            ipaddress.ip_address(value.split("%")[0])
+            return "ipv6"
+        except ValueError:
+            pass
+
+    # Hash types (most-specific first)
+    if _RE_SHA256.match(value):
+        return "sha256"
+    if _RE_SHA1.match(value):
+        return "sha1"
+    if _RE_MD5.match(value):
+        return "md5"
+
+    # URL
+    if re.match(r"^https?://", value, re.IGNORECASE):
+        return "url"
+
+    # CVE
+    if _RE_CVE.match(value):
+        return "cve"
+
+    # Email (before domain — email contains @)
+    if _RE_EMAIL.match(value):
+        return "email"
+
+    # Domain
+    if _RE_DOMAIN.match(value):
+        return "domain"
+
+    return "unknown"
+
+
+# ── Payload / field validation ────────────────────────────────────────────────
+
+def validate_payload(
+    body: Any,
+    required: Optional[List[str]] = None,
+    max_lengths: Optional[Dict[str, int]] = None,
+) -> List[str]:
+    """Validate a JSON request body dict.
+
+    Parameters
+    ----------
+    body:
+        The parsed request body.  Must be a dict.
+    required:
+        Field names that must be present and non-empty.
+    max_lengths:
+        Per-field maximum string lengths.  Merged with (and overrides)
+        the module-level ``_DEFAULT_MAX_LENGTHS``.
+
+    Returns a list of human-readable error strings (empty = valid).
+    """
+    errors: List[str] = []
+
+    if not isinstance(body, dict):
+        return ["request body must be a JSON object"]
+
+    # Required field check
+    for field in (required or []):
+        value = body.get(field)
+        if value is None or (isinstance(value, str) and not value.strip()) or value == []:
+            errors.append(f"{field} is required")
+
+    # Max-length checks
+    lengths = {**_DEFAULT_MAX_LENGTHS, **(max_lengths or {})}
+    for field, limit in lengths.items():
+        value = body.get(field)
+        if isinstance(value, str) and len(value) > limit:
+            errors.append(f"{field} exceeds maximum length of {limit}")
+
+    return errors
+
+
+def validate_mode(mode: str) -> Optional[str]:
+    """Return an error string if *mode* is not in ``VALID_MODES``, else ``None``."""
+    if mode not in VALID_MODES:
+        return f"invalid mode '{mode}'; valid modes: {sorted(VALID_MODES)}"
+    return None
+
+
+def validate_siem(siem: str) -> Optional[str]:
+    """Return an error string if *siem* is not in ``VALID_SIEMS``, else ``None``."""
+    if siem not in VALID_SIEMS:
+        return f"invalid siem '{siem}'; valid siems: {sorted(VALID_SIEMS)}"
+    return None
+
+
+def validate_ciso_output(output: str) -> Optional[str]:
+    """Return an error string if *output* is not in ``VALID_CISO_OUTPUTS``, else ``None``."""
+    if output not in VALID_CISO_OUTPUTS:
+        return f"invalid output '{output}'; valid outputs: {sorted(VALID_CISO_OUTPUTS)}"
+    return None
+
+
+def validate_ioc_type(ioc_type: str) -> Optional[str]:
+    """Return an error string if *ioc_type* is not in ``VALID_IOC_TYPES``, else ``None``."""
+    if ioc_type not in VALID_IOC_TYPES:
+        return f"invalid IOC type '{ioc_type}'; valid types: {sorted(VALID_IOC_TYPES)}"
+    return None
+
+
+def sanitize_string(value: str, max_length: int = 1000) -> str:
+    """Strip leading/trailing whitespace and truncate to *max_length* characters."""
+    return value.strip()[:max_length]
