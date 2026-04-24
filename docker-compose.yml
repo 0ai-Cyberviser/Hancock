@@ -31,6 +31,9 @@ services:
       - HANCOCK_RATE_LIMIT=${HANCOCK_RATE_LIMIT:-60}
     env_file:
       - .env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker:ro
     depends_on:
       ollama:
         condition: service_healthy
