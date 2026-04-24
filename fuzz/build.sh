@@ -1,5 +1,6 @@
 #!/bin/bash
 pip install -r requirements.txt
+pip install pyright
 if python - <<'PY'
 import importlib.util
 import sys
