@@ -39,9 +39,11 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      - name: Lint — critical errors only (E9, F63, F7, F82)
+      - name: Lint — critical first-party Python errors only (E9, F63, F7, F82)
         run: |
-          flake8 --count --select=E9,F63,F7,F82 --show-source --statistics .
+          flake8 --count --select=E9,F63,F7,F82 --show-source --statistics \
+            --exclude=.git,.github,.venv,venv,__pycache__,build,dist,htmlcov,.pytest_cache,.mypy_cache,projects,tgrok,whoosh-reloaded,fastapi,pydantic,tests/fixtures \
+            hancock_agent.py hancock_constants.py collectors formatter fuzzing_agent monitoring qa scripts tests
 
       - name: Docs backend/endpoint consistency lint
         run: python qa/docs_lint.py
