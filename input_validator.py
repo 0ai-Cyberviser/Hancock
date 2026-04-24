@@ -118,6 +118,7 @@ _RE_SHA256 = re.compile(r"^[0-9a-fA-F]{64}$")
 _RE_CVE = re.compile(r"^cve-\d{4}-\d{4,}$", re.IGNORECASE)
 _RE_EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 _RE_DOMAIN = re.compile(r"^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$")
+_RE_URL = re.compile(r"^https?://", re.IGNORECASE)
 
 
 def detect_ioc_type(ioc: str) -> str:
@@ -155,7 +156,7 @@ def detect_ioc_type(ioc: str) -> str:
         return "md5"
 
     # URL
-    if re.match(r"^https?://", value, re.IGNORECASE):
+    if _RE_URL.match(value):
         return "url"
 
     # CVE
@@ -199,10 +200,16 @@ def validate_payload(
     if not isinstance(body, dict):
         return ["request body must be a JSON object"]
 
-    # Required field check
+    # Required field check — a field is considered missing when it is absent,
+    # a blank string, or an empty list (all produce no usable value for the API).
     for field in (required or []):
         value = body.get(field)
-        if value is None or (isinstance(value, str) and not value.strip()) or value == []:
+        is_missing = (
+            value is None
+            or (isinstance(value, str) and not value.strip())
+            or value == []
+        )
+        if is_missing:
             errors.append(f"{field} is required")
 
     # Max-length checks
