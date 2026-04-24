@@ -41,9 +41,28 @@ jobs:
 
       - name: Lint — critical first-party Python errors only (E9, F63, F7, F82)
         run: |
-          flake8 --count --select=E9,F63,F7,F82 --show-source --statistics \
-            --exclude=.git,.github,.venv,venv,__pycache__,build,dist,htmlcov,.pytest_cache,.mypy_cache,projects,tgrok,whoosh-reloaded,fastapi,pydantic,tests/fixtures \
-            hancock_agent.py hancock_constants.py collectors formatter fuzzing_agent monitoring qa scripts tests
+          python - <<'PY' > /tmp/flake8-first-party-files.txt
+          from pathlib import Path
+
+          excluded_parts = {
+              ".git", ".github", ".venv", "venv", "__pycache__", "build",
+              "dist", "htmlcov", ".pytest_cache", ".mypy_cache", "projects",
+              "tgrok", "whoosh-reloaded", "fastapi", "pydantic",
+          }
+          excluded_prefixes = {Path("tests") / "fixtures"}
+
+          for path in sorted(Path(".").rglob("*.py")):
+              if any(part in excluded_parts for part in path.parts):
+                  continue
+              if any(path == prefix or prefix in path.parents for prefix in excluded_prefixes):
+                  continue
+              print(path.as_posix())
+          PY
+          if [ ! -s /tmp/flake8-first-party-files.txt ]; then
+            echo "No first-party Python files discovered for critical flake8 lint."
+            exit 1
+          fi
+          xargs -a /tmp/flake8-first-party-files.txt flake8 --count --select=E9,F63,F7,F82 --show-source --statistics
 
       - name: Docs backend/endpoint consistency lint
         run: python qa/docs_lint.py
