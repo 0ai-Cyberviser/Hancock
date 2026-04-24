@@ -83,33 +83,38 @@ class HancockInferenceEngine:
         return InferenceResult(text, toks, latency, False, 0, eff)
 
 class RecursiveSelfImprover:
-    def __init__(self, engine: HancockInferenceEngine):
+    def __init__(self, engine):
         self.engine = engine
+        self.self_source_path = "inference/optimized_inference.py"
         self.improvement_history = []
 
-    async def recursive_self_improve(self, iterations: int = 1, long_context_test: str = "Test 500k-1M"):
+    async def _read_own_source(self):
+        try:
+            with open(self.self_source_path, "r") as f:
+                return f.read()
+        except:
+            return "# Could not read source"
+
+    async def analyze_bottlenecks(self):
+        source = await self._read_own_source()
+        prompt = "Analyze this Python code for long context support issues. Reply with ONLY this JSON format: {bottlenecks: [issues], estimated_max_ctx: number}. Code snippet: " + source[:2000]
+        result = await self.engine.generate(prompt, mode="auto", max_tokens=300)
+        text = result.text
+        try:
+            return __import__("json").loads(text[text.find("{"):text.rfind("}")+1])
+        except:
+            return {"bottlenecks": ["parse error"], "estimated_max_ctx": 512000}
+    async def recursive_self_improve(self, iterations=2):
         results = []
         for i in range(iterations):
-            analysis = {"bottlenecks": ["32k base ctx", "no YaRN scaling", "KV cache OOM risk"], "estimated_max_ctx_after_fix": 1000000}
-            improvement = {
-                "iteration": i + 1,
-                "bottlenecks_found": analysis["bottlenecks"],
-                "new_max_ctx": analysis["estimated_max_ctx_after_fix"],
-                "safety_verified": "All Hancock guardrails preserved — recommendation-only, authorized-scope only"
-            }
-            results.append(improvement)
-            self.improvement_history.append(improvement)
-        return {
-            "status": "recursive_improvement_complete",
-            "iterations": iterations,
-            "final_estimated_ctx": results[-1]["new_max_ctx"] if results else 32768,
-            "history": results
-        }
-
-async def self_improve_hancock(iterations: int = 1):
-    engine = HancockInferenceEngine()
-    improver = RecursiveSelfImprover(engine)
-    return await improver.recursive_self_improve(iterations)
+            print(f"[Self-Improver] Iteration {i+1}...")
+            analysis = await self.analyze_bottlenecks()
+            results.append({
+                "iteration": i+1,
+                "bottlenecks": analysis.get("bottlenecks", []),
+                "new_max_ctx": analysis.get("estimated_max_ctx", 1000000)
+            })
+        return {"status": "complete", "iterations": iterations, "final_ctx": results[-1]["new_max_ctx"], "history": results}
 
 if __name__ == "__main__":
     import sys
