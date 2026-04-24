@@ -197,8 +197,8 @@ const resolvers = {
 - **GraphQL Voyager**: Schema visualization
 
 ### Community
-- Report bugs: [GitHub Issues](https://github.com/juanaquas/Hancock/issues)
-- Security contact: security@cyberviser.ai
+- Report bugs: [GitHub Issues](https://github.com/cyberviser/Hancock/issues)
+- Security contact: 0ai@cyberviserai.com
 - Contributing: [CONTRIBUTING.md](../CONTRIBUTING.md)
 
 ## Legal & Ethical Notice
@@ -226,9 +226,9 @@ const resolvers = {
 ## Support
 
 For questions, issues, or security concerns:
-- **GitHub Issues**: https://github.com/juanaquas/Hancock/issues
-- **Security Email**: security@cyberviser.ai
-- **Documentation**: https://cyberviser.netlify.app
+- **GitHub Issues**: https://github.com/cyberviser/Hancock/issues
+- **Security Email**: 0ai@cyberviserai.com
+- **Documentation**: https://github.com/cyberviser/Hancock/tree/main/docs
 
 ---
 

@@ -49,3 +49,5 @@ npm-debug.log*
 
 # Benchmark results (generated, not tracked)
 benchmarks/results/
+sandbox/orchestrator_state/
+sandbox/reports/

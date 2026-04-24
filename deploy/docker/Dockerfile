@@ -15,9 +15,9 @@ RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 # ── Stage 2: Runtime ──────────────────────────────────────────────────────────
 FROM python:3.11-slim AS runtime
 
-LABEL maintainer="CyberViser <contact@cyberviser.ai>"
+LABEL maintainer="CyberViser <0ai@cyberviserai.com>"
 LABEL description="Hancock — AI-powered cybersecurity agent by CyberViser"
-LABEL org.opencontainers.image.source="https://github.com/0ai-Cyberviser/Hancock"
+LABEL org.opencontainers.image.source="https://github.com/cyberviser/Hancock"
 LABEL org.opencontainers.image.version="0.6.0"
 
 WORKDIR /app

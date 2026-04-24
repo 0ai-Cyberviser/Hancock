@@ -67,7 +67,6 @@ MODEL, SCALER = train_or_load_model()
 
 def detect_zero_day_ensemble(prompt: str, mode: str = "auto") -> str:
     """Main 0ai ML-based Zero-Day Guard."""
-    global CONV_HISTORY
     CONV_HISTORY.append(prompt.lower())
     
     features = extract_features(prompt)
@@ -116,7 +115,6 @@ LOF_MODEL = train_lof_model()
 
 def detect_zero_day_ensemble_ensemble(prompt: str, mode: str = "auto") -> str:
     """Ensemble: IsolationForest + LOF for maximum zero-day coverage."""
-    global CONV_HISTORY
     CONV_HISTORY.append(prompt.lower())
     
     features = extract_features(prompt)

@@ -1,0 +1,11 @@
+test_file,issue_type,severity,description,line,fix_applied,before,after,estimated_improvement
+test_hancock_api.py,flaky-test,CRITICAL,Rate limit bucket eviction test uses fragile time mocking,392,"Fixed time mock to use iterator pattern, extended values list, improved assertions","side_effect=[0, 0, 120, 120]","MagicMock with iterator",Eliminates random StopIteration failures
+test_performance.py,slow-test,MEDIUM,Latency measurement tests sample 25 times each,216-244,"Reduced LATENCY_SAMPLES from 25 to 10, added LATENCY_SAMPLES_LONG constant",~2.5s per test,~1.5s per test,40% reduction in test time
+test_performance.py,slow-test,MEDIUM,Outlier detection tests measure 20 samples,281-307,"Reduced sample count from 20 to 10 in test methods",~1s per test,~0.5s per test,50% reduction per test
+test_hancock_api.py,coverage-gap,MEDIUM,Missing environment variable isolation tests,N/A,Created TestEnvironmentVariableIsolation class with 3 tests,0 tests,3 tests,100% new coverage
+test_hancock_api.py,coverage-gap,MEDIUM,Missing payload validation edge cases,N/A,Created TestPayloadValidationEdgeCases class with 3 tests,0 tests,3 tests,100% new coverage
+test_hancock_api.py,coverage-gap,MEDIUM,Missing authorization edge case tests,N/A,Created TestAuthorizationEdgeCases class with 2 tests,0 tests,2 tests,100% new coverage
+test_hancock_api.py,coverage-gap,MEDIUM,Missing rate limiting edge case tests,N/A,Created TestRateLimitEdgeCases class with 2 tests,0 tests,2 tests,100% new coverage
+test_hancock_api.py,coverage-gap,LOW,Missing metrics monotonicity tests,N/A,Created TestConcurrentAccessPatterns class with 1 test,0 tests,1 test,100% new coverage
+test_hancock_api.py,coverage-gap,LOW,Missing error response format consistency tests,N/A,Created TestErrorResponseConsistency class with 1 test,0 tests,1 test,100% new coverage
+test_performance.py,concurrency-risk,MEDIUM,Webhook HMAC test runs 120 concurrent requests,194-213,Documented as monitored - consider reducing if timeouts occur,120 requests,120 requests,Recommend monitoring

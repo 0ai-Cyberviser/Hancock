@@ -145,7 +145,7 @@ Board-level risk reporting, compliance automation (SOC2, ISO 27001, NIST CSF), s
 - Target: **500 GitHub stars**, **100 active API users**
 
 ### Phase 2: Commercial Launch (Months 7–12)
-- Launch Hancock Pro on cyberviser.ai
+- Launch Hancock Pro through the 0AI portfolio hub
 - Partner with 3 MSSPs for pilot deployments
 - List on AWS Marketplace and Azure Marketplace
 - Target: **$50K ARR**, **10 paying customers**
@@ -199,8 +199,8 @@ CyberViser is seeking **$500,000 in seed funding** to accelerate:
 ## Contact
 
 **GitHub:** [github.com/cyberviser/Hancock](https://github.com/cyberviser/Hancock)  
-**Website:** [cyberviser.netlify.app](https://cyberviser.netlify.app)  
-**Email:** 0ai@cyberviser.com  
+**Portfolio Hub:** [0ai-cyberviser.github.io/0ai](https://0ai-cyberviser.github.io/0ai/)  
+**Email:** 0ai@cyberviserai.com  
 
 ---
 

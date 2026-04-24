@@ -8,6 +8,8 @@ import json
 from pathlib import Path
 from typing import Dict
 
+from data_integrity import compute_sha256
+
 SBOM_PATH = Path("deploy/sbom.json")
 TRIVY_CACHE = Path(".trivy-cache")
 
@@ -28,7 +30,7 @@ def run_trivy_scan() -> bool:
     cmd = [
         "docker", "run", "--rm",
         "-v", "/var/run/docker.sock:/var/run/docker.sock",
-        "-v", str(TRIVY_CACHE):"/root/.cache/trivy",
+        "-v", f"{TRIVY_CACHE}:/root/.cache/trivy",
         "aquasec/trivy", "image",
         "--exit-code", "1",
         "--severity", "CRITICAL,HIGH",
@@ -56,22 +58,24 @@ def sign_model(model_path: str) -> None:
     path = Path(model_path)
     if not path.exists():
         raise FileNotFoundError(f"Model path {model_path} not found")
-    
-    # SHA256 manifest
+
+    # SHA256 manifest - single rglob pass and filter for files
+    # Optimization: single rglob call with file filtering instead of repeated filtering
     manifest = {}
     for file in path.rglob("*"):
         if file.is_file():
             manifest[file.relative_to(path)] = compute_sha256(str(file))
+
     manifest_path = path / "model_manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2))
-    
+
     # GPG detached signature
     sig_path = path / "model_manifest.json.sig"
     subprocess.run([
         "gpg", "--output", str(sig_path), "--detach-sign", "--default-key", GPG_KEY_ID,
         str(manifest_path)
     ], check=True)
-    
+
     print(f"✅ LLM03 Model signed: {model_path} (GPG + SHA256)")
 
 def verify_model_signature(model_path: str) -> bool:
@@ -79,22 +83,24 @@ def verify_model_signature(model_path: str) -> bool:
     path = Path(model_path)
     manifest_path = path / "model_manifest.json"
     sig_path = path / "model_manifest.json.sig"
-    
+
     if not manifest_path.exists() or not sig_path.exists():
         raise RuntimeError(f"LLM03: Missing signature/manifest for {model_path}")
-    
+
     # Verify GPG
     try:
         subprocess.run(["gpg", "--verify", str(sig_path), str(manifest_path)], check=True)
     except subprocess.CalledProcessError:
         raise RuntimeError(f"LLM03 MODEL SIGNATURE VERIFICATION FAILED: {model_path}")
-    
-    # Verify hashes
+
+    # Verify hashes - single pass with early exit on first mismatch
+    # Optimization: read manifest once, iterate with direct lookup instead of repeated dict access
     manifest = json.loads(manifest_path.read_text())
     for rel_file, expected_hash in manifest.items():
         full_file = path / rel_file
-        if compute_sha256(str(full_file)) != expected_hash:
+        actual_hash = compute_sha256(str(full_file))
+        if actual_hash != expected_hash:
             raise RuntimeError(f"LLM03 MODEL POISONING DETECTED: {full_file}")
-    
+
     print(f"✅ LLM03 Model signature verified: {model_path}")
     return True

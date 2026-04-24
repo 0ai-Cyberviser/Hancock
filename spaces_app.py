@@ -97,7 +97,7 @@ CSS = """
 with gr.Blocks(title="Hancock — CyberViser", theme=gr.themes.Monochrome(), css=CSS) as demo:
     gr.Markdown("""
 # 🛡️ Hancock — AI Cybersecurity Agent
-**by [CyberViser](https://cyberviser.github.io/Hancock/)** · Mistral 7B · MITRE ATT&CK · NVD/CVE
+**by [CyberViser](https://0ai-cyberviser.github.io/0ai/)** · Mistral 7B · MITRE ATT&CK · NVD/CVE
 
 > Specialised AI for pentest, SOC analysis, threat hunting, incident response, code generation, CISO advisory, Sigma rule authoring, and YARA rule generation.
     """)
@@ -223,7 +223,7 @@ with gr.Blocks(title="Hancock — CyberViser", theme=gr.themes.Monochrome(), css
 
     gr.Markdown("""
 ---
-🔗 [GitHub](https://github.com/cyberviser/Hancock) · [API Docs](https://cyberviser.netlify.app/api) · [CyberViser](https://cyberviser.netlify.app) · contact@cyberviser.ai
+🔗 [GitHub](https://github.com/cyberviser/Hancock) · [Docs](https://github.com/cyberviser/Hancock/tree/main/docs) · [0AI Portfolio](https://0ai-cyberviser.github.io/0ai/) · 0ai@cyberviserai.com
     """)
 
 demo.launch()

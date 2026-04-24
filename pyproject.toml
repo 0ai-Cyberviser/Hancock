@@ -28,9 +28,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://cyberviser.netlify.app"
+Homepage = "https://0ai-cyberviser.github.io/0ai/"
 Repository = "https://github.com/0ai-Cyberviser/Hancock"
-Documentation = "https://cyberviser.netlify.app/api"
+Documentation = "https://github.com/cyberviser/Hancock/tree/main/docs"
 
 [project.scripts]
 hancock = "hancock_cli:main"

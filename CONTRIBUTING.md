@@ -10,10 +10,10 @@ Be respectful. All contributions must be ethical and legal. Hancock is built for
 ## How to Contribute
 
 ### Reporting Bugs
-Open an issue using the [Bug Report template](.github/ISSUE_TEMPLATE/bug_report.md).
+Open the repository issue chooser and select the `Bug Report` form.
 
 ### Suggesting Features
-Open an issue using the [Feature Request template](.github/ISSUE_TEMPLATE/feature_request.md).
+Open the repository issue chooser and select the `Feature Request` form.
 
 ### Pull Requests
 
@@ -37,6 +37,10 @@ Open an issue using the [Feature Request template](.github/ISSUE_TEMPLATE/featur
    refactor: clean up collector logic
    ```
 8. **Push** and open a Pull Request
+
+If your change touches public links, docs routing, support, security, or
+ownership metadata, update [PUBLIC_SURFACE.md](PUBLIC_SURFACE.md) in the same
+pull request.
 
 ## Ownership and Contribution Terms
 

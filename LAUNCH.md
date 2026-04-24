@@ -23,9 +23,9 @@ v0.4.0 adds CISO advisory, Sigma/YARA rule generation, IOC enrichment, API key a
 The model is purpose-built — not ChatGPT with a security system prompt.
 Fine-tuning pipeline is open source if you want to train your own variant.
 
-Live demo: https://cyberviser.netlify.app/demo
+Portfolio hub: https://0ai-cyberviser.github.io/0ai/
 GitHub: https://github.com/cyberviser/Hancock
-Pricing (Community tier is free/self-hosted): https://cyberviser.netlify.app/pricing
+Project docs: https://github.com/cyberviser/Hancock/tree/main/docs
 
 Happy to answer questions about the fine-tuning approach or architecture.
 
@@ -56,7 +56,7 @@ v0.4.0 ships with:
 
 If you're an MSSP, pentest firm, or SOC analyst drowning in alerts and report writing — this was built for you.
 
-🔗 Try the demo: https://cyberviser.netlify.app/demo
+🔗 Explore the project: https://0ai-cyberviser.github.io/0ai/
 📦 GitHub: https://github.com/cyberviser/Hancock
 📧 Enterprise/trial: cyberviser@proton.me
 
@@ -85,7 +85,7 @@ I've been building Hancock — a Mistral 7B model fine-tuned on MITRE ATT&CK, NV
 - Python + Node.js SDKs
 - Auto-deploy pipeline
 
-**Try it:** https://cyberviser.netlify.app/demo  
+**Explore it:** https://0ai-cyberviser.github.io/0ai/  
 **Code:** https://github.com/cyberviser/Hancock  
 
 The fine-tuning pipeline is all open source if you want to extend it with your own data.
@@ -110,7 +110,7 @@ It's a fine-tuned LLM that you can hit with a security alert and get back:
 
 **Honest question for the community:** What would actually make this useful in your workflow? What's missing?
 
-Demo (no account needed): https://cyberviser.netlify.app/demo
+Project hub: https://0ai-cyberviser.github.io/0ai/
 
 ---
 
@@ -121,7 +121,7 @@ Shipping Hancock v0.4.0 — AI security agent fine-tuned on MITRE ATT&CK + 200k 
 
 Not another "ChatGPT with a security prompt." Purpose-built for pentesters and SOC analysts.
 
-🔗 https://cyberviser.netlify.app/demo
+🔗 https://0ai-cyberviser.github.io/0ai/
 
 Tweet 2:
 What it actually does:
@@ -145,7 +145,7 @@ Code: https://github.com/cyberviser/Hancock
 
 Tweet 4:
 If you run a MSSP, pentest firm, or SOC and want a trial — DM me or hit:
-https://cyberviser.netlify.app/contact
+https://0ai-cyberviser.github.io/0ai/
 
 cyberviser@proton.me
 
@@ -170,7 +170,7 @@ Deploy it as a REST API and hit it with:
 
 Community tier is free and self-hosted. Pro tier at $299/mo adds managed hosting and priority support.
 
-**Website:** https://cyberviser.netlify.app
+**Portfolio Hub:** https://0ai-cyberviser.github.io/0ai/
 **GitHub:** https://github.com/cyberviser/Hancock
 
 **Topics:** Cybersecurity, Artificial Intelligence, Developer Tools, SaaS
@@ -180,7 +180,7 @@ Community tier is free and self-hosted. Pro tier at $299/mo adds managed hosting
 ## 📋 AlternativeTo Submission
 
 **Product Name:** Hancock by CyberViser
-**URL:** https://cyberviser.netlify.app
+**URL:** https://0ai-cyberviser.github.io/0ai/
 **Description:** AI-powered cybersecurity agent fine-tuned on MITRE ATT&CK and CVE data. REST API for SOC alert triage, SIEM query generation, and incident response playbooks. Alternative to manual SIEM work and generic AI security tools.
 **Tags:** cybersecurity, AI, pentest, SOC, SIEM, incident-response, LLM
 **Alternatives to:** Darktrace, CrowdStrike Falcon AI, Microsoft Security Copilot (open-source/self-hosted alternative)

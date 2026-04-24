@@ -8,12 +8,12 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
 [![Model](https://img.shields.io/badge/Model-Mistral%207B-orange?logo=huggingface)](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3)
 [![NVIDIA NIM](https://img.shields.io/badge/NVIDIA-NIM-76b900?logo=nvidia)](https://build.nvidia.com)
-[![Website](https://img.shields.io/badge/Website-Live-00ff88?logo=netlify)](https://cyberviser.netlify.app)
-[![Netlify](https://img.shields.io/badge/Netlify-Live-00C7B7?style=flat-square&logo=netlify)](https://cyberviser.netlify.app)
+[![Portfolio](https://img.shields.io/badge/Portfolio-0AI-00ff88?style=for-the-badge&logo=githubpages&logoColor=black)](https://0ai-cyberviser.github.io/0ai/)
+[![Docs](https://img.shields.io/badge/Docs-Repository-0ea5e9?style=flat-square&logo=readthedocs&logoColor=white)](docs/)
 
 **Automate cybersecurity through specialized LLMs — from pentesting to SOC analysis.**
 
-[🌐 Website](https://cyberviser.netlify.app) · [📖 API Docs](https://cyberviser.netlify.app/api) · [📋 Business Proposal](BUSINESS_PROPOSAL.md) · [🐛 Report Bug](https://github.com/0ai-Cyberviser/Hancock/issues) · [✨ Request Feature](https://github.com/0ai-Cyberviser/Hancock/issues)
+[🌐 Portfolio Hub](https://0ai-cyberviser.github.io/0ai/) · [📚 Docs](docs/) · [🧾 OpenAPI](docs/openapi.yaml) · [🧭 Public Surface](PUBLIC_SURFACE.md) · [📋 Business Proposal](BUSINESS_PROPOSAL.md) · [🐛 Report Bug](https://github.com/cyberviser/Hancock/issues/new/choose) · [✨ Request Feature](https://github.com/cyberviser/Hancock/issues/new/choose)
 
 </div>
 
@@ -27,6 +27,10 @@ Hancock is **CyberViser's** AI-powered cybersecurity agent, fine-tuned on Mistra
 - **Pentest Knowledge Base** — Recon, exploitation, post-exploitation
 
 It operates in nine specialist modes and exposes a clean REST API.
+
+Public company and repository routing is documented in [PUBLIC_SURFACE.md](PUBLIC_SURFACE.md) so
+README links, support paths, security reporting, and PR metadata stay aligned
+across forks and upstream repos.
 
 ```
 ╔══════════════════════════════════════════════════════════╗
@@ -276,7 +280,7 @@ curl -X POST http://localhost:5000/v1/respond \
   -d '{"incident": "ransomware"}'
 ```
 
-> 📖 Full OpenAPI 3.1.0 spec: [`docs/openapi.yaml`](docs/openapi.yaml) · [Interactive API Docs](https://cyberviser.netlify.app/api)
+> 📖 Full OpenAPI 3.1.0 spec: [`docs/openapi.yaml`](docs/openapi.yaml) · [Docs source](docs/)
 
 ### CLI Commands
 

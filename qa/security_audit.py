@@ -84,27 +84,36 @@ def scan_for_secrets() -> list[dict]:
     the report.
     """
     findings: list[dict] = []
-    for pattern, label in SECRET_PATTERNS:
-        for py_file in Path(".").rglob("*.py"):
-            if any(excl in str(py_file) for excl in EXCLUDE):
+
+    for py_file in Path(".").rglob("*.py"):
+        if any(excl in str(py_file) for excl in EXCLUDE):
+            continue
+        try:
+            content = py_file.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+
+        for i, line in enumerate(content.splitlines(), 1):
+            line_lower = line.lower()
+            if "os.getenv" in line or "example" in line_lower:
                 continue
-            try:
-                content = py_file.read_text(encoding="utf-8", errors="ignore")
-            except OSError:
-                continue
-            for i, line in enumerate(content.splitlines(), 1):
-                if pattern.search(line) and "os.getenv" not in line and "example" not in line.lower():
-                    # Store only non-sensitive metadata.
-                    # file path and line number are not secret;
-                    # label is a string constant from SECRET_PATTERNS.
-                    safe_path = str(py_file)
-                    safe_line = i
-                    safe_type = str(label)
-                    findings.append({
-                        "file": safe_path,
-                        "line": safe_line,
-                        "type": safe_type,
-                    })
+
+            for pattern, label in SECRET_PATTERNS:
+                if not pattern.search(line):
+                    continue
+
+                # Store only non-sensitive metadata.
+                # file path and line number are not secret;
+                # label is a string constant from SECRET_PATTERNS.
+                safe_path = str(py_file)
+                safe_line = i
+                safe_type = str(label)
+                findings.append({
+                    "file": safe_path,
+                    "line": safe_line,
+                    "type": safe_type,
+                })
+                break
     return findings
 
 
