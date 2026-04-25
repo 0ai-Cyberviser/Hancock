@@ -1,3 +1,6 @@
 [submodule "tgrok"]
 	path = tgrok
 	url = https://github.com/MITRE-Cyber-Security-CVE-Database/tgrok.git
+[submodule "projects/0ai-assurance-network"]
+	path = projects/0ai-assurance-network
+	url = https://github.com/0ai-Cyberviser/0ai-assurance-network.git
