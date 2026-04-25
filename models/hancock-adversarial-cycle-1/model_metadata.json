@@ -1,0 +1,46 @@
+{
+  "model_name": "hancock-adversarial-cycle-1",
+  "base_model": "mistralai/mistral-7b-instruct-v0.3",
+  "training_method": "LoRA",
+  "dataset": "/home/_0ai_/Hancock-1/data/hancock_adversarial_cycle_1.jsonl",
+  "training_metrics": {
+    "start_time": "2026-04-25T07:49:09.129800",
+    "end_time": "2026-04-25T07:49:10.635353",
+    "duration_seconds": 1.5055532455444336,
+    "total_examples": 4146,
+    "epochs": 3,
+    "batch_size": 4,
+    "learning_rate": 0.0002,
+    "final_training_loss": 0.8574999999999998,
+    "final_validation_loss": 0.9432499999999999,
+    "loss_reduction": 51.000000000000014
+  },
+  "attack_type_coverage": {
+    "sqli_union": 41,
+    "xss_encoded": 10,
+    "command_injection": 1000,
+    "ssrf_internal": 37,
+    "xxe": 10,
+    "ldap_injection": 1000,
+    "xss_basic": 10,
+    "sqli_blind": 38,
+    "nosql_injection": 1000,
+    "path_traversal": 1000
+  },
+  "lora_config": {
+    "r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj"
+    ]
+  },
+  "deployment": {
+    "inference_framework": "ollama",
+    "model_path": "/home/_0ai_/Hancock-1/models/hancock-adversarial-cycle-1",
+    "ready_for_deployment": true
+  }
+}

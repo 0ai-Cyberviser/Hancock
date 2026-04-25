@@ -1,0 +1,32 @@
+{
+  "model_base": "mistralai/mistral-7b-instruct-v0.3",
+  "dataset": "/home/_0ai_/Hancock-1/data/hancock_adversarial_cycle_1.jsonl",
+  "output_dir": "/home/_0ai_/Hancock-1/models/hancock-adversarial-cycle-1",
+  "training_config": {
+    "epochs": 3,
+    "batch_size": 4,
+    "learning_rate": 0.0002,
+    "warmup_steps": 100,
+    "max_seq_length": 2048,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj"
+    ]
+  },
+  "dataset_info": {
+    "format": "instruction-input-output",
+    "source": "adversarial_training_peachtree_cycle_1",
+    "quality_filtered": true,
+    "deduplicated": true
+  },
+  "deployment": {
+    "model_name": "hancock-adversarial-cycle-1",
+    "inference_framework": "ollama",
+    "modelfile": "Modelfile.hancock-adversarial-cycle-1"
+  }
+}

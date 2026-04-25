@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CyberViser Web3 Portal - CVT Token, Staking, Governance, and Mining for the AI Security Ecosystem">
+    <meta name="keywords" content="CVT, CyberViser Token, Web3, Polygon, Staking, Governance, Crypto Mining, AI Security">
+    <meta name="author" content="HancockForge / 0AI / CyberViser">
+    <title>CyberViser Web3 Portal | CVT Token Ecosystem</title>
+    
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --cyber-red: #ff6b6b;
+            --cyber-blue: #4ecdc4;
+            --cyber-green: #51cf66;
+            --accent-purple: #a388ee;
+            --accent-gold: #ffe66d;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --border-color: #2a2a40;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        code, .mono {
+            font-family: 'Fira Code', 'Courier New', monospace;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background: var(--bg-card);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid var(--cyber-blue);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--cyber-blue);
+        }
+        
+        .wallet-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .wallet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(78, 205, 196, 0.3);
+        }
+        
+        .wallet-btn.connected {
+            background: var(--cyber-green);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2a1a40 100%);
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--cyber-blue);
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 1rem 2rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .tab.active {
+            color: var(--cyber-blue);
+            border-bottom-color: var(--cyber-blue);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+        
+        .card h2 {
+            color: var(--cyber-blue);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .card h3 {
+            color: var(--text-primary);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--cyber-blue);
+        }
+        
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--cyber-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #3ab8b0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: var(--cyber-green);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #40b854;
+        }
+        
+        .btn-danger {
+            background: var(--cyber-red);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #e55555;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid var(--cyber-blue);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .warning-box {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid var(--cyber-red);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .success-box {
+            background: rgba(81, 207, 102, 0.1);
+            border: 1px solid var(--cyber-green);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        /* Proposals */
+        .proposal {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .proposal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .proposal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .proposal-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .badge-active {
+            background: var(--cyber-green);
+            color: white;
+        }
+        
+        .badge-passed {
+            background: var(--cyber-blue);
+            color: white;
+        }
+        
+        .badge-rejected {
+            background: var(--cyber-red);
+            color: white;
+        }
+        
+        .vote-bar {
+            background: var(--bg-dark);
+            height: 30px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .vote-for {
+            background: var(--cyber-green);
+            height: 100%;
+            float: left;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .vote-against {
+            background: var(--cyber-red);
+            height: 100%;
+            float: right;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        /* Mining Stats */
+        .mining-stat {
+            background: var(--bg-dark);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .mining-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--cyber-green);
+        }
+        
+        .mining-stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        
+        .mining-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: var(--bg-dark);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: var(--cyber-green);
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(30px);
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--bg-card);
+            padding: 3rem 2rem;
+            border-top: 2px solid var(--border-color);
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--cyber-blue);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+            
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+        
+        .spinner {
+            border: 3px solid var(--bg-dark);
+            border-top: 3px solid var(--cyber-blue);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">🌐 CyberViser Web3</div>
+            <button class="wallet-btn" id="connectWallet">Connect Wallet</button>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>CyberViser Token (CVT)</h1>
+        <p>Powering the AI Security Ecosystem: Hancock, PeachTrace, PeachTree, PeachFuzz, CactusFuzz</p>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalSupply">100M</div>
+                <div class="stat-label">Total Supply</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="circulatingSupply">30M</div>
+                <div class="stat-label">Circulating Supply</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalStaked">0</div>
+                <div class="stat-label">Total Staked</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="currentAPY">12.5%</div>
+                <div class="stat-label">Current APY</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('dashboard')">Dashboard</button>
+            <button class="tab" onclick="switchTab('staking')">Staking</button>
+            <button class="tab" onclick="switchTab('governance')">Governance</button>
+            <button class="tab" onclick="switchTab('mining')">Mining</button>
+            <button class="tab" onclick="switchTab('explorer')">Explorer</button>
+        </div>
+        
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="grid-2">
+                <div class="card">
+                    <h2>💼 Your Wallet</h2>
+                    <div class="info-box">
+                        <p><strong>Address:</strong> <span class="mono" id="walletAddress">Not connected</span></p>
+                        <p><strong>CVT Balance:</strong> <span id="cvtBalance">0</span> CVT</p>
+                        <p><strong>MATIC Balance:</strong> <span id="maticBalance">0</span> MATIC</p>
+                    </div>
+                    
+                    <h3>Send CVT</h3>
+                    <div class="form-group">
+                        <label class="form-label">Recipient Address</label>
+                        <input type="text" class="form-input" id="sendAddress" placeholder="0x...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Amount (CVT)</label>
+                        <input type="number" class="form-input" id="sendAmount" placeholder="0">
+                    </div>
+                    <button class="btn btn-primary" onclick="sendCVT()">Send CVT</button>
+                </div>
+                
+                <div class="card">
+                    <h2>📊 Token Stats</h2>
+                    <div class="info-box">
+                        <p><strong>Contract Address:</strong><br><span class="mono" style="font-size: 0.875rem;" id="tokenContract">Loading...</span></p>
+                        <p><strong>Network:</strong> Polygon Mumbai Testnet</p>
+                        <p><strong>Decimals:</strong> 18</p>
+                        <p><strong>Symbol:</strong> CVT</p>
+                    </div>
+                    
+                    <h3>Token Distribution</h3>
+                    <div style="margin-top: 1rem;">
+                        <p>Team & Founders: 20% (20M CVT)</p>
+                        <p>Development Fund: 15% (15M CVT)</p>
+                        <p>Community Rewards: 25% (25M CVT)</p>
+                        <p>Ecosystem Growth: 15% (15M CVT)</p>
+                        <p>Public Sale: 10% (10M CVT)</p>
+                        <p>Treasury: 10% (10M CVT)</p>
+                        <p>Marketing: 5% (5M CVT)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Staking Tab -->
+        <div id="staking" class="tab-content">
+            <div class="card">
+                <h2>🔒 Stake CVT Tokens</h2>
+                <div class="info-box">
+                    <p><strong>Current APY:</strong> <span id="stakingAPY">12.5%</span> (10% base + 25% early staker bonus)</p>
+                    <p><strong>Your Staked:</strong> <span id="yourStaked">0</span> CVT</p>
+                    <p><strong>Pending Rewards:</strong> <span id="pendingRewards">0</span> CVT</p>
+                    <p><strong>Minimum Stake:</strong> 100 CVT</p>
+                </div>
+                
+                <div class="grid-2">
+                    <div>
+                        <h3>Stake CVT</h3>
+                        <div class="form-group">
+                            <label class="form-label">Amount to Stake (CVT)</label>
+                            <input type="number" class="form-input" id="stakeAmount" placeholder="100">
+                        </div>
+                        <button class="btn btn-success" onclick="stakeCVT()">Stake</button>
+                    </div>
+                    
+                    <div>
+                        <h3>Unstake CVT</h3>
+                        <div class="form-group">
+                            <label class="form-label">Amount to Unstake (CVT)</label>
+                            <input type="number" class="form-input" id="unstakeAmount" placeholder="0">
+                        </div>
+                        <button class="btn btn-danger" onclick="unstakeCVT()">Unstake</button>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <button class="btn btn-primary" onclick="claimRewards()">Claim Rewards</button>
+                </div>
+                
+                <div class="warning-box" style="margin-top: 2rem;">
+                    <p><strong>⚠️ Important:</strong></p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>Minimum stake: 100 CVT</li>
+                        <li>Rewards are calculated per second</li>
+                        <li>Early stakers (first 30 days) get 25% bonus APY</li>
+                        <li>Unstaking automatically claims rewards</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Governance Tab -->
+        <div id="governance" class="tab-content">
+            <div class="card">
+                <h2>🗳️ Governance Portal</h2>
+                <div class="info-box">
+                    <p><strong>Your Voting Power:</strong> <span id="votingPower">0</span> CVT (1 CVT = 1 vote)</p>
+                    <p><strong>Active Proposals:</strong> <span id="activeProposals">0</span></p>
+                    <p><strong>Quorum Required:</strong> 10% of total supply (10M CVT)</p>
+                    <p><strong>Voting Period:</strong> 7 days per proposal</p>
+                </div>
+                
+                <h3>Create Proposal</h3>
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="proposalTitle" placeholder="Proposal title">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-input" id="proposalDescription" rows="4" placeholder="Detailed description..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Type</label>
+                    <select class="form-input" id="proposalType">
+                        <option value="0">Feature Request</option>
+                        <option value="1">Budget Allocation</option>
+                        <option value="2">Partnership</option>
+                        <option value="3">Treasury Management</option>
+                        <option value="4">Protocol Upgrade</option>
+                        <option value="5">Other</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="createProposal()">Create Proposal (10K CVT required)</button>
+                
+                <h3 style="margin-top: 3rem;">Active Proposals</h3>
+                <div id="proposalsList">
+                    <div class="proposal">
+                        <div class="proposal-header">
+                            <div class="proposal-title">Example: Integrate PeachTrace v10 Features</div>
+                            <span class="proposal-badge badge-active">Active</span>
+                        </div>
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                            Proposal to integrate the latest PeachTrace v10 reconnaissance features into the Hancock ecosystem...
+                        </p>
+                        <div class="vote-bar">
+                            <div class="vote-for" style="width: 65%;">For: 6.5M CVT (65%)</div>
+                            <div class="vote-against" style="width: 35%;">Against: 3.5M CVT (35%)</div>
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <button class="btn btn-success" onclick="vote(1, true)">Vote For</button>
+                            <button class="btn btn-danger" onclick="vote(1, false)">Vote Against</button>
+                        </div>
+                        <p style="color: var(--text-secondary); margin-top: 1rem; font-size: 0.875rem;">
+                            Ends in 4 days • Proposer: 0x1234...5678
+                        </p>
+                    </div>
+                    
+                    <div class="loading" id="proposalsLoading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Loading proposals...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mining Tab -->
+        <div id="mining" class="tab-content">
+            <div class="card">
+                <h2>⛏️ Browser Mining</h2>
+                <div class="info-box">
+                    <p><strong>Algorithm:</strong> RandomX (CPU-optimized)</p>
+                    <p><strong>Pool:</strong> CyberViser Mining Pool</p>
+                    <p><strong>Reward:</strong> ~0.1 CVT per hour (varies by hashrate)</p>
+                </div>
+                
+                <div class="mining-toggle">
+                    <span style="font-size: 1.2rem;">Mining:</span>
+                    <div class="toggle-switch" id="miningToggle" onclick="toggleMining()">
+                        <div class="toggle-slider"></div>
+                    </div>
+                    <span id="miningStatus" style="font-size: 1.2rem; color: var(--cyber-red);">Stopped</span>
+                </div>
+                
+                <div class="grid-3">
+                    <div class="mining-stat">
+                        <div class="mining-stat-value" id="hashrate">0</div>
+                        <div class="mining-stat-label">Hashrate (H/s)</div>
+                    </div>
+                    <div class="mining-stat">
+                        <div class="mining-stat-value" id="minedToday">0</div>
+                        <div class="mining-stat-label">Mined Today (CVT)</div>
+                    </div>
+                    <div class="mining-stat">
+                        <div class="mining-stat-value" id="totalMined">0</div>
+                        <div class="mining-stat-label">Total Mined (CVT)</div>
+                    </div>
+                </div>
+                
+                <div class="warning-box" style="margin-top: 2rem;">
+                    <p><strong>⚠️ Mining Notice:</strong></p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>Browser mining uses your CPU</li>
+                        <li>Performance depends on your hardware</li>
+                        <li>Mining rewards are paid daily</li>
+                        <li>You can adjust thread count in settings</li>
+                        <li>Stop mining if your device overheats</li>
+                    </ul>
+                </div>
+                
+                <h3 style="margin-top: 2rem;">Mining Settings</h3>
+                <div class="form-group">
+                    <label class="form-label">CPU Threads (1-8)</label>
+                    <input type="number" class="form-input" id="miningThreads" min="1" max="8" value="2">
+                </div>
+                <button class="btn btn-primary" onclick="updateMiningSettings()">Update Settings</button>
+            </div>
+        </div>
+        
+        <!-- Explorer Tab -->
+        <div id="explorer" class="tab-content">
+            <div class="card">
+                <h2>🔍 Blockchain Explorer</h2>
+                
+                <h3>Search</h3>
+                <div class="form-group">
+                    <label class="form-label">Transaction Hash / Address / Block</label>
+                    <input type="text" class="form-input" id="explorerSearch" placeholder="0x... or block number">
+                </div>
+                <button class="btn btn-primary" onclick="searchExplorer()">Search</button>
+                
+                <div id="explorerResults" style="margin-top: 2rem;">
+                    <h3>Recent Transactions</h3>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <th style="padding: 1rem; text-align: left;">TxHash</th>
+                                    <th style="padding: 1rem; text-align: left;">From</th>
+                                    <th style="padding: 1rem; text-align: left;">To</th>
+                                    <th style="padding: 1rem; text-align: right;">Amount</th>
+                                    <th style="padding: 1rem; text-align: right;">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentTxs">
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td colspan="5" style="padding: 2rem; text-align: center; color: var(--text-secondary);">
+                                        Connect wallet to view recent transactions
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="info-box" style="margin-top: 2rem;">
+                    <p><strong>Full Explorer Links:</strong></p>
+                    <p><a href="https://mumbai.polygonscan.com" target="_blank" style="color: var(--cyber-blue);">View on PolygonScan (Mumbai)</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p style="margin-bottom: 1rem;">CyberViser Web3 Portal - Powering the AI Security Ecosystem</p>
+            <div class="footer-links">
+                <a href="https://cyberviserai.com">Main Hub</a>
+                <a href="https://cyberviser.github.io/Hancock/peachtrace/">PeachTrace</a>
+                <a href="https://0ai-cyberviser.github.io/PeachTree/">PeachTree</a>
+                <a href="https://0ai-cyberviser.github.io/peachfuzz/cactusfuzz/">CactusFuzz</a>
+                <a href="https://0ai-cyberviser.github.io/peachfuzz/peachfuzz/">PeachFuzz</a>
+                <a href="https://github.com/cyberviser/Hancock">GitHub</a>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 1rem;">
+                Built by HancockForge / 0AI / CyberViser<br>
+                © 2026 CyberViser. All rights reserved.
+            </p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.umd.min.js"></script>
+    <script>
+        // Web3 State
+        let provider = null;
+        let signer = null;
+        let userAddress = null;
+        let cvtContract = null;
+        let stakingContract = null;
+        let governanceContract = null;
+        let miningActive = false;
+        
+        // Contract Addresses (update after deployment)
+        const CVT_TOKEN_ADDRESS = 'YOUR_CVT_TOKEN_ADDRESS';
+        const STAKING_ADDRESS = 'YOUR_STAKING_ADDRESS';
+        const GOVERNANCE_ADDRESS = 'YOUR_GOVERNANCE_ADDRESS';
+        
+        // ABIs (simplified - full ABIs should be imported)
+        const CVT_ABI = [
+            "function balanceOf(address owner) view returns (uint256)",
+            "function transfer(address to, uint256 amount) returns (bool)",
+            "function approve(address spender, uint256 amount) returns (bool)",
+            "function totalSupply() view returns (uint256)"
+        ];
+        
+        const STAKING_ABI = [
+            "function stake(uint256 amount)",
+            "function unstake(uint256 amount)",
+            "function claimRewards()",
+            "function getStakeInfo(address user) view returns (uint256 amount, uint256 pendingReward, uint256 stakingDuration)",
+            "function getCurrentAPY() view returns (uint256)"
+        ];
+        
+        const GOVERNANCE_ABI = [
+            "function createProposal(string title, string description, uint8 proposalType) returns (uint256)",
+            "function vote(uint256 proposalId, bool support)",
+            "function getVotingPower(address user) view returns (uint256)",
+            "function proposalCount() view returns (uint256)",
+            "function getProposal(uint256 proposalId) view returns (address, string, string, uint8, uint256, uint256, uint256, uint256, uint8)"
+        ];
+        
+        // Connect Wallet
+        async function connectWallet() {
+            if (typeof window.ethereum === 'undefined') {
+                alert('Please install MetaMask to use this dApp!');
+                return;
+            }
+            
+            try {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = provider.getSigner();
+                userAddress = await signer.getAddress();
+                
+                // Initialize contracts
+                cvtContract = new ethers.Contract(CVT_TOKEN_ADDRESS, CVT_ABI, signer);
+                stakingContract = new ethers.Contract(STAKING_ADDRESS, STAKING_ABI, signer);
+                governanceContract = new ethers.Contract(GOVERNANCE_ADDRESS, GOVERNANCE_ABI, signer);
+                
+                // Update UI
+                document.getElementById('connectWallet').textContent = userAddress.substring(0, 6) + '...' + userAddress.substring(38);
+                document.getElementById('connectWallet').classList.add('connected');
+                document.getElementById('walletAddress').textContent = userAddress;
+                
+                // Load balances
+                await updateBalances();
+                await updateStakingInfo();
+                await loadProposals();
+                
+            } catch (error) {
+                console.error('Failed to connect wallet:', error);
+                alert('Failed to connect wallet. Please try again.');
+            }
+        }
+        
+        // Update Balances
+        async function updateBalances() {
+            if (!cvtContract || !userAddress) return;
+            
+            try {
+                const cvtBalance = await cvtContract.balanceOf(userAddress);
+                document.getElementById('cvtBalance').textContent = ethers.utils.formatEther(cvtBalance);
+                
+                const maticBalance = await provider.getBalance(userAddress);
+                document.getElementById('maticBalance').textContent = parseFloat(ethers.utils.formatEther(maticBalance)).toFixed(4);
+                
+                const totalSupply = await cvtContract.totalSupply();
+                document.getElementById('circulatingSupply').textContent = (parseInt(ethers.utils.formatEther(totalSupply)) / 1000000).toFixed(1) + 'M';
+                
+            } catch (error) {
+                console.error('Failed to update balances:', error);
+            }
+        }
+        
+        // Send CVT
+        async function sendCVT() {
+            if (!cvtContract) {
+                alert('Please connect wallet first');
+                return;
+            }
+            
+            const to = document.getElementById('sendAddress').value;
+            const amount = document.getElementById('sendAmount').value;
+            
+            if (!to || !amount) {
+                alert('Please enter recipient address and amount');
+                return;
+            }
+            
+            try {
+                const tx = await cvtContract.transfer(to, ethers.utils.parseEther(amount));
+                alert('Transaction submitted! TxHash: ' + tx.hash);
+                await tx.wait();
+                alert('Transaction confirmed!');
+                await updateBalances();
+            } catch (error) {
+                console.error('Transfer failed:', error);
+                alert('Transfer failed: ' + error.message);
+            }
+        }
+        
+        // Staking Functions
+        async function updateStakingInfo() {
+            if (!stakingContract || !userAddress) return;
+            
+            try {
+                const stakeInfo = await stakingContract.getStakeInfo(userAddress);
+                document.getElementById('yourStaked').textContent = ethers.utils.formatEther(stakeInfo.amount);
+                document.getElementById('pendingRewards').textContent = ethers.utils.formatEther(stakeInfo.pendingReward);
+                
+                const apy = await stakingContract.getCurrentAPY();
+                document.getElementById('stakingAPY').textContent = apy.toString() + '%';
+                document.getElementById('currentAPY').textContent = apy.toString() + '%';
+                
+            } catch (error) {
+                console.error('Failed to update staking info:', error);
+            }
+        }
+        
+        async function stakeCVT() {
+            const amount = document.getElementById('stakeAmount').value;
+            if (!amount || parseFloat(amount) < 100) {
+                alert('Minimum stake is 100 CVT');
+                return;
+            }
+            
+            try {
+                // Approve first
+                const approveTx = await cvtContract.approve(STAKING_ADDRESS, ethers.utils.parseEther(amount));
+                await approveTx.wait();
+                
+                // Stake
+                const stakeTx = await stakingContract.stake(ethers.utils.parseEther(amount));
+                alert('Staking... TxHash: ' + stakeTx.hash);
+                await stakeTx.wait();
+                alert('Staking successful!');
+                await updateBalances();
+                await updateStakingInfo();
+            } catch (error) {
+                console.error('Staking failed:', error);
+                alert('Staking failed: ' + error.message);
+            }
+        }
+        
+        async function unstakeCVT() {
+            const amount = document.getElementById('unstakeAmount').value;
+            if (!amount) {
+                alert('Please enter amount to unstake');
+                return;
+            }
+            
+            try {
+                const tx = await stakingContract.unstake(ethers.utils.parseEther(amount));
+                alert('Unstaking... TxHash: ' + tx.hash);
+                await tx.wait();
+                alert('Unstaking successful! Rewards claimed automatically.');
+                await updateBalances();
+                await updateStakingInfo();
+            } catch (error) {
+                console.error('Unstaking failed:', error);
+                alert('Unstaking failed: ' + error.message);
+            }
+        }
+        
+        async function claimRewards() {
+            try {
+                const tx = await stakingContract.claimRewards();
+                alert('Claiming rewards... TxHash: ' + tx.hash);
+                await tx.wait();
+                alert('Rewards claimed!');
+                await updateBalances();
+                await updateStakingInfo();
+            } catch (error) {
+                console.error('Claim failed:', error);
+                alert('Claim failed: ' + error.message);
+            }
+        }
+        
+        // Governance Functions
+        async function loadProposals() {
+            if (!governanceContract) return;
+            
+            try {
+                const count = await governanceContract.proposalCount();
+                document.getElementById('activeProposals').textContent = count.toString();
+                
+                const votingPower = await governanceContract.getVotingPower(userAddress);
+                document.getElementById('votingPower').textContent = ethers.utils.formatEther(votingPower);
+                
+                // Load recent proposals (simplified)
+                // In production, implement proper proposal loading with pagination
+                
+            } catch (error) {
+                console.error('Failed to load proposals:', error);
+            }
+        }
+        
+        async function createProposal() {
+            const title = document.getElementById('proposalTitle').value;
+            const description = document.getElementById('proposalDescription').value;
+            const type = document.getElementById('proposalType').value;
+            
+            if (!title || !description) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            try {
+                const tx = await governanceContract.createProposal(title, description, type);
+                alert('Creating proposal... TxHash: ' + tx.hash);
+                await tx.wait();
+                alert('Proposal created!');
+                await loadProposals();
+            } catch (error) {
+                console.error('Proposal creation failed:', error);
+                alert('Proposal creation failed: ' + error.message);
+            }
+        }
+        
+        async function vote(proposalId, support) {
+            try {
+                const tx = await governanceContract.vote(proposalId, support);
+                alert('Voting... TxHash: ' + tx.hash);
+                await tx.wait();
+                alert('Vote recorded!');
+                await loadProposals();
+            } catch (error) {
+                console.error('Voting failed:', error);
+                alert('Voting failed: ' + error.message);
+            }
+        }
+        
+        // Mining Functions
+        function toggleMining() {
+            const toggle = document.getElementById('miningToggle');
+            const status = document.getElementById('miningStatus');
+            
+            miningActive = !miningActive;
+            
+            if (miningActive) {
+                toggle.classList.add('active');
+                status.textContent = 'Running';
+                status.style.color = 'var(--cyber-green)';
+                startMining();
+            } else {
+                toggle.classList.remove('active');
+                status.textContent = 'Stopped';
+                status.style.color = 'var(--cyber-red)';
+                stopMining();
+            }
+        }
+        
+        function startMining() {
+            // Simplified mining simulation
+            // In production, connect to actual mining pool via WebSocket
+            let hashrate = 0;
+            const interval = setInterval(() => {
+                if (!miningActive) {
+                    clearInterval(interval);
+                    return;
+                }
+                
+                hashrate = Math.floor(Math.random() * 100) + 50;
+                document.getElementById('hashrate').textContent = hashrate;
+                
+                // Simulate earnings
+                const currentMined = parseFloat(document.getElementById('minedToday').textContent);
+                document.getElementById('minedToday').textContent = (currentMined + 0.001).toFixed(3);
+                
+            }, 1000);
+        }
+        
+        function stopMining() {
+            document.getElementById('hashrate').textContent = '0';
+        }
+        
+        function updateMiningSettings() {
+            const threads = document.getElementById('miningThreads').value;
+            alert('Mining settings updated: ' + threads + ' threads');
+        }
+        
+        // Tab Switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Explorer Functions
+        function searchExplorer() {
+            const query = document.getElementById('explorerSearch').value;
+            if (!query) {
+                alert('Please enter a transaction hash, address, or block number');
+                return;
+            }
+            
+            // In production, implement actual blockchain explorer functionality
+            alert('Explorer search for: ' + query + '\n\nFull blockchain explorer coming soon!');
+        }
+        
+        // Initialize
+        document.getElementById('connectWallet').addEventListener('click', connectWallet);
+        document.getElementById('tokenContract').textContent = CVT_TOKEN_ADDRESS;
+        
+        // Auto-connect if previously connected
+        if (window.ethereum && window.ethereum.selectedAddress) {
+            connectWallet();
+        }
+    </script>
+</body>
+</html>

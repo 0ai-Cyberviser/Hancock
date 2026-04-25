@@ -1,0 +1,27 @@
+========================================
+OSINT RECONNAISSANCE AUTHORIZATION
+========================================
+
+TARGET: example.com
+SCOPE: *.example.com, example.org
+AUTHORIZED BY: Development Team, Hancock Project
+DATE: 2026-04-25
+PURPOSE: PeachTrace module testing and validation
+EXPIRES: 2027-04-25
+
+This authorization grants permission for passive OSINT reconnaissance
+within the specified scope for development and testing purposes only.
+
+IMPORTANT: This is a TEMPLATE authorization file for testing purposes.
+Replace with actual written authorization from target organization
+before conducting real-world reconnaissance.
+
+For production use:
+1. Obtain written authorization from target organization
+2. Include legal entity name and authorized signatory
+3. Specify exact scope boundaries (domains, IP ranges, etc.)
+4. Define purpose and duration of assessment
+5. Maintain original signed document on file
+
+SIGNATURE: [Development/Testing Use Only - Not Valid for Production]
+========================================

@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PeachFuzz - Blue Team Defensive Fuzzer. CI-safe, deterministic fuzzing for parsers, APIs, and webhooks.">
+    <meta name="keywords" content="fuzzing, defensive security, blue team, CI/CD, parser testing, API security, security testing, libFuzzer, Atheris">
+    <meta name="author" content="CyberViser / 0AI">
+    <title>🍑 PeachFuzz - Blue Team Defensive Fuzzer | CyberViser AI</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Colors */
+            --cyber-red: #ff6b6b;
+            --cyber-blue: #4ecdc4;
+            --cyber-green: #51cf66;
+            --cyber-yellow: #ffe66d;
+            --cyber-purple: #a388ee;
+            --peach: #ff9a8d;
+            --dark-bg: #1a1a2e;
+            --dark-card: #16213e;
+            --dark-text: #e4e4e7;
+            --dark-muted: #94a3b8;
+            --accent-neon: #00ff41;
+            
+            /* Typography */
+            --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
+            --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background: var(--dark-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--peach);
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--peach);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-peach {
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--peach);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--peach), var(--cyber-purple));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 154, 141, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 120px 2rem 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 154, 141, 0.1), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(163, 136, 238, 0.1), transparent 50%);
+            pointer-events: none;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 154, 141, 0.2);
+            color: var(--peach);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: 1px solid var(--peach);
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--peach), var(--cyber-purple), var(--cyber-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero h1 .peach-emoji {
+            font-size: 4rem;
+            vertical-align: middle;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--dark-muted);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        
+        .hero-tagline {
+            font-size: 1.1rem;
+            color: var(--peach);
+            font-family: var(--font-mono);
+            margin-bottom: 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-hero {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-hero-primary {
+            background: linear-gradient(135deg, var(--peach), var(--cyber-purple));
+            color: white;
+        }
+        
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 154, 141, 0.4);
+        }
+        
+        .btn-hero-secondary {
+            background: transparent;
+            border: 2px solid var(--peach);
+            color: var(--peach);
+        }
+        
+        .btn-hero-secondary:hover {
+            background: var(--peach);
+            color: var(--dark-bg);
+        }
+        
+        /* Stats Section */
+        .stats {
+            padding: 60px 2rem;
+            background: var(--dark-card);
+        }
+        
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--dark-bg);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--peach);
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--peach);
+            font-family: var(--font-mono);
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--dark-muted);
+            margin-top: 0.5rem;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--dark-muted);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: var(--dark-card);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--peach);
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateX(10px);
+            border-left-color: var(--cyber-purple);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--peach);
+        }
+        
+        .feature-card p {
+            color: var(--dark-muted);
+            line-height: 1.8;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--cyber-green);
+            font-weight: bold;
+        }
+        
+        /* Terminal Demo */
+        .terminal-demo {
+            padding: 80px 2rem;
+            background: var(--dark-card);
+        }
+        
+        .terminal {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #0d0d0d;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .terminal-header {
+            background: #2d2d2d;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-button.red { background: #ff5f56; }
+        .terminal-button.yellow { background: #ffbd2e; }
+        .terminal-button.green { background: #27c93f; }
+        
+        .terminal-title {
+            margin-left: auto;
+            color: #999;
+            font-size: 0.9rem;
+            font-family: var(--font-mono);
+        }
+        
+        .terminal-body {
+            padding: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--accent-neon);
+        }
+        
+        .terminal-line {
+            margin: 0.5rem 0;
+        }
+        
+        .terminal-prompt {
+            color: var(--peach);
+        }
+        
+        .terminal-output {
+            color: var(--dark-muted);
+        }
+        
+        .terminal-success {
+            color: var(--cyber-green);
+        }
+        
+        .terminal-error {
+            color: var(--cyber-red);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            color: var(--dark-muted);
+            margin-bottom: 2rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--dark-card);
+            padding: 3rem 2rem 2rem;
+            border-top: 2px solid var(--peach);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            color: var(--peach);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin: 0.5rem 0;
+        }
+        
+        .footer-section a {
+            color: var(--dark-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--peach);
+        }
+        
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+            text-align: center;
+            color: var(--dark-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="logo">
+                <span class="logo-peach">🍑</span>
+                <span>PeachFuzz</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#ci-cd">CI/CD</a></li>
+                <li><a href="#targets">Targets</a></li>
+                <li><a href="https://github.com/0ai-Cyberviser/peachfuzz">GitHub</a></li>
+            </ul>
+            <a href="https://github.com/0ai-Cyberviser/peachfuzz" class="btn-primary">Get Started →</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🛡️ CI-SAFE DEFENSIVE FUZZING</div>
+            <h1>
+                <span class="peach-emoji">🍑</span> PeachFuzz
+            </h1>
+            <p class="hero-subtitle">Blue Team Defensive Fuzzer for CI/CD & Parser Safety</p>
+            <p class="hero-tagline">
+                Deterministic | Reproducible | Local-Only | Production-Ready
+            </p>
+            <div class="cta-buttons">
+                <a href="https://github.com/0ai-Cyberviser/peachfuzz#readme" class="btn-hero btn-hero-primary">
+                    📖 Read Docs
+                </a>
+                <a href="https://github.com/0ai-Cyberviser/peachfuzz" class="btn-hero btn-hero-secondary">
+                    💻 View Source
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Fuzzing Backends</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1304</div>
+                <div class="stat-label">Lines of Code</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Local-Only (Safe)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Network Traffic</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+        <div class="section-header">
+            <h2>🛡️ Defensive Fuzzing Capabilities</h2>
+            <p>Find crashes before attackers do - safely in CI/CD pipelines</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>PeachTrace Backend</h3>
+                <p>Coverage-guided fuzzing with real execution traces</p>
+                <ul class="feature-list">
+                    <li>Code coverage instrumentation</li>
+                    <li>Edge discovery and prioritization</li>
+                    <li>Corpus minimization</li>
+                    <li>Crash deduplication</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🐍</div>
+                <h3>Atheris Backend</h3>
+                <p>Native Python fuzzing with libFuzzer engine</p>
+                <ul class="feature-list">
+                    <li>Structure-aware mutation</li>
+                    <li>Fast execution (native speed)</li>
+                    <li>Sanitizer integration (ASan, UBSan)</li>
+                    <li>Industry-standard libFuzzer</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <h3>libFuzzer Integration</h3>
+                <p>C/C++ fuzzing for performance-critical parsers</p>
+                <ul class="feature-list">
+                    <li>Clang instrumentation</li>
+                    <li>Memory error detection</li>
+                    <li>Continuous fuzzing mode</li>
+                    <li>OSS-Fuzz compatible</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Target Support</h3>
+                <p>Fuzz all your parsers and APIs safely</p>
+                <ul class="feature-list">
+                    <li>JSON parsers (stdlib, orjson, rapidjson)</li>
+                    <li>OpenAPI schema validators</li>
+                    <li>GraphQL query parsers</li>
+                    <li>Webhook handlers</li>
+                    <li>XML/YAML parsers</li>
+                    <li>Custom protocols</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Crash Minimization</h3>
+                <p>Automatically reduce crashing inputs to minimal reproducers</p>
+                <ul class="feature-list">
+                    <li>Delta debugging algorithm</li>
+                    <li>Character-level minimization</li>
+                    <li>Preserves crash trigger</li>
+                    <li>100-10000x size reduction typical</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🧪</div>
+                <h3>Regression Tests</h3>
+                <p>Auto-generate pytest reproducers from crashes</p>
+                <ul class="feature-list">
+                    <li>One crash → one test function</li>
+                    <li>Parametrized test generation</li>
+                    <li>Immediate CI/CD integration</li>
+                    <li>Version control friendly</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CI/CD Integration -->
+    <section id="ci-cd" class="features" style="background: var(--dark-card);">
+        <div class="section-header">
+            <h2>⚡ CI/CD Pipeline Integration</h2>
+            <p>Run PeachFuzz on every commit - catch crashes before production</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>GitHub Actions</h3>
+                <p>Native GitHub Actions workflow support</p>
+                <ul class="feature-list">
+                    <li>.github/workflows/peachfuzz.yml template</li>
+                    <li>Parallel fuzzing across runners</li>
+                    <li>Artifact upload for crashes</li>
+                    <li>PR comment integration</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🦊</div>
+                <h3>GitLab CI</h3>
+                <p>GitLab CI/CD pipeline support</p>
+                <ul class="feature-list">
+                    <li>.gitlab-ci.yml template</li>
+                    <li>Docker executor support</li>
+                    <li>Merge request reports</li>
+                    <li>Coverage integration</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔨</div>
+                <h3>Jenkins</h3>
+                <p>Jenkins pipeline integration</p>
+                <ul class="feature-list">
+                    <li>Jenkinsfile example</li>
+                    <li>Workspace persistence</li>
+                    <li>Build failure on crashes</li>
+                    <li>Email notifications</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terminal Demo -->
+    <section id="targets" class="terminal-demo">
+        <div class="section-header">
+            <h2>⌨️ Quick Start Example</h2>
+            <p>Fuzz your JSON parser in under 60 seconds</p>
+        </div>
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-button red"></div>
+                <div class="terminal-button yellow"></div>
+                <div class="terminal-button green"></div>
+                <div class="terminal-title">peachfuzz.py</div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span> python3 peachfuzz.py --target my_json_parser --backend atheris --duration 60
+                </div>
+                <div class="terminal-line terminal-output">
+================================================================================
+</div>
+                <div class="terminal-line terminal-success">
+PEACHFUZZ - BLUE TEAM DEFENSIVE FUZZER
+</div>
+                <div class="terminal-line terminal-output">
+================================================================================
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-output">
+Target: my_json_parser
+</div>
+                <div class="terminal-line terminal-output">
+Backend: Atheris (libFuzzer engine)
+</div>
+                <div class="terminal-line terminal-output">
+Duration: 60 seconds
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+✓ Initializing corpus... 127 seed inputs
+</div>
+                <div class="terminal-line terminal-success">
+✓ Starting fuzzer...
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-output">
+[0s] exec/s: 1234, corpus: 127, coverage: 487 edges
+</div>
+                <div class="terminal-line terminal-output">
+[10s] exec/s: 1891, corpus: 203, coverage: 612 edges
+</div>
+                <div class="terminal-line terminal-output">
+[20s] exec/s: 2107, corpus: 289, coverage: 701 edges
+</div>
+                <div class="terminal-line terminal-error">
+[27s] CRASH DETECTED!
+</div>
+                <div class="terminal-line terminal-output">
+  Type: IndexError: list index out of range
+</div>
+                <div class="terminal-line terminal-output">
+  Input: {"nested": [[[[[...32 levels...
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+✓ Minimizing crash... 1847 bytes → 23 bytes
+</div>
+                <div class="terminal-line terminal-output">
+Minimized: {"nested":[[[[[[[[[[[[[[[[[[[[[[["x"]]]]]]]]]]]]]]]]]]]]]}
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+✓ Generating regression test...
+</div>
+                <div class="terminal-line terminal-output">
+File: tests/test_json_parser_crash_A1B2C3.py
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+✓ Fuzzing complete
+</div>
+                <div class="terminal-line terminal-output">
+  Total executions: 126,420
+</div>
+                <div class="terminal-line terminal-output">
+  Crashes found: 1
+</div>
+                <div class="terminal-line terminal-output">
+  New edges: 214
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+🍑 Crash saved. Fix the bug and run again!
+</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Start Fuzzing Your Parsers Today</h2>
+        <p>PeachFuzz: CI-safe defensive fuzzing that finds crashes before attackers do.</p>
+        <div class="cta-buttons">
+            <a href="https://github.com/0ai-Cyberviser/peachfuzz#quick-start" class="btn-hero btn-hero-primary">
+                🚀 Quick Start Guide
+            </a>
+            <a href="https://github.com/0ai-Cyberviser/peachfuzz" class="btn-hero btn-hero-secondary">
+                ⭐ Star on GitHub
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Projects</h4>
+                <ul>
+                    <li><a href="https://cyberviser.github.io/Hancock/">Hancock</a></li>
+                    <li><a href="https://cyberviser.github.io/Hancock/peachtrace/">PeachTrace</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/PeachTree/">PeachTree</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/peachfuzz/">PeachFuzz</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/cactusfuzz/">CactusFuzz</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz#readme">Documentation</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz#quick-start">Quick Start</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz#ci-cd-integration">CI/CD Setup</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz/tree/main/examples">Examples</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="https://cyberviserai.com/">Main Hub</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/0ai/">0AI Portfolio</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser">GitHub Org</a></li>
+                    <li><a href="mailto:0ai@cyberviserai.com">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz/blob/main/SECURITY.md">Security</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz/blob/main/LICENSE">License</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz/issues">Report Issue</a></li>
+                    <li><a href="mailto:cyberviser@proton.me">Support Email</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 CyberViser / 0AI • Built by Johnny Watters • Powered by Atheris + libFuzzer</p>
+            <p>🍑 PeachFuzz - Blue Team Defensive Fuzzer for CI/CD Pipelines</p>
+        </div>
+    </footer>
+</body>
+</html>

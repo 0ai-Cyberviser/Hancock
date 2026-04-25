@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PeachTree - Recursive Learning Engine for AI Security. Dataset orchestrator with quality control, deduplication, and provenance tracking.">
+    <meta name="keywords" content="dataset, machine learning, fine-tuning, AI training, data quality, JSONL, provenance, deduplication">
+    <meta name="author" content="CyberViser / 0AI">
+    <title>🌳 PeachTree - Dataset Orchestrator | CyberViser AI</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Colors */
+            --cyber-red: #ff6b6b;
+            --cyber-blue: #4ecdc4;
+            --cyber-green: #51cf66;
+            --cyber-yellow: #ffe66d;
+            --cyber-purple: #a388ee;
+            --dark-bg: #1a1a2e;
+            --dark-card: #16213e;
+            --dark-text: #e4e4e7;
+            --dark-muted: #94a3b8;
+            --accent-neon: #00ff41;
+            --accent-warn: #fb8500;
+            
+            /* Typography */
+            --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
+            --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background: var(--dark-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--cyber-green);
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-tree {
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--cyber-green);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cyber-green), var(--cyber-blue));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(81, 207, 102, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 120px 2rem 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(81, 207, 102, 0.1), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(163, 136, 238, 0.1), transparent 50%);
+            pointer-events: none;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(81, 207, 102, 0.2);
+            color: var(--cyber-green);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: 1px solid var(--cyber-green);
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--cyber-green), var(--cyber-blue), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero h1 .tree-emoji {
+            font-size: 4rem;
+            vertical-align: middle;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--dark-muted);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        
+        .hero-tagline {
+            font-size: 1.1rem;
+            color: var(--cyber-green);
+            font-family: var(--font-mono);
+            margin-bottom: 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-hero {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-hero-primary {
+            background: linear-gradient(135deg, var(--cyber-green), var(--cyber-blue));
+            color: white;
+        }
+        
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(81, 207, 102, 0.4);
+        }
+        
+        .btn-hero-secondary {
+            background: transparent;
+            border: 2px solid var(--cyber-green);
+            color: var(--cyber-green);
+        }
+        
+        .btn-hero-secondary:hover {
+            background: var(--cyber-green);
+            color: var(--dark-bg);
+        }
+        
+        /* Stats Section */
+        .stats {
+            padding: 60px 2rem;
+            background: var(--dark-card);
+        }
+        
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--dark-bg);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--cyber-green);
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+            font-family: var(--font-mono);
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--dark-muted);
+            margin-top: 0.5rem;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--dark-muted);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: var(--dark-card);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--cyber-green);
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateX(10px);
+            border-left-color: var(--cyber-blue);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--cyber-green);
+        }
+        
+        .feature-card p {
+            color: var(--dark-muted);
+            line-height: 1.8;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--cyber-green);
+            font-weight: bold;
+        }
+        
+        /* Workflow Diagram */
+        .workflow {
+            padding: 80px 2rem;
+            background: var(--dark-card);
+        }
+        
+        .workflow-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .workflow-step {
+            text-align: center;
+            position: relative;
+        }
+        
+        .workflow-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -2rem;
+            top: 2rem;
+            font-size: 2rem;
+            color: var(--cyber-green);
+        }
+        
+        .workflow-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--cyber-green), var(--cyber-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .workflow-step h3 {
+            color: var(--cyber-green);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Terminal Demo */
+        .terminal-demo {
+            padding: 80px 2rem;
+        }
+        
+        .terminal {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #0d0d0d;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .terminal-header {
+            background: #2d2d2d;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-button.red { background: #ff5f56; }
+        .terminal-button.yellow { background: #ffbd2e; }
+        .terminal-button.green { background: #27c93f; }
+        
+        .terminal-title {
+            margin-left: auto;
+            color: #999;
+            font-size: 0.9rem;
+            font-family: var(--font-mono);
+        }
+        
+        .terminal-body {
+            padding: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--accent-neon);
+        }
+        
+        .terminal-line {
+            margin: 0.5rem 0;
+        }
+        
+        .terminal-prompt {
+            color: var(--cyber-green);
+        }
+        
+        .terminal-output {
+            color: var(--dark-muted);
+        }
+        
+        .terminal-success {
+            color: var(--cyber-green);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            color: var(--dark-muted);
+            margin-bottom: 2rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--dark-card);
+            padding: 3rem 2rem 2rem;
+            border-top: 2px solid var(--cyber-green);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            color: var(--cyber-green);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin: 0.5rem 0;
+        }
+        
+        .footer-section a {
+            color: var(--dark-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--cyber-green);
+        }
+        
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+            text-align: center;
+            color: var(--dark-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features-grid,
+            .workflow-steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .workflow-step:not(:last-child)::after {
+                content: '↓';
+                right: auto;
+                left: 50%;
+                top: auto;
+                bottom: -2rem;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="logo">
+                <span class="logo-tree">🌳</span>
+                <span>PeachTree</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#workflow">Workflow</a></li>
+                <li><a href="#integration">Integration</a></li>
+                <li><a href="https://github.com/0ai-Cyberviser/PeachTree">GitHub</a></li>
+            </ul>
+            <a href="https://github.com/0ai-Cyberviser/PeachTree" class="btn-primary">Get Started →</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🌱 RECURSIVE LEARNING ENGINE</div>
+            <h1>
+                <span class="tree-emoji">🌳</span> PeachTree
+            </h1>
+            <p class="hero-subtitle">Dataset Orchestrator for AI Security Training</p>
+            <p class="hero-tagline">
+                Quality Control | Deduplication | Provenance Tracking | JSONL Export
+            </p>
+            <div class="cta-buttons">
+                <a href="https://github.com/0ai-Cyberviser/PeachTree#readme" class="btn-hero btn-hero-primary">
+                    📖 Read Docs
+                </a>
+                <a href="https://github.com/0ai-Cyberviser/PeachTree" class="btn-hero btn-hero-secondary">
+                    💻 View Source
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Quality Verified</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">MD5</div>
+                <div class="stat-label">Deduplication</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">JSONL</div>
+                <div class="stat-label">Export Format</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">♾️</div>
+                <div class="stat-label">Recursive Improvement</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+        <div class="section-header">
+            <h2>🎯 Enterprise-Grade Dataset Management</h2>
+            <p>Transform raw security data into production-ready training datasets</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h3>Quality Control</h3>
+                <p>Automated validation and filtering of training data</p>
+                <ul class="feature-list">
+                    <li>Format validation (JSONL, JSON, CSV)</li>
+                    <li>Schema enforcement</li>
+                    <li>Confidence scoring</li>
+                    <li>Outlier detection</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Deduplication</h3>
+                <p>MD5-based duplicate detection across datasets</p>
+                <ul class="feature-list">
+                    <li>MD5 hash fingerprinting</li>
+                    <li>Cross-dataset dedup</li>
+                    <li>Preserve unique samples only</li>
+                    <li>~30-40% reduction typical</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📜</div>
+                <h3>Provenance Tracking</h3>
+                <p>Full audit trail for every training sample</p>
+                <ul class="feature-list">
+                    <li>Source attribution</li>
+                    <li>Generation timestamp</li>
+                    <li>Transformation history</li>
+                    <li>Compliance-ready logs</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>JSONL Export</h3>
+                <p>Industry-standard format for LLM fine-tuning</p>
+                <ul class="feature-list">
+                    <li>Compatible with Unsloth, LoRA</li>
+                    <li>Hugging Face Datasets ready</li>
+                    <li>Streaming-friendly format</li>
+                    <li>Compression support</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>Multi-Source Ingestion</h3>
+                <p>Aggregate data from across your security stack</p>
+                <ul class="feature-list">
+                    <li>Hancock AI outputs</li>
+                    <li>PeachTrace OSINT reports</li>
+                    <li>PeachFuzz/CactusFuzz findings</li>
+                    <li>Custom collectors</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">♻️</div>
+                <h3>Recursive Self-Improvement</h3>
+                <p>Datasets improve AI, which generates better datasets</p>
+                <ul class="feature-list">
+                    <li>Feedback loop with Hancock</li>
+                    <li>Automatic quality metrics</li>
+                    <li>Model performance tracking</li>
+                    <li>Continuous optimization</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow -->
+    <section id="workflow" class="workflow">
+        <div class="workflow-container">
+            <div class="section-header">
+                <h2>🔄 Recursive Dataset Pipeline</h2>
+                <p>From raw security data to production-ready training datasets</p>
+            </div>
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="workflow-number">1</div>
+                    <h3>Ingest</h3>
+                    <p>Collect data from Hancock, PeachTrace, fuzzers, custom sources</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-number">2</div>
+                    <h3>Validate</h3>
+                    <p>Schema checks, format validation, confidence filtering</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-number">3</div>
+                    <h3>Deduplicate</h3>
+                    <p>MD5 hashing removes duplicates across all datasets</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-number">4</div>
+                    <h3>Export</h3>
+                    <p>Generate JSONL files ready for fine-tuning</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-number">5</div>
+                    <h3>Train</h3>
+                    <p>Fine-tune Hancock models (Mistral, Qwen, etc.)</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="workflow-number">6</div>
+                    <h3>Improve</h3>
+                    <p>Better models generate higher-quality data → Loop</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terminal Demo -->
+    <section class="terminal-demo">
+        <div class="section-header">
+            <h2>⌨️ CLI Interface</h2>
+            <p>Simple commands for powerful dataset operations</p>
+        </div>
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-button red"></div>
+                <div class="terminal-button yellow"></div>
+                <div class="terminal-button green"></div>
+                <div class="terminal-title">peachtree</div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span> peachtree ingest --source peachtrace_reports/ --type osint
+                </div>
+                <div class="terminal-line terminal-success">
+✓ Ingested 87 OSINT reports
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span> peachtree deduplicate --method md5
+                </div>
+                <div class="terminal-line terminal-success">
+✓ Removed 34 duplicates (39.1% reduction)
+</div>
+                <div class="terminal-line terminal-output">
+Unique samples: 53
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span> peachtree export --format jsonl --output hancock_osint_v2.jsonl
+                </div>
+                <div class="terminal-line terminal-success">
+✓ Exported 53 samples
+</div>
+                <div class="terminal-line terminal-output">
+File: hancock_osint_v2.jsonl (247 KB)
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span> peachtree stats
+                </div>
+                <div class="terminal-line terminal-output">
+Total Datasets: 8
+</div>
+                <div class="terminal-line terminal-output">
+Total Samples: 3,402
+</div>
+                <div class="terminal-line terminal-output">
+Unique Samples: 2,187
+</div>
+                <div class="terminal-line terminal-output">
+Deduplication Rate: 35.7%
+</div>
+                <div class="terminal-line terminal-output">
+Avg Confidence: 0.87
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+🌳 Ready for fine-tuning with hancock_finetune.py
+</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration -->
+    <section id="integration" class="features">
+        <div class="section-header">
+            <h2>🔗 Ecosystem Integration</h2>
+            <p>PeachTree powers the entire CyberViser AI training pipeline</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>Hancock AI</h3>
+                <p>Fine-tune Hancock models with curated datasets</p>
+                <ul class="feature-list">
+                    <li>hancock_finetune.py integration</li>
+                    <li>Automatic dataset versioning</li>
+                    <li>LoRA adapter training</li>
+                    <li>Performance benchmarking</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🍑</div>
+                <h3>PeachTrace</h3>
+                <p>Export OSINT recon reports as training data</p>
+                <ul class="feature-list">
+                    <li>Automatic report parsing</li>
+                    <li>Subdomain → attack surface mapping</li>
+                    <li>DNS security scoring</li>
+                    <li>Threat intelligence correlation</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🍑🌵</div>
+                <h3>PeachFuzz & CactusFuzz</h3>
+                <p>Convert fuzzing crashes into training examples</p>
+                <ul class="feature-list">
+                    <li>Crash minimization inputs</li>
+                    <li>Payload-response pairs</li>
+                    <li>Vulnerability classification</li>
+                    <li>Exploit generation scenarios</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Start Building Better Datasets Today</h2>
+        <p>Transform your security data into production-ready AI training datasets.</p>
+        <div class="cta-buttons">
+            <a href="https://github.com/0ai-Cyberviser/PeachTree#readme" class="btn-hero btn-hero-primary">
+                📚 View Documentation
+            </a>
+            <a href="https://github.com/0ai-Cyberviser/PeachTree" class="btn-hero btn-hero-secondary">
+                ⭐ Star on GitHub
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Projects</h4>
+                <ul>
+                    <li><a href="https://cyberviser.github.io/Hancock/">Hancock</a></li>
+                    <li><a href="https://cyberviser.github.io/Hancock/peachtrace/">PeachTrace</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/PeachTree/">PeachTree</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/peachfuzz/">PeachFuzz</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/cactusfuzz/">CactusFuzz</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="https://github.com/0ai-Cyberviser/PeachTree#readme">Documentation</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/PeachTree#quick-start">Quick Start</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/PeachTree/tree/main/examples">Examples</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/PeachTree/blob/main/API.md">API Reference</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="https://cyberviserai.com/">Main Hub</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/0ai/">0AI Portfolio</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser">GitHub Org</a></li>
+                    <li><a href="mailto:0ai@cyberviserai.com">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="https://github.com/0ai-Cyberviser/PeachTree/blob/main/SECURITY.md">Security</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/PeachTree/blob/main/LICENSE">License</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/PeachTree/issues">Report Issue</a></li>
+                    <li><a href="mailto:cyberviser@proton.me">Support Email</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 CyberViser / 0AI • Built by Johnny Watters • Powered by Recursive Learning</p>
+            <p>🌳 PeachTree - The Dataset Orchestrator for AI Security Training</p>
+        </div>
+    </footer>
+</body>
+</html>

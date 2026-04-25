@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CactusFuzz - Red Team Offensive Fuzzer. Scope-gated, simulation-first fuzzing for authorized penetration testing labs.">
+    <meta name="keywords" content="fuzzing, offensive security, red team, penetration testing, vulnerability research, exploit development, security testing">
+    <meta name="author" content="CyberViser / 0AI">
+    <title>🌵 CactusFuzz - Red Team Offensive Fuzzer | CyberViser AI</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Colors */
+            --cyber-red: #ff6b6b;
+            --cyber-blue: #4ecdc4;
+            --cyber-green: #51cf66;
+            --cyber-yellow: #ffe66d;
+            --cyber-purple: #a388ee;
+            --dark-bg: #1a1a2e;
+            --dark-card: #16213e;
+            --dark-text: #e4e4e7;
+            --dark-muted: #94a3b8;
+            --accent-neon: #00ff41;
+            --accent-warn: #fb8500;
+            
+            /* Typography */
+            --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
+            --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background: var(--dark-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--accent-warn);
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-warn);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-cactus {
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-warn);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-warn), var(--cyber-red));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(251, 133, 0, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 120px 2rem 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(251, 133, 0, 0.1), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 107, 107, 0.1), transparent 50%);
+            pointer-events: none;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(251, 133, 0, 0.2);
+            color: var(--accent-warn);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: 1px solid var(--accent-warn);
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-warn), var(--cyber-red), var(--cyber-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero h1 .cactus-emoji {
+            font-size: 4rem;
+            vertical-align: middle;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--dark-muted);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        
+        .hero-tagline {
+            font-size: 1.1rem;
+            color: var(--accent-warn);
+            font-family: var(--font-mono);
+            margin-bottom: 2rem;
+        }
+        
+        .warning-box {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: rgba(251, 133, 0, 0.1);
+            border: 2px solid var(--accent-warn);
+            border-radius: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+        }
+        
+        .warning-box strong {
+            color: var(--accent-warn);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-hero {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-hero-primary {
+            background: linear-gradient(135deg, var(--accent-warn), var(--cyber-red));
+            color: white;
+        }
+        
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(251, 133, 0, 0.4);
+        }
+        
+        .btn-hero-secondary {
+            background: transparent;
+            border: 2px solid var(--accent-warn);
+            color: var(--accent-warn);
+        }
+        
+        .btn-hero-secondary:hover {
+            background: var(--accent-warn);
+            color: var(--dark-bg);
+        }
+        
+        /* Stats Section */
+        .stats {
+            padding: 60px 2rem;
+            background: var(--dark-card);
+        }
+        
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--dark-bg);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--accent-warn);
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-warn);
+            font-family: var(--font-mono);
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--dark-muted);
+            margin-top: 0.5rem;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--dark-muted);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: var(--dark-card);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-warn);
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateX(10px);
+            border-left-color: var(--cyber-red);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-warn);
+        }
+        
+        .feature-card p {
+            color: var(--dark-muted);
+            line-height: 1.8;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .feature-list li::before {
+            content: '⚠';
+            position: absolute;
+            left: 0;
+            color: var(--accent-warn);
+            font-weight: bold;
+        }
+        
+        /* Terminal Demo */
+        .terminal-demo {
+            padding: 80px 2rem;
+            background: var(--dark-card);
+        }
+        
+        .terminal {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #0d0d0d;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .terminal-header {
+            background: #2d2d2d;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-button.red { background: #ff5f56; }
+        .terminal-button.yellow { background: #ffbd2e; }
+        .terminal-button.green { background: #27c93f; }
+        
+        .terminal-title {
+            margin-left: auto;
+            color: #999;
+            font-size: 0.9rem;
+            font-family: var(--font-mono);
+        }
+        
+        .terminal-body {
+            padding: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--accent-neon);
+        }
+        
+        .terminal-line {
+            margin: 0.5rem 0;
+        }
+        
+        .terminal-prompt {
+            color: var(--accent-warn);
+        }
+        
+        .terminal-output {
+            color: var(--dark-muted);
+        }
+        
+        .terminal-success {
+            color: var(--cyber-green);
+        }
+        
+        .terminal-warning {
+            color: var(--accent-warn);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            color: var(--dark-muted);
+            margin-bottom: 2rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--dark-card);
+            padding: 3rem 2rem 2rem;
+            border-top: 2px solid var(--accent-warn);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            color: var(--accent-warn);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin: 0.5rem 0;
+        }
+        
+        .footer-section a {
+            color: var(--dark-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--accent-warn);
+        }
+        
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+            text-align: center;
+            color: var(--dark-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="#" class="logo">
+                <span class="logo-cactus">🌵</span>
+                <span>CactusFuzz</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#guardrails">Guardrails</a></li>
+                <li><a href="#usage">Usage</a></li>
+                <li><a href="https://github.com/0ai-Cyberviser/peachfuzz">GitHub</a></li>
+            </ul>
+            <a href="https://github.com/0ai-Cyberviser/peachfuzz" class="btn-primary">Get Started →</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">⚠️ AUTHORIZED LABS ONLY</div>
+            <h1>
+                <span class="cactus-emoji">🌵</span> CactusFuzz
+            </h1>
+            <p class="hero-subtitle">Red Team Offensive Fuzzer for Authorized Research</p>
+            <p class="hero-tagline">
+                Scope-Gated | Simulation-First | Proposal-Only | Lab-Safe
+            </p>
+            <div class="warning-box">
+                <strong>⚠️ AUTHORIZATION REQUIRED:</strong> CactusFuzz is designed EXCLUSIVELY for authorized penetration testing labs, security research environments, and controlled red team exercises. All operations are scope-gated with mandatory authorization checks. Unauthorized use is prohibited and may violate laws.
+            </div>
+            <div class="cta-buttons">
+                <a href="https://github.com/0ai-Cyberviser/peachfuzz#cactusfuzz-red-team" class="btn-hero btn-hero-primary">
+                    📖 Read Docs
+                </a>
+                <a href="https://github.com/0ai-Cyberviser/peachfuzz" class="btn-hero btn-hero-secondary">
+                    💻 View Source
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Attack Generators</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Mutation Strategies</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1730</div>
+                <div class="stat-label">Lines of Code</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Authorization Required</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+        <div class="section-header">
+            <h2>🎯 Offensive Fuzzing Capabilities</h2>
+            <p>Advanced attack generation for authorized security research</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">💉</div>
+                <h3>Injection Attacks</h3>
+                <p>SQLi, NoSQLi, Command Injection, LDAP, XPath</p>
+                <ul class="feature-list">
+                    <li>Time-based blind SQLi payloads</li>
+                    <li>NoSQL operator injection ($ne, $gt, etc.)</li>
+                    <li>Command injection (backticks, pipes, &&)</li>
+                    <li>LDAP filter bypass techniques</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔓</div>
+                <h3>Authentication Bypass</h3>
+                <p>JWT manipulation, session fixation, auth logic flaws</p>
+                <ul class="feature-list">
+                    <li>JWT algorithm confusion (alg: none)</li>
+                    <li>Session token prediction</li>
+                    <li>OAuth redirect hijacking</li>
+                    <li>Race condition exploits</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📂</div>
+                <h3>Path Traversal</h3>
+                <p>Directory traversal, LFI, RFI, file upload bypass</p>
+                <ul class="feature-list">
+                    <li>../../../ encoding variations</li>
+                    <li>Null byte injection (%00)</li>
+                    <li>Double URL encoding</li>
+                    <li>MIME type bypass techniques</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💥</div>
+                <h3>Buffer Overflow</h3>
+                <p>Integer overflow, heap spray, format string attacks</p>
+                <ul class="feature-list">
+                    <li>Integer wraparound payloads</li>
+                    <li>Heap spray patterns</li>
+                    <li>Format string vulnerabilities (%n, %x)</li>
+                    <li>Stack smashing techniques</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Cryptographic Attacks</h3>
+                <p>Weak cipher exploitation, padding oracle, timing attacks</p>
+                <ul class="feature-list">
+                    <li>CBC padding oracle detection</li>
+                    <li>ECB mode exploitation</li>
+                    <li>Timing attack vectors</li>
+                    <li>Known plaintext attacks</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Protocol Abuse</h3>
+                <p>HTTP smuggling, SSRF, DNS rebinding, cache poisoning</p>
+                <ul class="feature-list">
+                    <li>HTTP request smuggling (CL.TE, TE.CL)</li>
+                    <li>SSRF with localhost bypass</li>
+                    <li>DNS rebinding payloads</li>
+                    <li>Cache poisoning headers</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guardrails -->
+    <section id="guardrails" class="features" style="background: var(--dark-card);">
+        <div class="section-header">
+            <h2>🛡️ Built-In Safety Guardrails</h2>
+            <p>Mandatory authorization and scope enforcement at every layer</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Scope Gates</h3>
+                <p>Automatic target validation before any fuzzing</p>
+                <ul class="feature-list">
+                    <li>IP/domain allowlist enforcement</li>
+                    <li>CIDR range validation</li>
+                    <li>Local network blocking (127.0.0.1, etc.)</li>
+                    <li>Scope file required (cactusfuzz_scope.txt)</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3>Authorization Checks</h3>
+                <p>Mandatory authorization file with expiration dates</p>
+                <ul class="feature-list">
+                    <li>Signed authorization document required</li>
+                    <li>Date/time range validation</li>
+                    <li>Authorized personnel verification</li>
+                    <li>Audit trail generation</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Proposal Mode</h3>
+                <p>Generate attack payloads without execution</p>
+                <ul class="feature-list">
+                    <li>--proposal-only flag (recommended)</li>
+                    <li>Review payloads before sending</li>
+                    <li>Human-in-the-loop approval</li>
+                    <li>Export to JSON for analysis</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terminal Demo -->
+    <section id="usage" class="terminal-demo">
+        <div class="section-header">
+            <h2>⌨️ Safe Lab Usage Example</h2>
+            <p>Always use --proposal-only for review-first workflows</p>
+        </div>
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-button red"></div>
+                <div class="terminal-button yellow"></div>
+                <div class="terminal-button green"></div>
+                <div class="terminal-title">cactusfuzz.py</div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span> python3 cactusfuzz.py --target https://lab.example.com --scope cactusfuzz_scope.txt --auth lab_authorization.txt --proposal-only
+                </div>
+                <div class="terminal-line terminal-output">
+================================================================================
+</div>
+                <div class="terminal-line terminal-warning">
+CACTUSFUZZ - RED TEAM OFFENSIVE FUZZER (AUTHORIZED LABS ONLY)
+</div>
+                <div class="terminal-line terminal-output">
+================================================================================
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+✓ Authorization validated: lab_authorization.txt
+</div>
+                <div class="terminal-line terminal-output">
+  Authorized by: Red Team Lead - Lab Environment
+</div>
+                <div class="terminal-line terminal-output">
+  Valid until: 2026-05-25 23:59:59 UTC
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+✓ Scope validated: https://lab.example.com IN SCOPE
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-warning">
+⚠️  PROPOSAL MODE: Generating payloads WITHOUT execution
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-output">
+[1/10] SQLi Injection Attacks... 47 payloads
+</div>
+                <div class="terminal-line terminal-output">
+[2/10] NoSQL Injection... 32 payloads
+</div>
+                <div class="terminal-line terminal-output">
+[3/10] Command Injection... 28 payloads
+</div>
+                <div class="terminal-line terminal-output">
+[4/10] Auth Bypass... 41 payloads
+</div>
+                <div class="terminal-line terminal-output">
+[5/10] Path Traversal... 53 payloads
+</div>
+                <div class="terminal-line terminal-output">
+[6/10] Buffer Overflow... 35 payloads
+</div>
+                <div class="terminal-line terminal-output">
+[7/10] Crypto Attacks... 19 payloads
+</div>
+                <div class="terminal-line terminal-output">
+[8/10] Protocol Abuse... 38 payloads
+</div>
+                <div class="terminal-line terminal-output">
+[9/10] XSS Variants... 44 payloads
+</div>
+                <div class="terminal-line terminal-output">
+[10/10] SSRF Payloads... 29 payloads
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-success">
+✓ Generated 366 attack payloads
+</div>
+                <div class="terminal-line terminal-success">
+✓ Saved: cactusfuzz_proposals_A1B2C3.json
+</div>
+                <div class="terminal-line">&nbsp;</div>
+                <div class="terminal-line terminal-warning">
+🌵 Proposal complete. Review payloads before execution.
+</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready for Authorized Red Team Research?</h2>
+        <p>CactusFuzz: Offensive fuzzing with mandatory authorization and scope controls.</p>
+        <div class="cta-buttons">
+            <a href="https://github.com/0ai-Cyberviser/peachfuzz#cactusfuzz-red-team" class="btn-hero btn-hero-primary">
+                📚 Read Full Documentation
+            </a>
+            <a href="https://github.com/0ai-Cyberviser/peachfuzz" class="btn-hero btn-hero-secondary">
+                ⭐ Star on GitHub
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Projects</h4>
+                <ul>
+                    <li><a href="https://cyberviser.github.io/Hancock/">Hancock</a></li>
+                    <li><a href="https://cyberviser.github.io/Hancock/peachtrace/">PeachTrace</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/PeachTree/">PeachTree</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/peachfuzz/">PeachFuzz</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/cactusfuzz/">CactusFuzz</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz#cactusfuzz-red-team">Documentation</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz#authorization-requirements">Authorization Guide</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz#examples">Examples</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz/blob/main/API.md">API Reference</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="https://cyberviserai.com/">Main Hub</a></li>
+                    <li><a href="https://0ai-cyberviser.github.io/0ai/">0AI Portfolio</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser">GitHub Org</a></li>
+                    <li><a href="mailto:0ai@cyberviserai.com">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal & Support</h4>
+                <ul>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz/blob/main/SECURITY.md">Security Policy</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz/blob/main/LICENSE">License</a></li>
+                    <li><a href="https://github.com/0ai-Cyberviser/peachfuzz/issues">Report Issue</a></li>
+                    <li><a href="mailto:cyberviser@proton.me">Support</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 CyberViser / 0AI • Built by Johnny Watters • Authorized Lab Use Only</p>
+            <p>🌵 CactusFuzz - Red Team Offensive Fuzzer with Mandatory Authorization</p>
+        </div>
+    </footer>
+</body>
+</html>

