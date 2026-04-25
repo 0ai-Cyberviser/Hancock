@@ -1,3 +1,19 @@
+## v0.9.0 — Blockchain Governance Security Integration (COMPLETE)
+- [x] 0ai-assurance-network governance inference integration
+- [x] PeachFuzz adversarial fuzzer (20+ mutations + 6 edge case categories)
+- [x] PeachTrace cryptographic audit ledger (SHA256 digest chains)
+- [x] Governance dataset extraction pipeline (Hancock conversational format)
+- [x] Non-blocking threat scanner (exit 0 with warnings for CI/CD)
+- [x] Custom prompts suite (7 .prompt.md files for specialized workflows)
+- [x] AssuranceForge recursive self-improvement cycle complete
+- [x] Published to cyberviser/peachfuzz and cyberviser/PeachTree
+- [ ] Governance mode endpoint in hancock_agent.py (/v1/governance)
+- [ ] Fine-tune Hancock on governance adversarial datasets
+- [ ] Multi-model router (Claude 4.6 / GPT-5.4 fallback)
+- [ ] Confidence-filtered autonomous governance execution
+**Impact:** Pentest/SOC → **Blockchain Governance Security** (AI assurance, threat detection, proposal risk scoring)
+NIST: AC-6, AU-6, IR-4, SI-4, SA-11
+Repos: [PeachFuzz](https://github.com/cyberviser/peachfuzz) | [PeachTree](https://github.com/cyberviser/PeachTree) | [0ai-assurance-network](https://github.com/0ai-Cyberviser/0ai-assurance-network)
 
 ## v0.8.0 — REST API & Webhook Integration (COMPLETE)
 - [x] FastAPI REST API server with async execution
