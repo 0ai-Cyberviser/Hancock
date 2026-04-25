@@ -83,6 +83,7 @@ across forks and upstream repos.
 | 🔎 **IOC** | Threat intelligence enrichment for IOCs | ✅ Live |
 | 🌍 **OSINT** | IP/domain geolocation, infrastructure mapping, predictive analytics | ✅ Live |
 | 🔐 **GraphQL Security** | GraphQL auth/authz testing, IDOR detection, JWT security | ✅ Live |
+| ⛓️ **Governance** | Blockchain governance proposal risk scoring, threat detection, AI assurance | 🔨 In Progress |
 
 ---
 
@@ -390,6 +391,39 @@ python collectors/graphql_security_tester.py \
 Tests include: introspection detection, IDOR/BOLA, JWT vulnerabilities, mutation authorization bypass, field-level auth flaws, and rate limiting bypasses.
 
 > 📖 Guides: [`docs/graphql-security-guide.md`](docs/graphql-security-guide.md) · [`docs/graphql-security-quickstart.md`](docs/graphql-security-quickstart.md) · [`TOOL_INTEGRATION.md`](TOOL_INTEGRATION.md)
+
+### Blockchain Governance Integration
+
+Hancock integrates with [0ai-assurance-network](https://github.com/0ai-Cyberviser/0ai-assurance-network) for AI-powered blockchain governance security:
+
+```bash
+# Generate governance simulation dataset
+cd /path/to/0ai-assurance-network
+python scripts/extract_governance_dataset.py \
+  --sim-results build/governance \
+  --output /path/to/PeachTree/datasets/raw/governance-sim.jsonl
+
+# Generate adversarial test cases with PeachFuzz
+python scripts/peachfuzz_governance.py \
+  --base-proposal examples/proposals/treasury-grant.json \
+  --output build/fuzz/governance-proposals.jsonl \
+  --count 100 \
+  --include-edge-cases
+
+# Audit governance operations with PeachTrace
+python scripts/peachtrace.py append \
+  --ledger build/audit/governance-ledger.json \
+  --event-type governance_simulation \
+  --event-data '{"proposal_id": "...", "risk_score": 58}' \
+  --actor governance-ops-bot
+```
+
+**Related Projects:**
+- 🔥 [**PeachFuzz**](https://github.com/cyberviser/peachfuzz) — Adversarial fuzzer with 20+ mutation strategies for governance proposals
+- 🍑 [**PeachTree**](https://github.com/cyberviser/PeachTree) — Dataset curation engine with provenance tracking and safety gates
+- ⛓️ [**0ai-assurance-network**](https://github.com/0ai-Cyberviser/0ai-assurance-network) — Blockchain governance inference with NIST 800-53 and MITRE ATT&CK mapping
+
+> 📖 Features: Multi-model consensus scoring, economic exploit detection, prompt injection guards, cryptographic audit trails (SHA256 digest chains), JSONL training dataset extraction
 
 ---
 
